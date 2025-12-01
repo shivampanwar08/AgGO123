@@ -89,15 +89,15 @@ export default function EquipmentSheet() {
           />
         </div>
 
-        {/* Footer Action */}
+        {/* Footer Action - Rendered as a flex item at the bottom */}
         {selectedItems.length > 0 && (
-          <div className="p-4 border-t border-gray-100 bg-white sticky bottom-0 left-0 right-0 z-50 pb-6">
+          <div className="p-4 border-t border-gray-100 bg-white z-50 pb-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
             <button 
               onClick={() => {
                 const query = selectedItems.join(',');
                 setLocation(`/drivers?items=${query}`);
               }}
-              className="w-full bg-primary hover:bg-green-700 text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-green-200 transition-all active:scale-95 flex items-center justify-center gap-2"
+              className="w-full bg-primary hover:bg-green-700 text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-green-200 transition-all active:scale-95 flex items-center justify-center gap-2 animate-in slide-in-from-bottom-4 duration-200"
             >
               Find Drivers ({selectedItems.length})
             </button>
