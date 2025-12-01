@@ -15,7 +15,7 @@ export default function Drivers() {
           <ArrowLeft size={24} className="text-gray-700" />
         </Link>
         <div>
-          <h1 className="text-lg font-bold">Nearby Owners</h1>
+          <h1 className="text-lg font-bold">Results for: {selectedTypes.join(', ') || 'All Equipment'}</h1>
           <p className="text-xs text-gray-500">Within 15km radius</p>
         </div>
       </div>

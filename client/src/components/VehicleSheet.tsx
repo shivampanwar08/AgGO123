@@ -99,7 +99,7 @@ export default function EquipmentSheet() {
               }}
               className="w-full bg-primary hover:bg-green-700 text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-green-200 transition-all active:scale-95 flex items-center justify-center gap-2 animate-in slide-in-from-bottom-4 duration-200"
             >
-              Find Drivers ({selectedItems.length})
+              Proceed ({selectedItems.length})
             </button>
           </div>
         )}
