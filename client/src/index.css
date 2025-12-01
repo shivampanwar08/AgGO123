@@ -37,68 +37,69 @@
   --color-chart-5: hsl(var(--chart-5));
 }
 
-/* RAPIDO / RIDESHARE INSPIRED THEME (Yellow & Black) */
+/* AgGo Theme - Agriculture Green & Earthy Tones */
 :root {
   --background: 0 0% 100%;
-  --foreground: 240 10% 3.9%;
+  --foreground: 150 50% 10%; /* Dark Green Text */
   
   --card: 0 0% 100%;
-  --card-foreground: 240 10% 3.9%;
+  --card-foreground: 150 50% 10%;
   
   --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 3.9%;
+  --popover-foreground: 150 50% 10%;
   
-  /* Vibrant Yellow for Primary Actions */
-  --primary: 48 95% 55%; /* #F9D923 approx */
-  --primary-foreground: 240 5.9% 10%;
+  /* Agriculture Green */
+  --primary: 142 76% 36%; /* #16a34a - Green-600ish */
+  --primary-foreground: 0 0% 100%;
   
-  --secondary: 240 4.8% 95.9%;
-  --secondary-foreground: 240 5.9% 10%;
+  /* Earthy Brown/Beige for Secondary */
+  --secondary: 35 30% 94%; /* Light beige */
+  --secondary-foreground: 25 40% 20%; /* Dark Brown text */
   
-  --muted: 240 4.8% 95.9%;
-  --muted-foreground: 240 3.8% 46.1%;
+  --muted: 150 20% 96%;
+  --muted-foreground: 150 10% 40%;
   
-  --accent: 48 95% 55%;
-  --accent-foreground: 240 5.9% 10%;
+  --accent: 142 76% 36%;
+  --accent-foreground: 0 0% 100%;
   
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 98%;
   
-  --border: 240 5.9% 90%;
-  --input: 240 5.9% 90%;
-  --ring: 48 95% 55%;
+  --border: 150 20% 90%;
+  --input: 150 20% 90%;
+  --ring: 142 76% 36%;
   
   --radius: 1rem;
 }
 
 .dark {
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
+  --background: 150 50% 5%;
+  --foreground: 150 20% 90%;
   
-  --card: 240 10% 3.9%;
-  --card-foreground: 0 0% 98%;
+  --card: 150 50% 5%;
+  --card-foreground: 150 20% 90%;
   
-  --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
+  --popover: 150 50% 5%;
+  --popover-foreground: 150 20% 90%;
   
-  --primary: 48 95% 55%;
-  --primary-foreground: 240 5.9% 10%;
+  --primary: 142 76% 36%;
+  --primary-foreground: 0 0% 100%;
   
-  --secondary: 240 3.7% 15.9%;
-  --secondary-foreground: 0 0% 98%;
+  --secondary: 150 30% 15%;
+  --secondary-foreground: 150 20% 90%;
   
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
+  --muted: 150 30% 15%;
+  --muted-foreground: 150 20% 60%;
   
-  --accent: 240 3.7% 15.9%;
-  --accent-foreground: 0 0% 98%;
+  --accent: 150 30% 15%;
+  --accent-foreground: 150 20% 90%;
   
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
   
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  --ring: 48 95% 55%;
+  --border: 150 30% 15%;
+  --input: 150 30% 15%;
+  --ring: 142 76% 36%;
 }
 
 @layer base {
@@ -110,7 +111,6 @@
   }
 }
 
-/* Custom Scrollbar Hide */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
