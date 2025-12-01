@@ -1,8 +1,13 @@
 import { ArrowLeft, Star, Tractor, MapPin, Phone, User } from 'lucide-react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import BottomNav from '@/components/BottomNav';
+import { useEffect, useState } from 'react';
 
 export default function Drivers() {
+  const [searchParams] = useState(new URLSearchParams(window.location.search));
+  const itemsParam = searchParams.get('items');
+  const selectedTypes = itemsParam ? itemsParam.split(',') : [];
+
   return (
     <div className="bg-gray-50 min-h-screen pb-20">
       <div className="bg-white px-4 py-4 sticky top-0 z-10 shadow-sm flex items-center gap-3">
@@ -18,12 +23,23 @@ export default function Drivers() {
       <div className="p-4 space-y-4">
         {/* Filter Tags */}
         <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
-          <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">Has Tractor</span>
-          <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">Has Trolley</span>
+          {selectedTypes.length > 0 ? (
+            selectedTypes.map(type => (
+              <span key={type} className="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap border border-green-700 shadow-sm">
+                Seeking: {type}
+              </span>
+            ))
+          ) : (
+            <>
+              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">Has Tractor</span>
+              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">Has Trolley</span>
+            </>
+          )}
         </div>
 
         <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Available Now</h2>
         
+        {/* Only show relevant drivers if filtering is active (Mock logic for demo) */}
         <DriverCard 
           id="d1"
           name="Ram Lal"
@@ -33,27 +49,37 @@ export default function Drivers() {
           distance="2.5 km"
           status="online"
           image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"
+          itemsParam={itemsParam}
         />
-        <DriverCard 
-          id="d2"
-          name="Balwinder Singh"
-          village="Kishanpur"
-          equipment={['Tractor', 'Harvester']}
-          rating="4.7"
-          distance="5.2 km"
-          status="online"
-          image="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop"
-        />
-         <DriverCard 
-          id="d3"
-          name="Mukesh Patel"
-          village="Shyam Nagar"
-          equipment={['Seeder', 'Rotavator']}
-          rating="4.5"
-          distance="8.0 km"
-          status="online"
-          image="https://images.unsplash.com/photo-1552058544-f2b08422138a?w=100&h=100&fit=crop"
-        />
+        
+        {/* Show others if they match or if no filter */}
+        {(!itemsParam || itemsParam.includes('Tractor')) && (
+           <DriverCard 
+            id="d2"
+            name="Balwinder Singh"
+            village="Kishanpur"
+            equipment={['Tractor', 'Harvester']}
+            rating="4.7"
+            distance="5.2 km"
+            status="online"
+            image="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop"
+            itemsParam={itemsParam}
+          />
+        )}
+
+        {(!itemsParam || itemsParam.includes('Seeder')) && (
+           <DriverCard 
+            id="d3"
+            name="Mukesh Patel"
+            village="Shyam Nagar"
+            equipment={['Seeder', 'Rotavator']}
+            rating="4.5"
+            distance="8.0 km"
+            status="online"
+            image="https://images.unsplash.com/photo-1552058544-f2b08422138a?w=100&h=100&fit=crop"
+            itemsParam={itemsParam}
+          />
+        )}
 
         <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mt-6 mb-2">Currently Busy / Offline</h2>
         
@@ -65,6 +91,7 @@ export default function Drivers() {
           rating="4.2"
           status="offline"
           image="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop"
+          itemsParam={itemsParam}
         />
       </div>
       <BottomNav />
@@ -72,11 +99,12 @@ export default function Drivers() {
   );
 }
 
-function DriverCard({ id, name, village, equipment, rating, distance, status, image }: any) {
+function DriverCard({ id, name, village, equipment, rating, distance, status, image, itemsParam }: any) {
   const isOnline = status === 'online';
+  const link = isOnline ? `/driver/${id}${itemsParam ? `?items=${itemsParam}` : ''}` : "#";
   
   return (
-    <Link href={isOnline ? `/driver/${id}` : "#"}>
+    <Link href={link}>
       <div className={`bg-white p-4 rounded-xl border border-gray-100 flex flex-col gap-3 transition-all ${isOnline ? 'active:scale-[0.98] hover:shadow-md cursor-pointer' : 'opacity-60 cursor-not-allowed'}`}>
         <div className="flex items-center gap-4">
           <div className="relative">

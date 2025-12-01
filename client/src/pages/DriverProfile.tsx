@@ -1,6 +1,6 @@
 import { ArrowLeft, Star, MapPin, Tractor, Plus, Check, ShieldCheck } from 'lucide-react';
-import { useLocation, useRoute } from 'wouter';
-import { useState } from 'react';
+import { useLocation } from 'wouter';
+import { useState, useEffect } from 'react';
 
 // Mock data for a specific driver
 const driverData = {
@@ -13,15 +13,31 @@ const driverData = {
   joined: '2021',
   equipment: [
     { id: 'e1', name: 'Mahindra 575 DI Tractor', type: 'Tractor', price: 800, image: 'https://images.unsplash.com/photo-1592600584051-38a3c93d8065?w=100&h=100&fit=crop' },
-    { id: 'e2', name: 'Hydraulic Trolley', type: 'Trolley', price: 300, image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop' }, // Placeholder image
-    { id: 'e3', name: '7ft Rotavator', type: 'Rotavator', price: 500, image: 'https://images.unsplash.com/photo-1530267981375-273474d11e61?w=100&h=100&fit=crop' }, // Placeholder
-    { id: 'e4', name: 'Seed Drill', type: 'Seeder', price: 400, image: 'https://images.unsplash.com/photo-1595842878568-388444927064?w=100&h=100&fit=crop' }, // Placeholder
+    { id: 'e2', name: 'Hydraulic Trolley', type: 'Trolley', price: 300, image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop' }, 
+    { id: 'e3', name: '7ft Rotavator', type: 'Rotavator', price: 500, image: 'https://images.unsplash.com/photo-1530267981375-273474d11e61?w=100&h=100&fit=crop' }, 
+    { id: 'e4', name: 'Seed Drill', type: 'Seeder', price: 400, image: 'https://images.unsplash.com/photo-1595842878568-388444927064?w=100&h=100&fit=crop' }, 
   ]
 };
 
 export default function DriverProfile() {
   const [, setLocation] = useLocation();
   const [addedItems, setAddedItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Read items from URL query params
+    const searchParams = new URLSearchParams(window.location.search);
+    const itemsParam = searchParams.get('items');
+    
+    if (itemsParam) {
+      const selectedTypes = itemsParam.split(',');
+      // Find matching equipment IDs based on types selected on home screen
+      const initialIds = driverData.equipment
+        .filter(e => selectedTypes.includes(e.type))
+        .map(e => e.id);
+      
+      setAddedItems(initialIds);
+    }
+  }, []);
 
   const toggleItem = (id: string) => {
     setAddedItems(prev => 
