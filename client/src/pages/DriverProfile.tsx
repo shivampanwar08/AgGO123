@@ -48,94 +48,92 @@ export default function DriverProfile() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-24">
+    <div className="bg-gray-50 min-h-screen pb-32">
       {/* Header Image Area */}
-      <div className="relative h-48 bg-green-600">
+      <div className="relative h-64 bg-green-600 overflow-hidden">
         <div className="absolute top-4 left-4 z-10">
           <button 
             onClick={() => setLocation('/drivers')}
-            className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors"
+            className="w-12 h-12 bg-black/20 backdrop-blur-xl rounded-full flex items-center justify-center text-white hover:bg-black/30 transition-colors border border-white/10"
           >
             <ArrowLeft size={24} />
           </button>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60"></div>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80')] bg-cover bg-center opacity-80"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/80"></div>
+        
+        <div className="absolute bottom-0 left-0 right-0 p-6 pb-16 bg-gradient-to-t from-black/90 to-transparent">
+           <h1 className="text-3xl font-bold text-white tracking-tight">{driverData.name}</h1>
+           <div className="flex items-center gap-2 text-white/80 mt-1">
+              <MapPin size={16} />
+              <span className="text-sm font-medium tracking-wide uppercase">{driverData.village}</span>
+            </div>
+        </div>
       </div>
 
-      {/* Profile Card */}
-      <div className="px-4 -mt-12 relative z-10">
-        <div className="bg-white rounded-2xl shadow-lg p-4 border border-gray-100">
-          <div className="flex justify-between items-start">
-            <div className="flex gap-4">
-              <div className="w-20 h-20 rounded-xl border-4 border-white shadow-md overflow-hidden -mt-10 bg-gray-200">
-                <img src={driverData.image} alt={driverData.name} className="w-full h-full object-cover" />
-              </div>
-              <div className="pt-1">
-                <h1 className="text-xl font-bold text-gray-900">{driverData.name}</h1>
-                <div className="flex items-center gap-1 text-sm text-gray-500">
-                  <MapPin size={14} />
-                  <span>{driverData.village}</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-end">
-              <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-lg border border-yellow-100">
-                <Star size={14} className="text-yellow-500 fill-yellow-500" />
-                <span className="font-bold text-yellow-700">{driverData.rating}</span>
-              </div>
-              <span className="text-xs text-gray-400 mt-1">{driverData.trips} Trips</span>
-            </div>
-          </div>
-
-          <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-2 gap-4">
-             <div className="flex items-center gap-2 text-sm text-gray-600">
-               <ShieldCheck size={18} className="text-green-600" />
-               <span>Verified Owner</span>
+      {/* Profile Stats Card */}
+      <div className="px-4 -mt-8 relative z-10">
+        <div className="glass rounded-3xl p-1">
+          <div className="bg-white/80 backdrop-blur-md rounded-[1.25rem] p-4 flex justify-between items-center">
+             <div className="flex flex-col items-center px-4 border-r border-gray-200/50">
+               <span className="text-2xl font-bold text-gray-900">{driverData.rating}</span>
+               <div className="flex text-yellow-400 text-xs">★★★★★</div>
+               <span className="text-[10px] text-gray-400 uppercase font-bold mt-1">Rating</span>
              </div>
-             <div className="flex items-center gap-2 text-sm text-gray-600">
-               <span className="font-bold">Since {driverData.joined}</span>
+             <div className="flex flex-col items-center px-4 border-r border-gray-200/50">
+               <span className="text-2xl font-bold text-gray-900">{driverData.trips}</span>
+               <span className="text-[10px] text-gray-400 uppercase font-bold mt-1">Trips</span>
+             </div>
+             <div className="flex flex-col items-center px-4">
+               <span className="text-2xl font-bold text-gray-900">3Y</span>
+               <span className="text-[10px] text-gray-400 uppercase font-bold mt-1">Exp</span>
              </div>
           </div>
         </div>
       </div>
 
       {/* Equipment List */}
-      <div className="p-4 mt-2">
-        <h2 className="text-lg font-bold text-gray-900 mb-3">Available Equipment</h2>
-        <div className="space-y-3">
+      <div className="p-4 mt-4">
+        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 ml-1">Inventory</h2>
+        <div className="space-y-4">
           {driverData.equipment.map(item => (
-            <div key={item.id} className="bg-white p-3 rounded-xl border border-gray-100 shadow-sm flex gap-3">
-              <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                 <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-              </div>
-              
-              <div className="flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="font-bold text-gray-900 text-sm line-clamp-1">{item.name}</h3>
-                  <p className="text-xs text-gray-500">{item.type}</p>
+            <div key={item.id} className={`glass rounded-3xl p-1 transition-all duration-300 ${addedItems.includes(item.id) ? 'ring-2 ring-green-500 shadow-lg shadow-green-500/20' : ''}`}>
+              <div className="bg-white/60 backdrop-blur-sm rounded-[1.25rem] p-3 flex gap-4">
+                <div className="w-24 h-24 bg-gray-100 rounded-2xl overflow-hidden flex-shrink-0 shadow-sm">
+                   <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                 </div>
                 
-                <div className="flex justify-between items-end">
-                  <span className="font-bold text-green-700">₹{item.price}/hr</span>
+                <div className="flex-1 flex flex-col justify-between py-1">
+                  <div>
+                    <h3 className="font-bold text-gray-900 text-base leading-tight">{item.name}</h3>
+                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mt-1">{item.type}</p>
+                  </div>
                   
-                  <button 
-                    onClick={() => toggleItem(item.id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-all ${
-                      addedItems.includes(item.id)
-                        ? 'bg-green-100 text-green-700 border border-green-200'
-                        : 'bg-primary text-white shadow-md active:scale-95'
-                    }`}
-                  >
-                    {addedItems.includes(item.id) ? (
-                      <>
-                        <Check size={14} /> Added
-                      </>
-                    ) : (
-                      <>
-                        <Plus size={14} /> Add
-                      </>
-                    )}
-                  </button>
+                  <div className="flex justify-between items-end">
+                    <div>
+                       <span className="font-bold text-xl text-gray-900">₹{item.price}</span>
+                       <span className="text-xs text-gray-400 font-medium">/hr</span>
+                    </div>
+                    
+                    <button 
+                      onClick={() => toggleItem(item.id)}
+                      className={`h-10 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-md active:scale-95 ${
+                        addedItems.includes(item.id)
+                          ? 'bg-black text-white'
+                          : 'bg-white text-black border border-gray-200'
+                      }`}
+                    >
+                      {addedItems.includes(item.id) ? (
+                        <>
+                          <Check size={14} /> Added
+                        </>
+                      ) : (
+                        <>
+                          <Plus size={14} /> Add
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -145,17 +143,21 @@ export default function DriverProfile() {
 
       {/* Checkout Floating Bar */}
       {addedItems.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-sm text-gray-500">{addedItems.length} items selected</span>
-            <span className="font-bold text-lg">₹{addedItems.reduce((acc, id) => acc + (driverData.equipment.find(e => e.id === id)?.price || 0), 0)}/hr</span>
-          </div>
-          <button 
-            onClick={() => setLocation('/billing')}
-            className="w-full bg-primary hover:bg-green-700 text-white font-bold text-lg py-3 rounded-xl shadow-lg shadow-green-200 transition-all active:scale-95"
-          >
-            Proceed to Book
-          </button>
+        <div className="fixed bottom-4 left-4 right-4 z-50">
+           <div className="glass-dark rounded-3xl p-1 shadow-2xl animate-in slide-in-from-bottom-10 duration-300">
+             <div className="bg-black/80 backdrop-blur-xl rounded-[1.25rem] p-4 flex items-center justify-between">
+                <div className="flex flex-col pl-2">
+                  <span className="text-xs text-gray-400 font-medium uppercase tracking-wide">{addedItems.length} items</span>
+                  <span className="font-bold text-xl text-white">₹{addedItems.reduce((acc, id) => acc + (driverData.equipment.find(e => e.id === id)?.price || 0), 0)}<span className="text-sm font-normal text-gray-500">/hr</span></span>
+                </div>
+                <button 
+                  onClick={() => setLocation('/billing')}
+                  className="bg-green-500 hover:bg-green-400 text-white font-bold text-base py-3 px-8 rounded-xl shadow-lg shadow-green-500/40 transition-all active:scale-95 neon-glow"
+                >
+                  Book Now
+                </button>
+             </div>
+           </div>
         </div>
       )}
     </div>

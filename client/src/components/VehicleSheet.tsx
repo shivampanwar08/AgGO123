@@ -24,20 +24,20 @@ export default function EquipmentSheet() {
       modal={false}
       open={true}
     >
-      <Drawer.Content className="fixed bottom-16 left-0 right-0 z-30 flex flex-col bg-white rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.1)] h-[85vh] max-h-[96%] outline-none pb-16">
+      <Drawer.Content className="fixed bottom-16 left-0 right-0 z-30 flex flex-col bg-white/90 backdrop-blur-xl rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] h-[85vh] max-h-[96%] outline-none pb-16 border-t border-white/50">
         {/* Handle */}
         <div className="p-4 pb-0 flex justify-center flex-shrink-0">
-          <div className="w-12 h-1.5 bg-gray-300 rounded-full mb-2" />
+          <div className="w-16 h-1.5 bg-gray-300/50 rounded-full mb-2 backdrop-blur-sm" />
         </div>
 
         {/* Header */}
-        <div className="px-6 pb-4 border-b border-gray-100 flex-shrink-0 flex justify-between items-center">
+        <div className="px-6 pb-4 border-b border-gray-100/50 flex-shrink-0 flex justify-between items-center">
           <div>
-            <h3 className="text-lg font-bold text-gray-900">Rent Equipment</h3>
-            <p className="text-sm text-gray-500">Select machines you need.</p>
+            <h3 className="text-xl font-bold text-gray-900 tracking-tight">Rent Equipment</h3>
+            <p className="text-xs uppercase tracking-widest text-gray-500 font-semibold mt-1">Select Machines</p>
           </div>
           {selectedItems.length > 0 && (
-            <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-bold">
+            <div className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg shadow-green-500/30">
               {selectedItems.length} Selected
             </div>
           )}
@@ -91,13 +91,13 @@ export default function EquipmentSheet() {
 
         {/* Footer Action - Rendered as a flex item at the bottom */}
         {selectedItems.length > 0 && (
-          <div className="p-4 border-t border-gray-100 bg-white z-50 pb-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+          <div className="p-4 border-t border-gray-100/50 bg-white/80 backdrop-blur-md z-50 pb-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
             <button 
               onClick={() => {
                 const query = selectedItems.join(',');
                 setLocation(`/drivers?items=${query}`);
               }}
-              className="w-full bg-primary hover:bg-green-700 text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-green-200 transition-all active:scale-95 flex items-center justify-center gap-2 animate-in slide-in-from-bottom-4 duration-200"
+              className="w-full bg-primary hover:bg-green-500 text-white font-bold text-lg py-4 rounded-2xl shadow-lg shadow-green-500/40 transition-all active:scale-95 flex items-center justify-center gap-2 animate-in slide-in-from-bottom-4 duration-200 neon-glow"
             >
               Proceed ({selectedItems.length})
             </button>
@@ -112,36 +112,36 @@ function EquipmentOption({ icon, name, price, desc, tag, selected, onClick }: an
   return (
     <div 
       onClick={onClick} 
-      className={`cursor-pointer relative flex items-center p-4 rounded-2xl border-2 transition-all active:scale-[0.98] ${
+      className={`cursor-pointer relative flex items-center p-4 rounded-2xl border transition-all duration-300 active:scale-[0.98] ${
         selected 
-          ? 'bg-green-50 border-green-500 shadow-md' 
-          : 'bg-white border-gray-100 hover:border-green-200'
+          ? 'bg-green-50/80 border-green-500 shadow-lg shadow-green-500/10' 
+          : 'bg-white/60 border-gray-100 hover:border-green-200 hover:bg-white/80'
       }`}
     >
       {tag && (
-        <span className="absolute -top-2.5 right-4 bg-black text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
+        <span className="absolute -top-2.5 right-4 bg-black text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shadow-md">
           {tag}
         </span>
       )}
       
-      <div className={`w-12 h-12 rounded-full flex items-center justify-center shadow-sm border mr-4 flex-shrink-0 ${selected ? 'bg-white border-green-200' : 'bg-gray-50 border-gray-100'}`}>
+      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border mr-4 flex-shrink-0 transition-colors duration-300 ${selected ? 'bg-white border-green-200' : 'bg-gray-50 border-gray-100'}`}>
         {icon}
       </div>
       
       <div className="flex-1">
         <div className="flex justify-between items-start">
-          <h4 className="font-bold text-gray-900 text-base">{name}</h4>
+          <h4 className="font-bold text-gray-900 text-lg tracking-tight">{name}</h4>
           <span className="font-bold text-primary text-lg">{price}</span>
         </div>
         
         <div className="flex justify-between items-center mt-0.5">
-          <p className="text-xs text-gray-500 font-medium">{desc}</p>
+          <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide">{desc}</p>
         </div>
       </div>
 
       {selected && (
-        <div className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-green-500 text-white rounded-full p-1">
-          <Check size={16} />
+        <div className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-green-500 text-white rounded-full p-1.5 shadow-lg shadow-green-500/30 animate-in zoom-in duration-200">
+          <Check size={14} strokeWidth={3} />
         </div>
       )}
     </div>

@@ -7,9 +7,9 @@
   --font-sans: "Plus Jakarta Sans", sans-serif;
 
   --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -30,76 +30,70 @@
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
-  --color-chart-1: hsl(var(--chart-1));
-  --color-chart-2: hsl(var(--chart-2));
-  --color-chart-3: hsl(var(--chart-3));
-  --color-chart-4: hsl(var(--chart-4));
-  --color-chart-5: hsl(var(--chart-5));
 }
 
-/* AgGo Theme - Agriculture Green & Earthy Tones */
+/* AgGo Futuristic Theme */
 :root {
-  --background: 0 0% 100%;
-  --foreground: 150 50% 10%; /* Dark Green Text */
+  --background: 210 20% 98%; /* Cool greyish white */
+  --foreground: 220 40% 10%;
   
   --card: 0 0% 100%;
-  --card-foreground: 150 50% 10%;
+  --card-foreground: 220 40% 10%;
   
   --popover: 0 0% 100%;
-  --popover-foreground: 150 50% 10%;
+  --popover-foreground: 220 40% 10%;
   
-  /* Agriculture Green */
-  --primary: 142 76% 36%; /* #16a34a - Green-600ish */
+  /* Neon Green */
+  --primary: 142 70% 45%; /* Vibrant Green */
   --primary-foreground: 0 0% 100%;
   
-  /* Earthy Brown/Beige for Secondary */
-  --secondary: 35 30% 94%; /* Light beige */
-  --secondary-foreground: 25 40% 20%; /* Dark Brown text */
+  --secondary: 210 20% 94%;
+  --secondary-foreground: 220 40% 10%;
   
-  --muted: 150 20% 96%;
-  --muted-foreground: 150 10% 40%;
+  --muted: 210 20% 90%;
+  --muted-foreground: 215 20% 45%;
   
-  --accent: 142 76% 36%;
+  --accent: 142 70% 45%;
   --accent-foreground: 0 0% 100%;
   
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 98%;
   
-  --border: 150 20% 90%;
-  --input: 150 20% 90%;
-  --ring: 142 76% 36%;
+  --border: 210 20% 90%;
+  --input: 210 20% 90%;
+  --ring: 142 70% 45%;
   
-  --radius: 1rem;
+  --radius: 1.5rem;
 }
 
 .dark {
-  --background: 150 50% 5%;
-  --foreground: 150 20% 90%;
+  --background: 220 40% 5%;
+  --foreground: 210 20% 98%;
   
-  --card: 150 50% 5%;
-  --card-foreground: 150 20% 90%;
+  --card: 220 35% 10%;
+  --card-foreground: 210 20% 98%;
   
-  --popover: 150 50% 5%;
-  --popover-foreground: 150 20% 90%;
+  --popover: 220 35% 10%;
+  --popover-foreground: 210 20% 98%;
   
-  --primary: 142 76% 36%;
-  --primary-foreground: 0 0% 100%;
+  --primary: 142 80% 50%; /* Brighter Green for Dark Mode */
+  --primary-foreground: 220 40% 5%;
   
-  --secondary: 150 30% 15%;
-  --secondary-foreground: 150 20% 90%;
+  --secondary: 215 30% 15%;
+  --secondary-foreground: 210 20% 98%;
   
-  --muted: 150 30% 15%;
-  --muted-foreground: 150 20% 60%;
+  --muted: 215 30% 15%;
+  --muted-foreground: 215 20% 65%;
   
-  --accent: 150 30% 15%;
-  --accent-foreground: 150 20% 90%;
+  --accent: 215 30% 15%;
+  --accent-foreground: 210 20% 98%;
   
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
   
-  --border: 150 30% 15%;
-  --input: 150 30% 15%;
-  --ring: 142 76% 36%;
+  --border: 215 30% 15%;
+  --input: 215 30% 15%;
+  --ring: 142 80% 50%;
 }
 
 @layer base {
@@ -111,10 +105,24 @@
   }
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+@layer utilities {
+  .glass {
+    @apply bg-white/80 backdrop-blur-xl border border-white/20 shadow-lg;
+  }
+  
+  .glass-dark {
+    @apply bg-black/60 backdrop-blur-xl border border-white/10 shadow-xl;
+  }
+
+  .neon-glow {
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.5);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
