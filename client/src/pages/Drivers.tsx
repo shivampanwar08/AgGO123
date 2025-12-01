@@ -25,7 +25,9 @@ export default function Drivers() {
         <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Available Now</h2>
         
         <DriverCard 
+          id="d1"
           name="Ram Lal"
+          village="Rampur Village"
           equipment={['Tractor', 'Trolley']}
           rating="4.9"
           distance="2.5 km"
@@ -33,7 +35,9 @@ export default function Drivers() {
           image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"
         />
         <DriverCard 
+          id="d2"
           name="Balwinder Singh"
+          village="Kishanpur"
           equipment={['Tractor', 'Harvester']}
           rating="4.7"
           distance="5.2 km"
@@ -41,7 +45,9 @@ export default function Drivers() {
           image="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop"
         />
          <DriverCard 
+          id="d3"
           name="Mukesh Patel"
+          village="Shyam Nagar"
           equipment={['Seeder', 'Rotavator']}
           rating="4.5"
           distance="8.0 km"
@@ -52,7 +58,9 @@ export default function Drivers() {
         <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mt-6 mb-2">Currently Busy / Offline</h2>
         
         <DriverCard 
+          id="d4"
           name="Suresh Kumar"
+          village="Rampur Village"
           equipment={['Tractor']}
           rating="4.2"
           status="offline"
@@ -64,11 +72,11 @@ export default function Drivers() {
   );
 }
 
-function DriverCard({ name, equipment, rating, distance, status, image }: any) {
+function DriverCard({ id, name, village, equipment, rating, distance, status, image }: any) {
   const isOnline = status === 'online';
   
   return (
-    <Link href={isOnline ? "/billing" : "#"}>
+    <Link href={isOnline ? `/driver/${id}` : "#"}>
       <div className={`bg-white p-4 rounded-xl border border-gray-100 flex flex-col gap-3 transition-all ${isOnline ? 'active:scale-[0.98] hover:shadow-md cursor-pointer' : 'opacity-60 cursor-not-allowed'}`}>
         <div className="flex items-center gap-4">
           <div className="relative">
@@ -80,7 +88,10 @@ function DriverCard({ name, equipment, rating, distance, status, image }: any) {
 
           <div className="flex-1">
             <div className="flex justify-between items-start">
-              <h3 className="font-bold text-gray-900">{name}</h3>
+              <div>
+                <h3 className="font-bold text-gray-900">{name}</h3>
+                <p className="text-xs text-gray-500 font-medium">{village}</p>
+              </div>
               {distance && (
                 <span className="text-xs font-bold text-primary bg-green-50 px-2 py-0.5 rounded-full flex items-center gap-1">
                   <MapPin size={10} /> {distance}
