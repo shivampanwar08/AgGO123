@@ -91,7 +91,7 @@ export default function EquipmentSheet() {
 
         {/* Footer Action */}
         {selectedItems.length > 0 && (
-          <div className="p-4 border-t border-gray-100 bg-white absolute bottom-0 left-0 right-0 pb-20">
+          <div className="p-4 border-t border-gray-100 bg-white sticky bottom-0 left-0 right-0 z-50 pb-6">
             <button 
               onClick={() => setLocation('/drivers')}
               className="w-full bg-primary hover:bg-green-700 text-white font-bold text-lg py-4 rounded-xl shadow-lg shadow-green-200 transition-all active:scale-95 flex items-center justify-center gap-2"
