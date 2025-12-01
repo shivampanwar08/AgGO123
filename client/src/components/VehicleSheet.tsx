@@ -1,9 +1,11 @@
 import { Drawer } from 'vaul';
 import { Bike, Car, CarTaxiFront, Clock, Info } from 'lucide-react';
 import { useState } from 'react';
+import { useLocation } from 'wouter';
 
 export default function VehicleSheet() {
-  const [snap, setSnap] = useState<number | string | null>('320px');
+  const [snap, setSnap] = useState<number | string | null>('140px');
+  const [, setLocation] = useLocation();
 
   return (
     <Drawer.Root 
@@ -13,16 +15,16 @@ export default function VehicleSheet() {
       modal={false}
       open={true}
     >
-      <Drawer.Content className="fixed bottom-0 left-0 right-0 z-30 flex flex-col bg-white rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.1)] h-[85vh] max-h-[96%] outline-none">
+      <Drawer.Content className="fixed bottom-16 left-0 right-0 z-30 flex flex-col bg-white rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.1)] h-[85vh] max-h-[96%] outline-none pb-16">
         {/* Handle */}
         <div className="p-4 pb-0 flex justify-center flex-shrink-0">
           <div className="w-12 h-1.5 bg-gray-300 rounded-full mb-2" />
         </div>
 
-        {/* Header - Only visible when snapped up or fully open ideally, but keeping simple */}
+        {/* Header */}
         <div className="px-6 pb-4 border-b border-gray-100 flex-shrink-0">
           <h3 className="text-lg font-bold text-gray-900">Available Rides</h3>
-          <p className="text-sm text-gray-500">Prices may vary due to traffic.</p>
+          <p className="text-sm text-gray-500">Select a ride to see drivers.</p>
         </div>
 
         {/* Scrollable Content */}
@@ -35,6 +37,7 @@ export default function VehicleSheet() {
             desc="Fastest way to beat traffic"
             tag="Cheapest"
             color="bg-yellow-50 border-yellow-200"
+            onClick={() => setLocation('/drivers')}
           />
           <VehicleOption 
             icon={<CarTaxiFront size={24} className="text-black" />}
@@ -44,6 +47,7 @@ export default function VehicleSheet() {
             desc="Hassle-free auto rides"
             tag="Popular"
             color="bg-gray-50 border-gray-200"
+            onClick={() => setLocation('/drivers')}
           />
            <VehicleOption 
             icon={<Car size={24} className="text-gray-800" />}
@@ -52,6 +56,7 @@ export default function VehicleSheet() {
             price="₹145"
             desc="Comfortable hatchbacks"
             color="bg-white border-gray-100"
+            onClick={() => setLocation('/drivers')}
           />
            <VehicleOption 
             icon={<Car size={24} className="text-gray-800" />}
@@ -60,6 +65,7 @@ export default function VehicleSheet() {
             price="₹180"
             desc="Spacious sedans, top drivers"
             color="bg-white border-gray-100"
+            onClick={() => setLocation('/drivers')}
           />
           <VehicleOption 
             icon={<CarTaxiFront size={24} className="text-green-600" />}
@@ -69,23 +75,17 @@ export default function VehicleSheet() {
             desc="Eco-friendly rides"
             tag="Eco"
             color="bg-green-50 border-green-100"
+            onClick={() => setLocation('/drivers')}
           />
-        </div>
-
-        {/* Sticky Footer Button */}
-        <div className="p-4 border-t border-gray-100 bg-white pb-8">
-          <button className="w-full bg-primary hover:bg-yellow-400 text-black font-bold text-lg py-4 rounded-xl shadow-lg shadow-yellow-200 transition-all active:scale-95 flex items-center justify-center gap-2">
-            Book Bike
-          </button>
         </div>
       </Drawer.Content>
     </Drawer.Root>
   );
 }
 
-function VehicleOption({ icon, name, eta, price, desc, tag, color }: any) {
+function VehicleOption({ icon, name, eta, price, desc, tag, color, onClick }: any) {
   return (
-    <div className={`relative flex items-center p-4 rounded-2xl border-2 transition-all active:scale-[0.98] ${color}`}>
+    <div onClick={onClick} className={`cursor-pointer relative flex items-center p-4 rounded-2xl border-2 transition-all active:scale-[0.98] ${color}`}>
       {tag && (
         <span className="absolute -top-2.5 right-4 bg-black text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
           {tag}
