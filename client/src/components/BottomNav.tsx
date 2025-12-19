@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'wouter';
-import { Home, Users, ShoppingBag, Settings } from 'lucide-react';
+import { Home, Users, ShoppingBag, Settings, Leaf } from 'lucide-react';
 
 export default function BottomNav() {
   const [location] = useLocation();
@@ -7,29 +7,35 @@ export default function BottomNav() {
   const isActive = (path: string) => location === path;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-white/20 shadow-2xl z-50 h-20 px-4 pb-4 rounded-t-3xl">
-      <div className="grid grid-cols-4 h-full items-center">
+    <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-white/20 shadow-2xl z-50 h-20 px-2 pb-4 rounded-t-3xl">
+      <div className="grid grid-cols-5 h-full items-center">
         <NavItem 
           to="/" 
-          icon={<Home size={24} />} 
+          icon={<Home size={20} />} 
           label="Home" 
           active={isActive('/')} 
         />
         <NavItem 
           to="/drivers" 
-          icon={<Users size={24} />} 
+          icon={<Users size={20} />} 
           label="Drivers" 
           active={isActive('/drivers')} 
         />
         <NavItem 
+          to="/marketplace" 
+          icon={<Leaf size={20} />} 
+          label="Market" 
+          active={isActive('/marketplace')} 
+        />
+        <NavItem 
           to="/shops" 
-          icon={<ShoppingBag size={24} />} 
+          icon={<ShoppingBag size={20} />} 
           label="Shops" 
           active={isActive('/shops')} 
         />
         <NavItem 
           to="/settings" 
-          icon={<Settings size={24} />} 
+          icon={<Settings size={20} />} 
           label="Settings" 
           active={isActive('/settings')} 
         />
