@@ -1,6 +1,7 @@
 import { ArrowLeft, Star, MapPin, Phone, Search, ShoppingCart, TrendingDown } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import { useState } from 'react';
+import { useApp } from '@/lib/appContext';
 
 // Mock Data for Product Comparison
 const productCatalog = [
@@ -68,6 +69,7 @@ const shops = [
 ];
 
 export default function Shops() {
+  const { darkMode } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
@@ -86,8 +88,8 @@ export default function Shops() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-20">
-      <div className="bg-white px-4 py-4 sticky top-0 z-10 shadow-sm space-y-3">
+    <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} min-h-screen pb-20 transition-colors`}>
+      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} px-4 py-4 sticky top-0 z-10 shadow-sm space-y-3`}>
         <h1 className="text-xl font-bold">Agri Shops Nearby</h1>
         
         {/* Search Bar */}

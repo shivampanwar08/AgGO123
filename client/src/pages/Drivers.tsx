@@ -2,25 +2,27 @@ import { ArrowLeft, Star, Tractor, MapPin, Phone, User } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import BottomNav from '@/components/BottomNav';
 import { useEffect, useState } from 'react';
+import { useApp } from '@/lib/appContext';
 
 export default function Drivers() {
+  const { darkMode } = useApp();
   const [searchParams] = useState(new URLSearchParams(window.location.search));
   const itemsParam = searchParams.get('items');
   const selectedTypes = itemsParam ? itemsParam.split(',') : [];
 
   return (
-    <div className="bg-gray-50/50 min-h-screen pb-24">
-      <div className="bg-white/80 backdrop-blur-xl px-4 py-4 sticky top-0 z-10 shadow-sm flex items-center gap-4 border-b border-white/20">
+    <div className={`${darkMode ? 'bg-gray-900/50' : 'bg-gray-50/50'} min-h-screen pb-24 transition-colors`}>
+      <div className={`${darkMode ? 'bg-gray-800/80 border-gray-700' : 'bg-white/80 border-white/20'} backdrop-blur-xl px-4 py-4 sticky top-0 z-10 shadow-sm flex items-center gap-4 border-b transition-colors`}>
         <Link href="/">
           <button className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
             <ArrowLeft size={20} className="text-gray-800" />
           </button>
         </Link>
         <div>
-          <h1 className="text-xl font-bold text-gray-900 tracking-tight">
+          <h1 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} tracking-tight`}>
             {selectedTypes.length > 0 ? 'Matching Owners' : 'Nearby Owners'}
           </h1>
-          <p className="text-xs text-gray-500 font-medium uppercase tracking-widest">Within 15km radius</p>
+          <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} font-medium uppercase tracking-widest`}>Within 15km radius</p>
         </div>
       </div>
 
@@ -41,7 +43,7 @@ export default function Drivers() {
           )}
         </div>
 
-        <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 ml-1">Available Now</h2>
+        <h2 className={`text-xs font-bold ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-widest mb-3 ml-1`}>Available Now</h2>
         
         {/* Only show relevant drivers if filtering is active (Mock logic for demo) */}
         <DriverCard 
@@ -85,7 +87,7 @@ export default function Drivers() {
           />
         )}
 
-        <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-8 mb-3 ml-1">Currently Busy / Offline</h2>
+        <h2 className={`text-xs font-bold ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-widest mt-8 mb-3 ml-1`}>Currently Busy / Offline</h2>
         
         <DriverCard 
           id="d4"
