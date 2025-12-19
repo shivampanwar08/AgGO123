@@ -168,7 +168,13 @@ export default function Settings() {
         </div>
 
         {/* Logout */}
-        <button className="glass rounded-3xl p-1 w-full active:scale-95 transition-transform">
+        <button 
+          onClick={() => {
+            localStorage.removeItem('aggo_user_phone');
+            window.location.reload();
+          }}
+          className="glass rounded-3xl p-1 w-full active:scale-95 transition-transform"
+        >
           <div className="bg-white/60 backdrop-blur-sm rounded-[1.25rem] p-4 flex items-center gap-4 text-red-500 font-bold">
              <LogOut size={20} />
              <span>Log Out</span>
