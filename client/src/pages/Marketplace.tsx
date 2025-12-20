@@ -2,6 +2,7 @@ import { ArrowLeft, Star, MapPin, Phone, TrendingUp, Plus, Check, Search, Leaf, 
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import BottomNav from '@/components/BottomNav';
+import { useApp } from '@/lib/appContext';
 
 const farmersWithCrops = [
   {
@@ -90,6 +91,7 @@ const buyersList = [
 ];
 
 export default function Marketplace() {
+  const { darkMode } = useApp();
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<'browse' | 'sell'>('browse');
   const [searchQuery, setSearchQuery] = useState('');
@@ -104,25 +106,25 @@ export default function Marketplace() {
   );
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-24">
-      <div className="bg-white/80 backdrop-blur-xl px-4 py-4 sticky top-0 z-10 shadow-sm border-b border-white/20">
+    <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} min-h-screen pb-24 transition-colors`}>
+      <div className={`${darkMode ? 'bg-gray-800/80 border-gray-700' : 'bg-white/80 border-white/20'} backdrop-blur-xl px-4 py-4 sticky top-0 z-10 shadow-sm border-b transition-colors`}>
         <div className="flex items-center gap-4 mb-4">
           <button 
             onClick={() => setLocation('/')}
-            className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+            className={`w-10 h-10 ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'} rounded-full flex items-center justify-center transition-colors`}
           >
-            <ArrowLeft size={20} className="text-gray-800" />
+            <ArrowLeft size={20} className={darkMode ? 'text-gray-300' : 'text-gray-800'} />
           </button>
-          <h1 className="text-xl font-bold text-gray-900 tracking-tight">Crop Marketplace</h1>
+          <h1 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} tracking-tight`}>Crop Marketplace</h1>
         </div>
 
-        <div className="flex gap-2 bg-gray-100/50 p-1 rounded-xl">
+        <div className={`flex gap-2 ${darkMode ? 'bg-gray-900/50' : 'bg-gray-100/50'} p-1 rounded-xl`}>
           <button
             onClick={() => setActiveTab('browse')}
             className={`flex-1 py-2.5 px-4 rounded-lg font-bold text-sm transition-all duration-200 ${
               activeTab === 'browse'
-                ? 'bg-white text-primary shadow-md'
-                : 'text-gray-600 hover:text-gray-800'
+                ? `${darkMode ? 'bg-gray-800 text-green-400' : 'bg-white text-primary shadow-md'}`
+                : `${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-600 hover:text-gray-800'}`
             }`}
           >
             Browse Farmers
@@ -131,8 +133,8 @@ export default function Marketplace() {
             onClick={() => setActiveTab('sell')}
             className={`flex-1 py-2.5 px-4 rounded-lg font-bold text-sm transition-all duration-200 ${
               activeTab === 'sell'
-                ? 'bg-white text-primary shadow-md'
-                : 'text-gray-600 hover:text-gray-800'
+                ? `${darkMode ? 'bg-gray-800 text-green-400' : 'bg-white text-primary shadow-md'}`
+                : `${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-600 hover:text-gray-800'}`
             }`}
           >
             Sell My Crops
@@ -143,36 +145,36 @@ export default function Marketplace() {
       {activeTab === 'browse' && (
         <div className="p-4 space-y-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} size={18} />
             <input 
               type="text" 
               placeholder="Search crops, pesticides..." 
-              className="w-full bg-white text-gray-900 rounded-xl pl-10 pr-4 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-green-500 transition-all border border-gray-200"
+              className={`w-full ${darkMode ? 'bg-gray-800 text-white border-gray-700' : 'bg-white text-gray-900 border-gray-200'} rounded-xl pl-10 pr-4 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-green-500 transition-all border`}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
           <div className="space-y-6">
-            <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-4">
+            <h2 className={`text-xs font-bold ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-widest mt-4`}>
               Available Crops ({filteredFarmers.reduce((acc, f) => acc + f.crops.length, 0)})
             </h2>
 
             {filteredFarmers.length === 0 && searchQuery ? (
-              <div className="text-center py-10 text-gray-400">
+              <div className={`text-center py-10 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                 <p>No crops found matching "{searchQuery}"</p>
               </div>
             ) : (
               filteredFarmers.map(farmer => (
-                <div key={farmer.id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
-                  <div className="p-4 bg-gradient-to-r from-green-50/50 to-transparent border-b border-gray-100">
+                <div key={farmer.id} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} rounded-2xl border overflow-hidden shadow-sm`}>
+                  <div className={`p-4 ${darkMode ? 'bg-gray-700/50 border-gray-700' : 'bg-gradient-to-r from-green-50/50 to-transparent border-gray-100'} border-b`}>
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl overflow-hidden bg-gray-100">
+                      <div className={`w-12 h-12 rounded-xl overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
                         <img src={farmer.image} alt={farmer.name} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-bold text-gray-900">{farmer.name}</h3>
-                        <p className="text-xs text-gray-500 flex items-center gap-1">
+                        <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{farmer.name}</h3>
+                        <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} flex items-center gap-1`}>
                           <MapPin size={12} /> {farmer.village} • {farmer.distance}
                         </p>
                       </div>
@@ -181,32 +183,32 @@ export default function Marketplace() {
                           <Star size={14} className="text-yellow-400 fill-yellow-400" />
                           {farmer.rating}
                         </div>
-                        <button className="text-green-600 hover:text-green-700 font-bold text-xs mt-1">Contact</button>
+                        <button className={`${darkMode ? 'text-green-400' : 'text-green-600 hover:text-green-700'} font-bold text-xs mt-1`}>Contact</button>
                       </div>
                     </div>
                   </div>
 
-                  <div className="divide-y divide-gray-100">
+                  <div className={`${darkMode ? 'divide-gray-700' : 'divide-gray-100'} divide-y`}>
                     {farmer.crops.map(crop => (
-                      <div key={crop.id} className="p-4 hover:bg-gray-50/50 transition-colors cursor-pointer" onClick={() => setSelectedCrop(crop)}>
+                      <div key={crop.id} className={`p-4 ${darkMode ? 'hover:bg-gray-700/50' : 'hover:bg-gray-50/50'} transition-colors cursor-pointer`} onClick={() => setSelectedCrop(crop)}>
                         <div className="flex gap-4">
-                          <div className="w-16 h-16 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
+                          <div className={`w-16 h-16 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} overflow-hidden flex-shrink-0`}>
                             <img src={crop.image} alt={crop.name} className="w-full h-full object-cover" />
                           </div>
                           <div className="flex-1">
                             <div className="flex justify-between items-start">
                               <div>
-                                <h4 className="font-bold text-gray-900">{crop.name}</h4>
-                                <p className="text-xs text-gray-500 mt-0.5">Quantity: {crop.qty}</p>
+                                <h4 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{crop.name}</h4>
+                                <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} mt-0.5`}>Quantity: {crop.qty}</p>
                               </div>
                               <div className="text-right">
-                                <div className="font-bold text-lg text-green-600">₹{crop.pricePerUnit}</div>
-                                <span className="text-[10px] text-gray-500 font-medium">per unit</span>
+                                <div className={`font-bold text-lg ${darkMode ? 'text-green-400' : 'text-green-600'}`}>₹{crop.pricePerUnit}</div>
+                                <span className={`text-[10px] ${darkMode ? 'text-gray-400' : 'text-gray-500'} font-medium`}>per unit</span>
                               </div>
                             </div>
                             <div className="flex items-center gap-2 mt-2 text-xs font-semibold">
-                              <TrendingUp size={12} className="text-green-600" />
-                              <span className="text-green-600">{crop.buyersOffering} buyers interested</span>
+                              <TrendingUp size={12} className={darkMode ? 'text-green-400' : 'text-green-600'} />
+                              <span className={darkMode ? 'text-green-400' : 'text-green-600'}>{crop.buyersOffering} buyers interested</span>
                             </div>
                           </div>
                         </div>
@@ -223,18 +225,18 @@ export default function Marketplace() {
       {activeTab === 'sell' && (
         <div className="p-4 space-y-4">
           <div className="space-y-4">
-            <h2 className="text-sm font-bold text-gray-900 mt-2">My Listed Crops</h2>
+            <h2 className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mt-2`}>My Listed Crops</h2>
             
             {myCrops.map(crop => (
-              <div key={crop.id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+              <div key={crop.id} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} rounded-2xl border overflow-hidden shadow-sm`}>
                 <div className="p-4">
                   <div className="flex gap-4">
-                    <div className="w-20 h-20 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
+                    <div className={`w-20 h-20 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} overflow-hidden flex-shrink-0`}>
                       <img src={crop.image} alt={crop.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-gray-900">{crop.name}</h3>
-                      <p className="text-xs text-gray-500 mt-1">Available: {crop.qty}</p>
+                      <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{crop.name}</h3>
+                      <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} mt-1`}>Available: {crop.qty}</p>
                       <button className="text-red-500 text-xs font-bold mt-2 hover:text-red-600">Remove</button>
                     </div>
                   </div>
@@ -242,13 +244,13 @@ export default function Marketplace() {
               </div>
             ))}
 
-            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-green-500/30 transition-all active:scale-95">
+            <button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:opacity-90 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-green-500/30 transition-all active:scale-95">
               <Plus size={18} />
               Add New Crop
             </button>
           </div>
 
-          <h2 className="text-sm font-bold text-gray-900 mt-6 mb-2">Best Buyers for My Crops</h2>
+          <h2 className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mt-6 mb-2`}>Best Buyers for My Crops</h2>
 
           <div className="space-y-3">
             {buyersList.map(buyer => (
