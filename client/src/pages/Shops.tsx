@@ -2,6 +2,7 @@ import { ArrowLeft, Star, MapPin, Phone, Search, ShoppingCart, TrendingDown } fr
 import BottomNav from '@/components/BottomNav';
 import { useState } from 'react';
 import { useApp } from '@/lib/appContext';
+import { t } from '@/lib/translations';
 
 // Mock Data for Product Comparison
 const productCatalog = [
@@ -69,7 +70,7 @@ const shops = [
 ];
 
 export default function Shops() {
-  const { darkMode } = useApp();
+  const { darkMode, language } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
@@ -89,16 +90,16 @@ export default function Shops() {
 
   return (
     <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} min-h-screen pb-20 transition-colors`}>
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} px-4 py-4 sticky top-0 z-10 shadow-sm space-y-3`}>
-        <h1 className="text-xl font-bold">Agri Shops Nearby</h1>
+      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} px-4 py-4 sticky top-0 z-10 shadow-sm space-y-3 transition-colors`}>
+        <h1 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{t('agri_shops', language)}</h1>
         
         {/* Search Bar */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+          <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} size={18} />
           <input 
             type="text" 
-            placeholder="Search Urea, DAP, Seeds..." 
-            className="w-full bg-gray-100 text-gray-900 rounded-xl pl-10 pr-4 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-green-500 transition-all"
+            placeholder={t('search_products', language)}
+            className={`w-full ${darkMode ? 'bg-gray-700 text-white border-gray-600' : 'bg-gray-100 text-gray-900'} rounded-xl pl-10 pr-4 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-green-500 transition-all border`}
             value={searchQuery}
             onChange={handleSearch}
           />
@@ -109,8 +110,8 @@ export default function Shops() {
         {searchQuery.length > 1 ? (
           // Search Results View (Comparison)
           <div className="space-y-6">
-            <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-              Found {searchResults.length} Products
+            <h2 className={`text-xs font-bold ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-wider`}>
+              {t('found_products', language)} {searchResults.length} {t('products', language)}
             </h2>
             
             {searchResults.map(product => (
@@ -118,8 +119,8 @@ export default function Shops() {
             ))}
 
             {searchResults.length === 0 && (
-              <div className="text-center py-10 text-gray-400">
-                <p>No products found matching "{searchQuery}"</p>
+              <div className={`text-center py-10 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                <p>{t('no_products_found', language)} "{searchQuery}"</p>
               </div>
             )}
           </div>
@@ -127,8 +128,8 @@ export default function Shops() {
           // Default Shop List View
           <>
             <div className="flex justify-between items-center">
-              <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider">All Shops</h2>
-              <span className="text-xs text-green-600 font-bold">View Map</span>
+              <h2 className={`text-xs font-bold ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-wider`}>{t('all_shops', language)}</h2>
+              <span className={`text-xs ${darkMode ? 'text-green-400' : 'text-green-600'} font-bold`}>{t('view_map', language)}</span>
             </div>
 
             {shops.map(shop => (
@@ -143,57 +144,58 @@ export default function Shops() {
 }
 
 function ProductComparisonCard({ product }: any) {
+  const { darkMode, language } = useApp();
   // Sort prices low to high
   const sortedPrices = [...product.prices].sort((a, b) => a.price - b.price);
   const bestPrice = sortedPrices[0];
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm">
+    <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} rounded-xl border overflow-hidden shadow-sm transition-colors`}>
       {/* Product Header */}
-      <div className="p-4 border-b border-gray-50 flex gap-4">
-        <div className="w-16 h-16 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
+      <div className={`p-4 border-b ${darkMode ? 'border-gray-700' : 'border-gray-50'} flex gap-4`}>
+        <div className={`w-16 h-16 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} overflow-hidden flex-shrink-0`}>
           <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
         </div>
         <div>
-          <h3 className="font-bold text-gray-900">{product.name}</h3>
-          <p className="text-xs text-gray-500 mb-1">{product.category}</p>
-          <div className="inline-flex items-center gap-1 bg-green-50 text-green-700 px-2 py-1 rounded-md text-xs font-bold">
+          <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{product.name}</h3>
+          <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} mb-1`}>{product.category}</p>
+          <div className={`inline-flex items-center gap-1 ${darkMode ? 'bg-green-900/40 text-green-400' : 'bg-green-50 text-green-700'} px-2 py-1 rounded-md text-xs font-bold`}>
             <TrendingDown size={12} />
-            Best Price: ₹{bestPrice.price}
+            {t('best_price', language)}: ₹{bestPrice.price}
           </div>
         </div>
       </div>
 
       {/* Price List */}
-      <div className="divide-y divide-gray-50">
+      <div className={`${darkMode ? 'divide-gray-700' : 'divide-gray-50'} divide-y`}>
         {sortedPrices.map((offer, index) => {
           const shop = shops.find(s => s.id === offer.shopId);
           const isCheapest = index === 0;
 
           return (
-            <div key={offer.shopId} className={`p-3 flex items-center justify-between ${isCheapest ? 'bg-green-50/30' : ''}`}>
+            <div key={offer.shopId} className={`p-3 flex items-center justify-between ${isCheapest ? darkMode ? 'bg-green-900/20' : 'bg-green-50/30' : ''}`}>
               <div className="flex items-center gap-3">
                  <div className="flex flex-col">
-                    <span className={`text-sm font-bold ${isCheapest ? 'text-gray-900' : 'text-gray-600'}`}>
+                    <span className={`text-sm font-bold ${isCheapest ? darkMode ? 'text-white' : 'text-gray-900' : darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                       {shop?.name}
                     </span>
-                    <span className="text-[10px] text-gray-400 flex items-center gap-1">
+                    <span className={`text-[10px] ${darkMode ? 'text-gray-500' : 'text-gray-400'} flex items-center gap-1`}>
                       <MapPin size={10} /> {shop?.distance}
                     </span>
                  </div>
               </div>
               
               <div className="text-right">
-                <div className="font-bold text-gray-900">₹{offer.price}</div>
+                <div className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>₹{offer.price}</div>
                 {offer.inStock ? (
-                   <span className="text-[10px] text-green-600 font-medium">In Stock</span>
+                   <span className={`text-[10px] ${darkMode ? 'text-green-400' : 'text-green-600'} font-medium`}>{t('in_stock', language)}</span>
                 ) : (
-                   <span className="text-[10px] text-red-500 font-medium">Out of Stock</span>
+                   <span className="text-[10px] text-red-500 font-medium">{t('out_of_stock', language)}</span>
                 )}
               </div>
               
               {offer.inStock && (
-                 <button className="ml-2 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center shadow-sm active:scale-90 transition-transform">
+                 <button className="ml-2 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center shadow-sm active:scale-90 transition-transform">
                    <ShoppingCart size={14} />
                  </button>
               )}
@@ -206,15 +208,17 @@ function ProductComparisonCard({ product }: any) {
 }
 
 function ShopCard({ name, type, rating, distance, image, isOpen }: any) {
+  const { darkMode } = useApp();
+  
   return (
-    <div className="bg-white p-4 rounded-xl border border-gray-100 flex gap-4 shadow-sm hover:shadow-md transition-all">
-      <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+    <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} p-4 rounded-xl border flex gap-4 shadow-sm hover:shadow-md transition-all`}>
+      <div className={`w-20 h-20 rounded-lg overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} flex-shrink-0`}>
         <img src={image} alt={name} className="w-full h-full object-cover" />
       </div>
 
       <div className="flex-1">
         <div className="flex justify-between items-start">
-          <h3 className="font-bold text-gray-900">{name}</h3>
+          <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{name}</h3>
           {isOpen ? (
              <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">OPEN</span>
           ) : (
