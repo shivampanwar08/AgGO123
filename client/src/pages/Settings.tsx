@@ -448,18 +448,18 @@ export default function Settings() {
         {activeTab !== 'landrent' && (
           <button 
             onClick={() => setActiveTab('landrent')}
-            className={`flex-1 ${activeTab === 'profile' ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/30' : cardClass} font-bold py-3 rounded-xl hover:opacity-80 transition-all active:scale-95 flex items-center justify-center gap-2`}
+            className={`flex-1 ${activeTab === 'profile' ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/30' : cardClass} font-bold py-3 rounded-xl hover:opacity-80 transition-all active:scale-95 flex items-center justify-center gap-1.5`}
           >
-            <Leaf size={16} />
+            <Leaf size={14} />
             {t('land_rental', language)}
           </button>
         )}
         {activeTab !== 'garage' && (
           <button 
             onClick={() => setActiveTab('garage')}
-            className={`flex-1 ${activeTab === 'profile' ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30' : cardClass} font-bold py-3 rounded-xl hover:opacity-80 transition-all active:scale-95 flex items-center justify-center gap-2`}
+            className={`flex-1 ${activeTab === 'profile' ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30' : cardClass} font-bold py-3 rounded-xl hover:opacity-80 transition-all active:scale-95 flex items-center justify-center gap-1.5 text-sm`}
           >
-            🏗️ {t('aago_garage', language)}
+            <span className="text-base">🏗️</span> {t('aago_garage', language)}
           </button>
         )}
       </div>
