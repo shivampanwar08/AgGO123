@@ -64,12 +64,51 @@ const landListings = [
   }
 ];
 
+const garageData = [
+  {
+    id: 'g1',
+    village: 'Rampur Village',
+    garageAddress: 'Main Road, Near Mandis',
+    openHours: '6:00 AM - 8:00 PM',
+    distance: '2.5 km',
+    machines: [
+      { id: 'm1', type: 'Tractor', available: true, date: 'Today', image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&h=100&fit=crop' },
+      { id: 'm2', type: 'Harvester', available: true, date: 'Tomorrow', image: 'https://images.unsplash.com/photo-1605986753494-3a2e3b03c9d5?w=100&h=100&fit=crop' },
+      { id: 'm3', type: 'Trolley', available: false, date: 'Jan 25', image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop' }
+    ]
+  },
+  {
+    id: 'g2',
+    village: 'Sector 5',
+    garageAddress: 'Industrial Area Block C',
+    openHours: '7:00 AM - 6:00 PM',
+    distance: '4.2 km',
+    machines: [
+      { id: 'm4', type: 'Rotavator', available: true, date: 'Today', image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&h=100&fit=crop' },
+      { id: 'm5', type: 'Seeder', available: true, date: 'Today', image: 'https://images.unsplash.com/photo-1605986753494-3a2e3b03c9d5?w=100&h=100&fit=crop' }
+    ]
+  },
+  {
+    id: 'g3',
+    village: 'Sector 7',
+    garageAddress: 'Agricultural Hub, Town Center',
+    openHours: '6:30 AM - 9:00 PM',
+    distance: '3.5 km',
+    machines: [
+      { id: 'm6', type: 'Tractor', available: true, date: 'Today', image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop' },
+      { id: 'm7', type: 'Harvester', available: false, date: 'Jan 26', image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&h=100&fit=crop' },
+      { id: 'm8', type: 'Trolley', available: true, date: 'Today', image: 'https://images.unsplash.com/photo-1605986753494-3a2e3b03c9d5?w=100&h=100&fit=crop' }
+    ]
+  }
+];
+
 export default function Settings() {
   const { language, setLanguage, darkMode, setDarkMode } = useApp();
   const [isEditing, setIsEditing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'profile' | 'landrent'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'landrent' | 'garage'>('profile');
   const [searchQuery, setSearchQuery] = useState('');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+  const [bookedMachines, setBookedMachines] = useState<string[]>([]);
 
   const [profile, setProfile] = useState({
     name: 'Farmer John',
@@ -93,6 +132,68 @@ export default function Settings() {
 
   return (
     <div className={`${bgClass} min-h-screen pb-24 transition-colors duration-300`}>
+      {activeTab === 'garage' && (
+        <div className="p-4 space-y-4">
+          <h1 className={`text-2xl font-bold ${textClass} mt-2 mb-4`}>{t('aago_garage', language)}</h1>
+
+          <div className="space-y-4">
+            {garageData.map(garage => (
+              <div key={garage.id} className={`${cardClass} rounded-2xl border overflow-hidden`}>
+                <div className="p-4">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h3 className={`font-bold text-lg ${textClass}`}>{garage.village}</h3>
+                      <p className={`text-xs ${textMutedClass} flex items-center gap-1 mt-1`}>
+                        <MapPin size={12} /> {garage.garageAddress}
+                      </p>
+                    </div>
+                    <span className={`text-[10px] font-bold text-white ${darkMode ? 'bg-blue-600/80' : 'bg-blue-500/80'} px-2 py-1 rounded-lg flex items-center gap-1`}>
+                      📍 {garage.distance}
+                    </span>
+                  </div>
+
+                  <p className={`text-[10px] ${textMutedClass} font-bold uppercase tracking-wide mb-3`}>
+                    ⏰ {t('open_hours', language)}: {garage.openHours}
+                  </p>
+
+                  <h4 className={`text-xs font-bold ${textMutedClass} uppercase tracking-wider mb-3`}>
+                    {t('available_machines', language)} ({garage.machines.filter(m => m.available).length})
+                  </h4>
+
+                  <div className="space-y-2">
+                    {garage.machines.map(machine => (
+                      <div 
+                        key={machine.id}
+                        className={`flex items-center gap-3 p-3 ${machine.available ? darkMode ? 'bg-green-900/20' : 'bg-green-50' : darkMode ? 'bg-gray-700/30' : 'bg-gray-100/50'} rounded-lg`}
+                      >
+                        <img src={machine.image} alt={machine.type} className="w-12 h-12 rounded-md object-cover" />
+                        <div className="flex-1">
+                          <p className={`text-sm font-bold ${textClass}`}>{machine.type}</p>
+                          <p className={`text-xs ${textMutedClass}`}>{t('available_date', language)}: {machine.date}</p>
+                        </div>
+                        {machine.available ? (
+                          <button
+                            onClick={() => setBookedMachines([...bookedMachines, machine.id])}
+                            disabled={bookedMachines.includes(machine.id)}
+                            className={`${bookedMachines.includes(machine.id) ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'} text-white font-bold text-xs px-3 py-2 rounded-lg transition-colors active:scale-95`}
+                          >
+                            {bookedMachines.includes(machine.id) ? t('check_status', language) : t('book_now', language)}
+                          </button>
+                        ) : (
+                          <span className={`text-xs font-bold ${darkMode ? 'text-red-400' : 'text-red-600'}`}>
+                            {t('machine_unavailable', language)}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {activeTab === 'profile' && (
       <>
       <div className={`${cardClass} rounded-b-3xl p-1 shadow-lg border`}>
@@ -212,7 +313,7 @@ export default function Settings() {
 
         <div className={`${cardClass} rounded-3xl p-1 border`}>
           <div className={`${darkMode ? 'bg-gray-800/80' : 'bg-white/80'} backdrop-blur-sm rounded-[1.25rem] overflow-hidden`}>
-            <MenuItem icon={<Bell size={20} />} label={t('notifications', language)} onClick={() => alert('Notifications: You have 3 new messages')} darkMode={darkMode} />
+            <MenuItem icon={<Bell size={20} />} label={t('notifications', language)} onClick={() => setActiveTab('garage')} darkMode={darkMode} />
             <MenuItem icon={<SettingsIcon size={20} />} label={t('app_settings', language)} onClick={() => alert('Settings: Dark Mode, Language, Units')} darkMode={darkMode} />
           </div>
         </div>
@@ -335,23 +436,32 @@ export default function Settings() {
         </div>
       )}
 
-      {activeTab === 'profile' ? (
-        <div className="fixed bottom-24 left-4 right-4 z-40">
+      {activeTab !== 'profile' && (
+        <div className="fixed bottom-24 left-4 right-4 z-40 flex gap-2">
+          <button 
+            onClick={() => setActiveTab('profile')}
+            className={`flex-1 ${cardClass} border-2 font-bold py-3 rounded-xl hover:opacity-80 transition-all active:scale-95 ${darkMode ? 'text-white' : 'text-gray-700'}`}
+          >
+            {t('back_profile', language)}
+          </button>
+        </div>
+      )}
+
+      {activeTab === 'profile' && (
+        <div className="fixed bottom-24 left-4 right-4 z-40 flex gap-2">
           <button 
             onClick={() => setActiveTab('landrent')}
-            className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-500/30 hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+            className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-500/30 hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2"
           >
             <Leaf size={18} />
             {t('explore_lands', language)}
           </button>
-        </div>
-      ) : (
-        <div className="fixed bottom-24 left-4 right-4 z-40">
           <button 
-            onClick={() => setActiveTab('profile')}
-            className={`w-full ${cardClass} border-2 font-bold py-3 rounded-xl hover:opacity-80 transition-all active:scale-95 ${darkMode ? 'text-white' : 'text-gray-700'}`}
+            onClick={() => setActiveTab('garage')}
+            className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2"
           >
-            {t('back_profile', language)}
+            🏗️
+            {t('aago_garage', language)}
           </button>
         </div>
       )}
