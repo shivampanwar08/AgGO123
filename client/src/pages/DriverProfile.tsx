@@ -1,6 +1,7 @@
 import { ArrowLeft, Star, MapPin, Tractor, Plus, Check, ShieldCheck } from 'lucide-react';
 import { useLocation } from 'wouter';
 import { useState, useEffect } from 'react';
+import { useApp } from '@/lib/appContext';
 
 // Mock data for a specific driver
 const driverData = {
@@ -20,6 +21,7 @@ const driverData = {
 };
 
 export default function DriverProfile() {
+  const { darkMode } = useApp();
   const [, setLocation] = useLocation();
   const [addedItems, setAddedItems] = useState<string[]>([]);
 
@@ -48,9 +50,9 @@ export default function DriverProfile() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-32">
+    <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} min-h-screen pb-32 transition-colors`}>
       {/* Header Image Area */}
-      <div className="relative h-64 bg-green-600 overflow-hidden">
+      <div className={`relative h-64 ${darkMode ? 'bg-green-700' : 'bg-green-600'} overflow-hidden transition-colors`}>
         <div className="absolute top-4 left-4 z-10">
           <button 
             onClick={() => setLocation('/drivers')}
@@ -74,19 +76,19 @@ export default function DriverProfile() {
       {/* Profile Stats Card */}
       <div className="px-4 -mt-8 relative z-10">
         <div className="glass rounded-3xl p-1">
-          <div className="bg-white/80 backdrop-blur-md rounded-[1.25rem] p-4 flex justify-between items-center">
-             <div className="flex flex-col items-center px-4 border-r border-gray-200/50">
-               <span className="text-2xl font-bold text-gray-900">{driverData.rating}</span>
+          <div className={`${darkMode ? 'bg-gray-800/80' : 'bg-white/80'} backdrop-blur-md rounded-[1.25rem] p-4 flex justify-between items-center transition-colors`}>
+             <div className={`flex flex-col items-center px-4 border-r ${darkMode ? 'border-gray-700/50' : 'border-gray-200/50'}`}>
+               <span className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{driverData.rating}</span>
                <div className="flex text-yellow-400 text-xs">★★★★★</div>
-               <span className="text-[10px] text-gray-400 uppercase font-bold mt-1">Rating</span>
+               <span className={`text-[10px] ${darkMode ? 'text-gray-400' : 'text-gray-400'} uppercase font-bold mt-1`}>Rating</span>
              </div>
-             <div className="flex flex-col items-center px-4 border-r border-gray-200/50">
-               <span className="text-2xl font-bold text-gray-900">{driverData.trips}</span>
-               <span className="text-[10px] text-gray-400 uppercase font-bold mt-1">Trips</span>
+             <div className={`flex flex-col items-center px-4 border-r ${darkMode ? 'border-gray-700/50' : 'border-gray-200/50'}`}>
+               <span className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{driverData.trips}</span>
+               <span className={`text-[10px] ${darkMode ? 'text-gray-400' : 'text-gray-400'} uppercase font-bold mt-1`}>Trips</span>
              </div>
              <div className="flex flex-col items-center px-4">
-               <span className="text-2xl font-bold text-gray-900">3Y</span>
-               <span className="text-[10px] text-gray-400 uppercase font-bold mt-1">Exp</span>
+               <span className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>3Y</span>
+               <span className={`text-[10px] ${darkMode ? 'text-gray-400' : 'text-gray-400'} uppercase font-bold mt-1`}>Exp</span>
              </div>
           </div>
         </div>
@@ -94,33 +96,33 @@ export default function DriverProfile() {
 
       {/* Equipment List */}
       <div className="p-4 mt-4">
-        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 ml-1">Inventory</h2>
+        <h2 className={`text-sm font-bold ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-widest mb-4 ml-1`}>Inventory</h2>
         <div className="space-y-4">
           {driverData.equipment.map(item => (
             <div key={item.id} className={`glass rounded-3xl p-1 transition-all duration-300 ${addedItems.includes(item.id) ? 'ring-2 ring-green-500 shadow-lg shadow-green-500/20' : ''}`}>
-              <div className="bg-white/60 backdrop-blur-sm rounded-[1.25rem] p-3 flex gap-4">
-                <div className="w-24 h-24 bg-gray-100 rounded-2xl overflow-hidden flex-shrink-0 shadow-sm">
+              <div className={`${darkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-sm rounded-[1.25rem] p-3 flex gap-4 transition-colors`}>
+                <div className={`w-24 h-24 ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} rounded-2xl overflow-hidden flex-shrink-0 shadow-sm`}>
                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                 </div>
                 
                 <div className="flex-1 flex flex-col justify-between py-1">
                   <div>
-                    <h3 className="font-bold text-gray-900 text-base leading-tight">{item.name}</h3>
-                    <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mt-1">{item.type}</p>
+                    <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'} text-base leading-tight`}>{item.name}</h3>
+                    <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} font-semibold uppercase tracking-wide mt-1`}>{item.type}</p>
                   </div>
                   
                   <div className="flex justify-between items-end">
                     <div>
-                       <span className="font-bold text-xl text-gray-900">₹{item.price}</span>
-                       <span className="text-xs text-gray-400 font-medium">/hr</span>
+                       <span className={`font-bold text-xl ${darkMode ? 'text-white' : 'text-gray-900'}`}>₹{item.price}</span>
+                       <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'} font-medium`}>/hr</span>
                     </div>
                     
                     <button 
                       onClick={() => toggleItem(item.id)}
                       className={`h-10 px-4 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-md active:scale-95 ${
                         addedItems.includes(item.id)
-                          ? 'bg-black text-white'
-                          : 'bg-white text-black border border-gray-200'
+                          ? `${darkMode ? 'bg-gray-700 text-green-400 border-gray-600' : 'bg-black text-white border-gray-700'} border`
+                          : `${darkMode ? 'bg-gray-700 text-gray-300 border-gray-600' : 'bg-white text-black border-gray-200'} border`
                       }`}
                     >
                       {addedItems.includes(item.id) ? (
@@ -145,10 +147,10 @@ export default function DriverProfile() {
       {addedItems.length > 0 && (
         <div className="fixed bottom-4 left-4 right-4 z-50">
            <div className="glass-dark rounded-3xl p-1 shadow-2xl animate-in slide-in-from-bottom-10 duration-300">
-             <div className="bg-black/80 backdrop-blur-xl rounded-[1.25rem] p-4 flex items-center justify-between">
+             <div className={`${darkMode ? 'bg-gray-800/80' : 'bg-black/80'} backdrop-blur-xl rounded-[1.25rem] p-4 flex items-center justify-between transition-colors`}>
                 <div className="flex flex-col pl-2">
-                  <span className="text-xs text-gray-400 font-medium uppercase tracking-wide">{addedItems.length} items</span>
-                  <span className="font-bold text-xl text-white">₹{addedItems.reduce((acc, id) => acc + (driverData.equipment.find(e => e.id === id)?.price || 0), 0)}<span className="text-sm font-normal text-gray-500">/hr</span></span>
+                  <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'} font-medium uppercase tracking-wide`}>{addedItems.length} items</span>
+                  <span className={`font-bold text-xl ${darkMode ? 'text-white' : 'text-white'}`}>₹{addedItems.reduce((acc, id) => acc + (driverData.equipment.find(e => e.id === id)?.price || 0), 0)}<span className="text-sm font-normal text-gray-500">/hr</span></span>
                 </div>
                 <button 
                   onClick={() => setLocation('/billing')}

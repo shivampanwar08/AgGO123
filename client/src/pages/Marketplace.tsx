@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useLocation } from 'wouter';
 import BottomNav from '@/components/BottomNav';
 import { useApp } from '@/lib/appContext';
+import { t } from '@/lib/translations';
 
 const farmersWithCrops = [
   {
@@ -91,7 +92,7 @@ const buyersList = [
 ];
 
 export default function Marketplace() {
-  const { darkMode } = useApp();
+  const { darkMode, language } = useApp();
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<'browse' | 'sell'>('browse');
   const [searchQuery, setSearchQuery] = useState('');
@@ -225,7 +226,7 @@ export default function Marketplace() {
       {activeTab === 'sell' && (
         <div className="p-4 space-y-4">
           <div className="space-y-4">
-            <h2 className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mt-2`}>My Listed Crops</h2>
+            <h2 className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mt-2`}>{t('my_listed_crops', language)}</h2>
             
             {myCrops.map(crop => (
               <div key={crop.id} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} rounded-2xl border overflow-hidden shadow-sm`}>
@@ -246,55 +247,55 @@ export default function Marketplace() {
 
             <button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:opacity-90 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-green-500/30 transition-all active:scale-95">
               <Plus size={18} />
-              Add New Crop
+              {t('add_crop', language)}
             </button>
           </div>
 
-          <h2 className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mt-6 mb-2`}>Best Buyers for My Crops</h2>
+          <h2 className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mt-6 mb-2`}>{t('best_buyers', language)}</h2>
 
           <div className="space-y-3">
             {buyersList.map(buyer => (
-              <div key={buyer.id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-all">
+              <div key={buyer.id} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} rounded-2xl border overflow-hidden shadow-sm hover:shadow-md transition-all`}>
                 <div className="p-4">
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="w-14 h-14 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
+                    <div className={`w-14 h-14 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} overflow-hidden flex-shrink-0`}>
                       <img src={buyer.image} alt={buyer.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1">
                       <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="font-bold text-gray-900">{buyer.name}</h3>
-                          <p className="text-xs text-gray-500">{buyer.type}</p>
+                          <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{buyer.name}</h3>
+                          <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{buyer.type}</p>
                         </div>
                         <div className="flex items-center gap-1 text-xs font-bold">
                           <Star size={12} className="text-yellow-400 fill-yellow-400" />
                           {buyer.rating}
                         </div>
                       </div>
-                      <p className="text-xs text-gray-400 mt-1">{buyer.location}</p>
+                      <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'} mt-1`}>{buyer.location}</p>
                     </div>
                   </div>
 
-                  <div className="bg-green-50/50 rounded-lg p-3 mb-3">
-                    <p className="text-xs font-semibold text-gray-600 mb-2">Price Offers:</p>
+                  <div className={`${darkMode ? 'bg-green-900/20' : 'bg-green-50/50'} rounded-lg p-3 mb-3`}>
+                    <p className={`text-xs font-semibold ${darkMode ? 'text-gray-400' : 'text-gray-600'} mb-2`}>Price Offers:</p>
                     <div className="grid grid-cols-3 gap-2">
                       <div className="text-center">
-                        <div className="font-bold text-green-600">₹{buyer.priceOffer.wheat}</div>
-                        <span className="text-[10px] text-gray-500">Wheat/kg</span>
+                        <div className={`font-bold ${darkMode ? 'text-green-400' : 'text-green-600'}`}>₹{buyer.priceOffer.wheat}</div>
+                        <span className={`text-[10px] ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Wheat/kg</span>
                       </div>
                       <div className="text-center">
-                        <div className="font-bold text-green-600">₹{buyer.priceOffer.rice}</div>
-                        <span className="text-[10px] text-gray-500">Rice/kg</span>
+                        <div className={`font-bold ${darkMode ? 'text-green-400' : 'text-green-600'}`}>₹{buyer.priceOffer.rice}</div>
+                        <span className={`text-[10px] ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Rice/kg</span>
                       </div>
                       <div className="text-center">
-                        <div className="font-bold text-green-600">₹{buyer.priceOffer.tomatoes}</div>
-                        <span className="text-[10px] text-gray-500">Veg/kg</span>
+                        <div className={`font-bold ${darkMode ? 'text-green-400' : 'text-green-600'}`}>₹{buyer.priceOffer.tomatoes}</div>
+                        <span className={`text-[10px] ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Veg/kg</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="flex gap-2">
-                    <button className="flex-1 bg-white border border-green-500 text-green-600 font-bold py-2 rounded-lg text-xs hover:bg-green-50 transition-colors">
+                    <button className={`flex-1 ${darkMode ? 'bg-gray-700 border-green-600 text-green-400' : 'bg-white border-green-500 text-green-600'} border font-bold py-2 rounded-lg text-xs hover:opacity-80 transition-colors`}>
                       <Phone size={14} className="inline mr-1" />
                       Contact
                     </button>
