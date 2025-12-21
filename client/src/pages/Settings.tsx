@@ -133,54 +133,54 @@ export default function Settings() {
   return (
     <div className={`${bgClass} min-h-screen pb-24 transition-colors duration-300`}>
       {activeTab === 'garage' && (
-        <div className="p-4 space-y-4">
-          <h1 className={`text-2xl font-bold ${textClass} mt-2 mb-4`}>{t('aago_garage', language)}</h1>
+        <div className="p-3 space-y-2.5">
+          <h1 className={`text-xl font-bold ${textClass} mt-1 mb-2`}>{t('aago_garage', language)}</h1>
 
-          <div className="space-y-4">
+          <div className="space-y-2.5">
             {garageData.map(garage => (
-              <div key={garage.id} className={`${cardClass} rounded-2xl border overflow-hidden`}>
-                <div className="p-4">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className={`font-bold text-lg ${textClass}`}>{garage.village}</h3>
-                      <p className={`text-xs ${textMutedClass} flex items-center gap-1 mt-1`}>
-                        <MapPin size={12} /> {garage.garageAddress}
+              <div key={garage.id} className={`${cardClass} rounded-xl border overflow-hidden`}>
+                <div className="p-2.5">
+                  <div className="flex justify-between items-start gap-2 mb-2">
+                    <div className="flex-1">
+                      <h3 className={`font-bold text-sm ${textClass}`}>{garage.village}</h3>
+                      <p className={`text-[11px] ${textMutedClass} flex items-center gap-0.5 mt-0.5 leading-snug`}>
+                        <MapPin size={10} /> {garage.garageAddress}
                       </p>
                     </div>
-                    <span className={`text-[10px] font-bold text-white ${darkMode ? 'bg-blue-600/80' : 'bg-blue-500/80'} px-2 py-1 rounded-lg flex items-center gap-1`}>
+                    <span className={`text-[9px] font-bold text-white ${darkMode ? 'bg-blue-600/80' : 'bg-blue-500/80'} px-1.5 py-0.5 rounded flex items-center gap-0.5 flex-shrink-0`}>
                       📍 {garage.distance}
                     </span>
                   </div>
 
-                  <p className={`text-[10px] ${textMutedClass} font-bold uppercase tracking-wide mb-3`}>
+                  <p className={`text-[9px] ${textMutedClass} font-bold uppercase tracking-tight mb-1.5`}>
                     ⏰ {t('open_hours', language)}: {garage.openHours}
                   </p>
 
-                  <h4 className={`text-xs font-bold ${textMutedClass} uppercase tracking-wider mb-3`}>
+                  <h4 className={`text-[10px] font-bold ${textMutedClass} uppercase tracking-tight mb-1.5`}>
                     {t('available_machines', language)} ({garage.machines.filter(m => m.available).length})
                   </h4>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     {garage.machines.map(machine => (
                       <div 
                         key={machine.id}
-                        className={`flex items-center gap-3 p-3 ${machine.available ? darkMode ? 'bg-green-900/20' : 'bg-green-50' : darkMode ? 'bg-gray-700/30' : 'bg-gray-100/50'} rounded-lg`}
+                        className={`flex items-center gap-2 p-1.5 ${machine.available ? darkMode ? 'bg-green-900/20' : 'bg-green-50' : darkMode ? 'bg-gray-700/30' : 'bg-gray-100/50'} rounded`}
                       >
-                        <img src={machine.image} alt={machine.type} className="w-12 h-12 rounded-md object-cover" />
-                        <div className="flex-1">
-                          <p className={`text-sm font-bold ${textClass}`}>{machine.type}</p>
-                          <p className={`text-xs ${textMutedClass}`}>{t('available_date', language)}: {machine.date}</p>
+                        <img src={machine.image} alt={machine.type} className="w-9 h-9 rounded object-cover flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-xs font-bold ${textClass} truncate`}>{machine.type}</p>
+                          <p className={`text-[10px] ${textMutedClass} truncate`}>{t('available_date', language)}: {machine.date}</p>
                         </div>
                         {machine.available ? (
                           <button
                             onClick={() => setBookedMachines([...bookedMachines, machine.id])}
                             disabled={bookedMachines.includes(machine.id)}
-                            className={`${bookedMachines.includes(machine.id) ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'} text-white font-bold text-xs px-3 py-2 rounded-lg transition-colors active:scale-95`}
+                            className={`${bookedMachines.includes(machine.id) ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'} text-white font-bold text-[10px] px-2 py-1 rounded transition-colors active:scale-95 flex-shrink-0 whitespace-nowrap`}
                           >
                             {bookedMachines.includes(machine.id) ? t('check_status', language) : t('book_now', language)}
                           </button>
                         ) : (
-                          <span className={`text-xs font-bold ${darkMode ? 'text-red-400' : 'text-red-600'}`}>
+                          <span className={`text-[10px] font-bold ${darkMode ? 'text-red-400' : 'text-red-600'} flex-shrink-0 whitespace-nowrap`}>
                             {t('machine_unavailable', language)}
                           </span>
                         )}
@@ -345,80 +345,80 @@ export default function Settings() {
       )}
 
       {activeTab === 'landrent' && (
-        <div className="p-4 space-y-4">
-          <h1 className={`text-2xl font-bold ${textClass} mt-2 mb-4`}>{t('land_rental', language)}</h1>
+        <div className="p-3 space-y-2.5">
+          <h1 className={`text-xl font-bold ${textClass} mt-1 mb-2`}>{t('land_rental', language)}</h1>
 
-          <div className="relative mb-4">
-            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} size={18} />
+          <div className="relative mb-2">
+            <Search className={`absolute left-2.5 top-1/2 transform -translate-y-1/2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} size={16} />
             <input 
               type="text" 
               placeholder="Search by farmer name, village, soil type..." 
-              className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'} rounded-xl pl-10 pr-4 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-green-500 transition-all border`}
+              className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'} rounded-lg pl-8 pr-3 py-2 text-xs font-medium outline-none focus:ring-2 focus:ring-green-500 transition-all border`}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
-          <h2 className={`text-xs font-bold ${textMutedClass} uppercase tracking-widest`}>Available Farms ({filteredLands.length})</h2>
+          <h2 className={`text-[10px] font-bold ${textMutedClass} uppercase tracking-tight`}>Available Farms ({filteredLands.length})</h2>
 
-          <div className="space-y-4">
+          <div className="space-y-2.5">
             {filteredLands.map(land => (
-              <div key={land.id} className={`${cardClass} rounded-2xl border overflow-hidden shadow-sm hover:shadow-md transition-all`}>
-                <div className="p-4">
-                  <div className="flex gap-4 mb-4">
-                    <div className={`w-20 h-20 ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} rounded-lg overflow-hidden flex-shrink-0`}>
+              <div key={land.id} className={`${cardClass} rounded-xl border overflow-hidden shadow-sm hover:shadow-md transition-all`}>
+                <div className="p-2.5">
+                  <div className="flex gap-2.5 mb-2">
+                    <div className={`w-16 h-16 ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} rounded-lg overflow-hidden flex-shrink-0`}>
                       <img src={land.image} alt={land.farmerName} className="w-full h-full object-cover" />
                     </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className={`font-bold ${textClass} text-lg`}>{land.farmerName}</h3>
-                          <p className={`text-xs ${textMutedClass} flex items-center gap-1 mt-1`}>
-                            <MapPin size={12} /> {land.village} • {land.distance}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start gap-1">
+                        <div className="flex-1 min-w-0">
+                          <h3 className={`font-bold ${textClass} text-sm truncate`}>{land.farmerName}</h3>
+                          <p className={`text-[10px] ${textMutedClass} flex items-center gap-0.5 mt-0.5 truncate`}>
+                            <MapPin size={10} /> {land.village} • {land.distance}
                           </p>
                         </div>
-                        <div className="text-right">
-                          <div className={`font-bold text-2xl ${darkMode ? 'text-green-400' : 'text-green-600'}`}>₹{land.pricePerAcre}</div>
-                          <span className={`text-[10px] ${textMutedClass}`}>per acre</span>
+                        <div className="text-right flex-shrink-0">
+                          <div className={`font-bold text-base ${darkMode ? 'text-green-400' : 'text-green-600'}`}>₹{land.pricePerAcre}</div>
+                          <span className={`text-[9px] ${textMutedClass}`}>per acre</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className={`grid grid-cols-2 gap-3 mb-4 p-3 ${darkMode ? 'bg-green-900/20' : 'bg-green-50/50'} rounded-lg`}>
+                  <div className={`grid grid-cols-2 gap-1 mb-2 p-1.5 ${darkMode ? 'bg-green-900/20' : 'bg-green-50/50'} rounded text-[9px]`}>
                     <div>
-                      <p className={`text-[10px] ${textMutedClass} font-bold uppercase`}>Land Size</p>
-                      <p className={`font-bold ${textClass}`}>{land.landSize}</p>
+                      <p className={`${textMutedClass} font-bold uppercase`}>Size</p>
+                      <p className={`font-bold ${textClass} text-xs`}>{land.landSize}</p>
                     </div>
                     <div>
-                      <p className={`text-[10px] ${textMutedClass} font-bold uppercase`}>Soil Type</p>
-                      <p className={`font-bold ${textClass} text-sm`}>{land.soilType}</p>
+                      <p className={`${textMutedClass} font-bold uppercase`}>Soil</p>
+                      <p className={`font-bold ${textClass} text-xs`}>{land.soilType.split(' -')[0]}</p>
                     </div>
                     <div>
-                      <p className={`text-[10px] ${textMutedClass} font-bold uppercase`}>Water Access</p>
-                      <p className={`font-bold ${textClass} text-sm`}>{land.waterAccess}</p>
+                      <p className={`${textMutedClass} font-bold uppercase`}>Water</p>
+                      <p className={`font-bold ${textClass} text-xs`}>{land.waterAccess.split('+')[0].trim()}</p>
                     </div>
                     <div>
-                      <p className={`text-[10px] ${textMutedClass} font-bold uppercase`}>Condition</p>
-                      <p className={`font-bold ${darkMode ? 'text-green-400' : 'text-green-600'}`}>{land.condition}</p>
+                      <p className={`${textMutedClass} font-bold uppercase`}>Status</p>
+                      <p className={`font-bold ${darkMode ? 'text-green-400' : 'text-green-600'} text-xs`}>{land.condition.split(' -')[0]}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-1 text-xs font-bold">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-1 text-[10px] font-bold">
                       <span className="text-yellow-400">★★★★★</span>
                       <span className={textMutedClass}>{land.rating}</span>
                     </div>
-                    <span className={`text-xs ${textMutedClass}`}>Verified Owner</span>
+                    <span className={`text-[9px] ${textMutedClass}`}>Verified</span>
                   </div>
 
-                  <div className="flex gap-2">
-                    <button className={`flex-1 ${darkMode ? 'bg-gray-700 border-green-600 text-green-400' : 'bg-white border-green-500 text-green-600'} border font-bold py-2.5 rounded-lg text-sm hover:opacity-80 transition-opacity flex items-center justify-center gap-2`}>
-                      <Phone size={16} />
-                      Call Now
+                  <div className="flex gap-1.5">
+                    <button className={`flex-1 ${darkMode ? 'bg-gray-700 border-green-600 text-green-400' : 'bg-white border-green-500 text-green-600'} border font-bold py-1.5 rounded text-xs hover:opacity-80 transition-opacity flex items-center justify-center gap-1`}>
+                      <Phone size={12} />
+                      Call
                     </button>
-                    <button className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-2.5 rounded-lg text-sm hover:opacity-90 transition-opacity shadow-lg shadow-green-500/20">
-                      View Details
+                    <button className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-1.5 rounded text-xs hover:opacity-90 transition-opacity shadow-lg shadow-green-500/20">
+                      Details
                     </button>
                   </div>
                 </div>
