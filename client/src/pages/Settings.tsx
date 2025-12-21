@@ -313,7 +313,6 @@ export default function Settings() {
 
         <div className={`${cardClass} rounded-3xl p-1 border`}>
           <div className={`${darkMode ? 'bg-gray-800/80' : 'bg-white/80'} backdrop-blur-sm rounded-[1.25rem] overflow-hidden`}>
-            <MenuItem icon={<Bell size={20} />} label={t('notifications', language)} onClick={() => setActiveTab('garage')} darkMode={darkMode} />
             <MenuItem icon={<SettingsIcon size={20} />} label={t('app_settings', language)} onClick={() => alert('Settings: Dark Mode, Language, Units')} darkMode={darkMode} />
           </div>
         </div>
@@ -436,35 +435,34 @@ export default function Settings() {
         </div>
       )}
 
-      {activeTab !== 'profile' && (
-        <div className="fixed bottom-24 left-4 right-4 z-40 flex gap-2">
+      {/* Tab Navigation */}
+      <div className="fixed bottom-24 left-4 right-4 z-40 flex gap-2">
+        {activeTab !== 'profile' && (
           <button 
             onClick={() => setActiveTab('profile')}
             className={`flex-1 ${cardClass} border-2 font-bold py-3 rounded-xl hover:opacity-80 transition-all active:scale-95 ${darkMode ? 'text-white' : 'text-gray-700'}`}
           >
-            {t('back_profile', language)}
+            {t('profile', language)}
           </button>
-        </div>
-      )}
-
-      {activeTab === 'profile' && (
-        <div className="fixed bottom-24 left-4 right-4 z-40 flex gap-2">
+        )}
+        {activeTab !== 'landrent' && (
           <button 
             onClick={() => setActiveTab('landrent')}
-            className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-500/30 hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+            className={`flex-1 ${activeTab === 'profile' ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/30' : cardClass} font-bold py-3 rounded-xl hover:opacity-80 transition-all active:scale-95 flex items-center justify-center gap-2`}
           >
-            <Leaf size={18} />
-            {t('explore_lands', language)}
+            <Leaf size={16} />
+            {t('land_rental', language)}
           </button>
+        )}
+        {activeTab !== 'garage' && (
           <button 
             onClick={() => setActiveTab('garage')}
-            className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+            className={`flex-1 ${activeTab === 'profile' ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30' : cardClass} font-bold py-3 rounded-xl hover:opacity-80 transition-all active:scale-95 flex items-center justify-center gap-2`}
           >
-            🏗️
-            {t('aago_garage', language)}
+            🏗️ {t('aago_garage', language)}
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       <BottomNav />
     </div>
