@@ -119,6 +119,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'owner_name': 'Owner Name',
     'shop_address': 'Shop Address',
     'products_inventory': 'Products Inventory',
+    'change_role': 'Change Role',
   },
   hi: {
     'home': 'होम',
@@ -238,6 +239,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'owner_name': 'मालिक का नाम',
     'shop_address': 'दुकान का पता',
     'products_inventory': 'उत्पाद सूची',
+    'change_role': 'भूमिका बदलें',
   },
   pa: {
     'home': 'ਘਰ',
@@ -357,6 +359,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'owner_name': 'ਮਾਲਕ ਦਾ ਨਾਮ',
     'shop_address': 'ਦੁਕਾਨ ਦਾ ਪਤਾ',
     'products_inventory': 'ਮਾਲ ਦੀ ਸੂਚੀ',
+    'change_role': 'ਭੂਮਿਕਾ ਬਦਲੋ',
   }
 };
 

@@ -1,9 +1,10 @@
-import { User, Settings as SettingsIcon, Bell, CreditCard, HelpCircle, LogOut, ChevronRight, Edit2, MapPin, Phone, Leaf, Search, Languages, Moon, Sun } from 'lucide-react';
+import { User, Settings as SettingsIcon, Bell, CreditCard, HelpCircle, LogOut, ChevronRight, Edit2, MapPin, Phone, Leaf, Search, Languages, Moon, Sun, Users } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import { useState } from 'react';
 import { useApp } from '@/lib/appContext';
 import { t } from '@/lib/translations';
 import type { Language } from '@/lib/translations';
+import RoleSelection from './RoleSelection';
 
 const landListings = [
   {
@@ -103,12 +104,13 @@ const garageData = [
 ];
 
 export default function Settings() {
-  const { language, setLanguage, darkMode, setDarkMode } = useApp();
+  const { language, setLanguage, darkMode, setDarkMode, setUserRole } = useApp();
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState<'profile' | 'landrent' | 'garage'>('profile');
   const [searchQuery, setSearchQuery] = useState('');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [bookedMachines, setBookedMachines] = useState<string[]>([]);
+  const [showRoleSelector, setShowRoleSelector] = useState(false);
 
   const [profile, setProfile] = useState({
     name: 'Farmer John',
@@ -129,6 +131,15 @@ export default function Settings() {
   const cardClass = darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100';
   const textClass = darkMode ? 'text-white' : 'text-gray-900';
   const textMutedClass = darkMode ? 'text-gray-400' : 'text-gray-500';
+
+  const handleRoleChange = (role: 'user' | 'equipment-renter' | 'land-owner' | 'shopper') => {
+    setUserRole(role);
+    setShowRoleSelector(false);
+  };
+
+  if (showRoleSelector) {
+    return <RoleSelection onRoleSelect={handleRoleChange} />;
+  }
 
   return (
     <div className={`${bgClass} min-h-screen pb-24 transition-colors duration-300`}>
@@ -313,6 +324,7 @@ export default function Settings() {
 
         <div className={`${cardClass} rounded-3xl p-1 border`}>
           <div className={`${darkMode ? 'bg-gray-800/80' : 'bg-white/80'} backdrop-blur-sm rounded-[1.25rem] overflow-hidden`}>
+            <MenuItem icon={<Users size={20} />} label={t('change_role', language)} onClick={() => setShowRoleSelector(true)} darkMode={darkMode} />
             <MenuItem icon={<SettingsIcon size={20} />} label={t('app_settings', language)} onClick={() => alert('Settings: Dark Mode, Language, Units')} darkMode={darkMode} />
           </div>
         </div>
