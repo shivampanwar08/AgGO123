@@ -4,7 +4,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AppProvider } from "@/lib/appContext";
+import { AppProvider, useApp } from "@/lib/appContext";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import Drivers from "@/pages/Drivers";
@@ -16,6 +16,9 @@ import Marketplace from "@/pages/Marketplace";
 import Settings from "@/pages/Settings";
 import Splash from "@/pages/Splash";
 import Auth from "@/pages/Auth";
+import RoleSelection from "@/pages/RoleSelection";
+import EquipmentRenterForm from "@/pages/EquipmentRenterForm";
+import LandOwnerForm from "@/pages/LandOwnerForm";
 
 function Router() {
   return (
@@ -31,6 +34,38 @@ function Router() {
       <Route component={NotFound} />
     </Switch>
   );
+}
+
+function AppContent() {
+  const { userRole, setUserRole } = useApp();
+  const [showForm, setShowForm] = useState<'equipment' | 'land' | null>(null);
+
+  const handleFormComplete = () => {
+    setShowForm(null);
+  };
+
+  const handleRoleSelect = (role: 'user' | 'equipment-renter' | 'land-owner') => {
+    setUserRole(role);
+    if (role === 'equipment-renter') {
+      setShowForm('equipment');
+    } else if (role === 'land-owner') {
+      setShowForm('land');
+    }
+  };
+
+  if (!userRole) {
+    return <RoleSelection onRoleSelect={handleRoleSelect} />;
+  }
+
+  if (showForm === 'equipment') {
+    return <EquipmentRenterForm onBack={() => setShowForm(null)} onSubmit={handleFormComplete} />;
+  }
+
+  if (showForm === 'land') {
+    return <LandOwnerForm onBack={() => setShowForm(null)} onSubmit={handleFormComplete} />;
+  }
+
+  return <Router />;
 }
 
 function App() {
@@ -58,6 +93,7 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem('aggo_user_phone');
+    localStorage.removeItem('aggo_user_role');
     setUserPhone(null);
     setIsAuthenticated(false);
   };
@@ -75,7 +111,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Toaster />
-          <Router />
+          <AppContent />
         </TooltipProvider>
       </QueryClientProvider>
     </AppProvider>

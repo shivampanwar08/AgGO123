@@ -1,11 +1,15 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import type { Language } from './translations';
 
+export type UserRole = 'user' | 'equipment-renter' | 'land-owner';
+
 interface AppContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
+  userRole: UserRole | null;
+  setUserRole: (role: UserRole) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -17,6 +21,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const [darkMode, setDarkModeState] = useState(() => {
     return localStorage.getItem('aggo_darkmode') === 'true';
+  });
+
+  const [userRole, setUserRoleState] = useState<UserRole | null>(() => {
+    return (localStorage.getItem('aggo_user_role') as UserRole) || null;
   });
 
   const setLanguage = (lang: Language) => {
@@ -35,6 +43,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const setUserRole = (role: UserRole) => {
+    setUserRoleState(role);
+    localStorage.setItem('aggo_user_role', role);
+  };
+
   useEffect(() => {
     document.documentElement.lang = language;
     if (darkMode) {
@@ -45,7 +58,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AppContext.Provider value={{ language, setLanguage, darkMode, setDarkMode }}>
+    <AppContext.Provider value={{ language, setLanguage, darkMode, setDarkMode, userRole, setUserRole }}>
       {children}
     </AppContext.Provider>
   );
