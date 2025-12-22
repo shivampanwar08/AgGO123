@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useApp } from '@/lib/appContext';
 import { t } from '@/lib/translations';
 import type { Language } from '@/lib/translations';
-import RoleSelection from './RoleSelection';
+import RoleChangeFlow from './RoleChangeFlow';
 
 const landListings = [
   {
@@ -132,13 +132,12 @@ export default function Settings() {
   const textClass = darkMode ? 'text-white' : 'text-gray-900';
   const textMutedClass = darkMode ? 'text-gray-400' : 'text-gray-500';
 
-  const handleRoleChange = (role: 'user' | 'equipment-renter' | 'land-owner' | 'shopper') => {
-    setUserRole(role);
+  const handleRoleChangeComplete = () => {
     setShowRoleSelector(false);
   };
 
   if (showRoleSelector) {
-    return <RoleSelection onRoleSelect={handleRoleChange} />;
+    return <RoleChangeFlow onComplete={handleRoleChangeComplete} />;
   }
 
   return (
