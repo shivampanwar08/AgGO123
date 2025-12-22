@@ -1,9 +1,9 @@
-import { Users, Wrench, Leaf, ArrowRight } from 'lucide-react';
+import { Users, Wrench, Leaf, ArrowRight, ShoppingCart } from 'lucide-react';
 import { useApp } from '@/lib/appContext';
 import { t } from '@/lib/translations';
 
 interface RoleSelectionProps {
-  onRoleSelect: (role: 'user' | 'equipment-renter' | 'land-owner') => void;
+  onRoleSelect: (role: 'user' | 'equipment-renter' | 'land-owner' | 'shopper') => void;
 }
 
 export default function RoleSelection({ onRoleSelect }: RoleSelectionProps) {
@@ -35,6 +35,13 @@ export default function RoleSelection({ onRoleSelect }: RoleSelectionProps) {
       description: t('land_owner_desc', language),
       icon: <Leaf size={48} className="text-amber-500" />,
       color: 'from-amber-500 to-amber-600'
+    },
+    {
+      id: 'shopper',
+      title: t('shopper', language),
+      description: t('shopper_desc', language),
+      icon: <ShoppingCart size={48} className="text-purple-500" />,
+      color: 'from-purple-500 to-purple-600'
     }
   ];
 
@@ -50,7 +57,7 @@ export default function RoleSelection({ onRoleSelect }: RoleSelectionProps) {
           {roles.map((role) => (
             <button
               key={role.id}
-              onClick={() => onRoleSelect(role.id as 'user' | 'equipment-renter' | 'land-owner')}
+              onClick={() => onRoleSelect(role.id as 'user' | 'equipment-renter' | 'land-owner' | 'shopper')}
               className={`w-full ${cardClass} border rounded-2xl p-4 transition-all hover:shadow-lg active:scale-95`}
             >
               <div className="flex items-center gap-4">

@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import type { Language } from './translations';
 
-export type UserRole = 'user' | 'equipment-renter' | 'land-owner';
+export type UserRole = 'user' | 'equipment-renter' | 'land-owner' | 'shopper';
 
 interface AppContextType {
   language: Language;

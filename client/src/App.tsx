@@ -19,6 +19,7 @@ import Auth from "@/pages/Auth";
 import RoleSelection from "@/pages/RoleSelection";
 import EquipmentRenterForm from "@/pages/EquipmentRenterForm";
 import LandOwnerForm from "@/pages/LandOwnerForm";
+import ShopperForm from "@/pages/ShopperForm";
 
 function Router() {
   return (
@@ -38,18 +39,20 @@ function Router() {
 
 function AppContent() {
   const { userRole, setUserRole } = useApp();
-  const [showForm, setShowForm] = useState<'equipment' | 'land' | null>(null);
+  const [showForm, setShowForm] = useState<'equipment' | 'land' | 'shopper' | null>(null);
 
   const handleFormComplete = () => {
     setShowForm(null);
   };
 
-  const handleRoleSelect = (role: 'user' | 'equipment-renter' | 'land-owner') => {
+  const handleRoleSelect = (role: 'user' | 'equipment-renter' | 'land-owner' | 'shopper') => {
     setUserRole(role);
     if (role === 'equipment-renter') {
       setShowForm('equipment');
     } else if (role === 'land-owner') {
       setShowForm('land');
+    } else if (role === 'shopper') {
+      setShowForm('shopper');
     }
   };
 
@@ -63,6 +66,10 @@ function AppContent() {
 
   if (showForm === 'land') {
     return <LandOwnerForm onBack={() => setShowForm(null)} onSubmit={handleFormComplete} />;
+  }
+
+  if (showForm === 'shopper') {
+    return <ShopperForm onBack={() => setShowForm(null)} onSubmit={handleFormComplete} />;
   }
 
   return <Router />;
