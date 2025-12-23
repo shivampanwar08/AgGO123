@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ChevronLeft, Plus, Trash2 } from 'lucide-react';
 import { useApp } from '@/lib/appContext';
 import { t } from '@/lib/translations';
+import type { EquipmentRenterData } from '@/lib/appContext';
 
 interface EquipmentRenterFormProps {
   onBack: () => void;
@@ -9,7 +10,7 @@ interface EquipmentRenterFormProps {
 }
 
 export default function EquipmentRenterForm({ onBack, onSubmit }: EquipmentRenterFormProps) {
-  const { darkMode, language } = useApp();
+  const { darkMode, language, setEquipmentData } = useApp();
   const [equipment, setEquipment] = useState([
     { id: 1, name: 'Tractor', pricePerDay: 800, quantity: 1 }
   ]);
@@ -39,6 +40,18 @@ export default function EquipmentRenterForm({ onBack, onSubmit }: EquipmentRente
     setEquipment(equipment.map(e => 
       e.id === id ? { ...e, [field]: value } : e
     ));
+  };
+
+  const handleSubmit = () => {
+    const data: EquipmentRenterData = {
+      ownerName: formData.ownerName,
+      village: formData.village,
+      phone: formData.phone,
+      bankAccount: formData.bankAccount,
+      equipment: equipment
+    };
+    setEquipmentData(data);
+    onSubmit();
   };
 
   return (
@@ -160,7 +173,7 @@ export default function EquipmentRenterForm({ onBack, onSubmit }: EquipmentRente
         </div>
 
         <button
-          onClick={onSubmit}
+          onClick={handleSubmit}
           className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-4 rounded-xl text-lg shadow-lg shadow-blue-500/30 hover:opacity-90 active:scale-95 transition-all"
         >
           {t('submit_profile', language)}

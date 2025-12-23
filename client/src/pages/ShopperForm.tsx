@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ChevronLeft, Plus, Trash2 } from 'lucide-react';
 import { useApp } from '@/lib/appContext';
 import { t } from '@/lib/translations';
+import type { ShopperData } from '@/lib/appContext';
 
 interface ShopperFormProps {
   onBack: () => void;
@@ -9,7 +10,7 @@ interface ShopperFormProps {
 }
 
 export default function ShopperForm({ onBack, onSubmit }: ShopperFormProps) {
-  const { darkMode, language } = useApp();
+  const { darkMode, language, setShopperData } = useApp();
   const [products, setProducts] = useState([
     { id: 1, name: 'Urea Fertilizer', category: 'Fertilizers', price: 650, quantity: 50 }
   ]);
@@ -41,6 +42,20 @@ export default function ShopperForm({ onBack, onSubmit }: ShopperFormProps) {
     setProducts(products.map(p => 
       p.id === id ? { ...p, [field]: value } : p
     ));
+  };
+
+  const handleSubmit = () => {
+    const data: ShopperData = {
+      shopName: formData.shopName,
+      shopOwner: formData.shopOwner,
+      village: formData.village,
+      phone: formData.phone,
+      shopAddress: formData.shopAddress,
+      bankAccount: formData.bankAccount,
+      products: products
+    };
+    setShopperData(data);
+    onSubmit();
   };
 
   return (
@@ -200,7 +215,7 @@ export default function ShopperForm({ onBack, onSubmit }: ShopperFormProps) {
         </div>
 
         <button
-          onClick={onSubmit}
+          onClick={handleSubmit}
           className="w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold py-4 rounded-xl text-lg shadow-lg shadow-purple-500/30 hover:opacity-90 active:scale-95 transition-all"
         >
           {t('submit_profile', language)}

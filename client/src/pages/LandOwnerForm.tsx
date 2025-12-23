@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ChevronLeft, Plus, Trash2 } from 'lucide-react';
 import { useApp } from '@/lib/appContext';
 import { t } from '@/lib/translations';
+import type { LandOwnerData } from '@/lib/appContext';
 
 interface LandOwnerFormProps {
   onBack: () => void;
@@ -9,7 +10,7 @@ interface LandOwnerFormProps {
 }
 
 export default function LandOwnerForm({ onBack, onSubmit }: LandOwnerFormProps) {
-  const { darkMode, language } = useApp();
+  const { darkMode, language, setLandData } = useApp();
   const [lands, setLands] = useState([
     { id: 1, size: 2, soilType: 'Black Soil', waterAccess: 'Well + Borewell', pricePerAcre: 800 }
   ]);
@@ -39,6 +40,18 @@ export default function LandOwnerForm({ onBack, onSubmit }: LandOwnerFormProps) 
     setLands(lands.map(l => 
       l.id === id ? { ...l, [field]: value } : l
     ));
+  };
+
+  const handleSubmit = () => {
+    const data: LandOwnerData = {
+      ownerName: formData.ownerName,
+      village: formData.village,
+      phone: formData.phone,
+      bankAccount: formData.bankAccount,
+      lands: lands
+    };
+    setLandData(data);
+    onSubmit();
   };
 
   return (
@@ -170,7 +183,7 @@ export default function LandOwnerForm({ onBack, onSubmit }: LandOwnerFormProps) 
         </div>
 
         <button
-          onClick={onSubmit}
+          onClick={handleSubmit}
           className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold py-4 rounded-xl text-lg shadow-lg shadow-amber-500/30 hover:opacity-90 active:scale-95 transition-all"
         >
           {t('submit_profile', language)}
