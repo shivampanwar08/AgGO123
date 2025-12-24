@@ -181,7 +181,7 @@ export default function MapBackground() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="absolute top-3 right-3 z-20 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg border border-white/20"
+          className="fixed top-20 right-4 z-50 bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-xl border border-white/30"
         >
           <div className="flex items-center gap-2">
             {weather.isRaining ? (
