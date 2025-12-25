@@ -11,9 +11,9 @@ export default function LocationCard() {
           ? 'bg-gray-800/80 border-gray-700/50' 
           : 'bg-white/80 border-white/50'
       } rounded-2xl shadow-2xl border overflow-hidden transition-all duration-300 backdrop-blur-xl hover:shadow-3xl`}>
-        <div className="p-5 relative flex items-center gap-4">
+        <div className="p-3 relative flex items-center gap-3">
           {/* Location Indicator */}
-          <div className={`w-12 h-12 flex items-center justify-center flex-shrink-0 ${
+          <div className={`w-10 h-10 flex items-center justify-center flex-shrink-0 ${
             darkMode 
               ? 'bg-gradient-to-br from-green-900/60 to-green-900/30' 
               : 'bg-gradient-to-br from-green-100 to-green-50'
@@ -24,14 +24,13 @@ export default function LocationCard() {
           </div>
           
           {/* Content */}
-          <div className="flex-1">
-            <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} font-semibold uppercase tracking-wider mb-1`}>Your Location</p>
-            <p className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'} truncate`}>Sector 2, HSR Layout</p>
-            <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'} mt-0.5`}>📍 ~2.5 km from farmers</p>
+          <div className="flex-1 min-w-0">
+            <p className={`text-[11px] ${darkMode ? 'text-gray-400' : 'text-gray-500'} font-semibold uppercase tracking-wider`}>Your Location</p>
+            <p className={`text-xs font-bold ${darkMode ? 'text-white' : 'text-gray-900'} truncate`}>Sector 2, HSR Layout</p>
           </div>
 
           {/* Badge */}
-          <div className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
+          <div className={`px-2 py-0.5 rounded-full text-[10px] font-bold whitespace-nowrap ${
             darkMode
               ? 'bg-green-900/40 text-green-300'
               : 'bg-green-100 text-green-700'
