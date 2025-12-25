@@ -3,10 +3,17 @@ import LocationCard from "@/components/LocationCard";
 import VehicleSheet from "@/components/VehicleSheet";
 import BottomNav from "@/components/BottomNav";
 import { useApp } from "@/lib/appContext";
+import { t } from "@/lib/translations";
 import { Wrench, Leaf, ShoppingCart } from "lucide-react";
 
 export default function Home() {
   const { darkMode, userRole, equipmentData, landData, shopperData, language } = useApp();
+
+  // Helper to translate equipment/land/product descriptions
+  const getTranslatedDesc = (key: string, fallback: string) => {
+    const translated = t(key, language);
+    return translated !== key ? translated : fallback;
+  };
   
   const bgClass = darkMode ? 'bg-gray-900' : 'bg-white';
   const cardClass = darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100';
@@ -52,20 +59,24 @@ export default function Home() {
               📦 Equipment Inventory
             </h2>
             <div className="space-y-3">
-              {equipmentData.equipment.map((item) => (
-                <div key={item.id} className={`${cardClass} border rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow`}>
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <p className={`font-bold text-lg ${textClass}`}>{item.name}</p>
-                      <p className={`text-sm ${textMutedClass} mt-1`}>Available Qty: {item.quantity}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className={`text-2xl font-bold text-blue-500`}>₹{item.pricePerDay}</p>
-                      <p className={`text-xs ${textMutedClass}`}>/day</p>
+              {equipmentData.equipment.map((item) => {
+                const descKey = item.name.toLowerCase().replace(/\s+/g, '_').replace(/[()]/g, '');
+                const desc = getTranslatedDesc(`${descKey}_`, item.name);
+                return (
+                  <div key={item.id} className={`${cardClass} border rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow`}>
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <p className={`font-bold text-lg ${textClass}`}>{item.name}</p>
+                        <p className={`text-sm ${textMutedClass} mt-1`}>{desc}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className={`text-2xl font-bold text-blue-500`}>₹{item.pricePerDay}</p>
+                        <p className={`text-xs ${textMutedClass}`}>/day</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -113,21 +124,27 @@ export default function Home() {
               🌾 Land Listings
             </h2>
             <div className="space-y-3">
-              {landData.lands.map((item) => (
-                <div key={item.id} className={`${cardClass} border rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow`}>
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <p className={`font-bold text-lg ${textClass}`}>{item.size} Acres</p>
-                      <p className={`text-sm ${textMutedClass} mt-1`}>{item.soilType}</p>
+              {landData.lands.map((item) => {
+                const soilKey = item.soilType.toLowerCase().replace(/[^a-z0-9_]/g, '_').slice(0, -1);
+                const waterKey = item.waterAccess.toLowerCase().replace(/[^a-z0-9_]/g, '_').slice(0, -1);
+                const translatedSoil = getTranslatedDesc(soilKey, item.soilType);
+                const translatedWater = getTranslatedDesc(waterKey, item.waterAccess);
+                return (
+                  <div key={item.id} className={`${cardClass} border rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow`}>
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <p className={`font-bold text-lg ${textClass}`}>{item.size} {t('acres', language) || 'Acres'}</p>
+                        <p className={`text-sm ${textMutedClass} mt-1`}>{translatedSoil}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className={`text-2xl font-bold text-amber-500`}>₹{item.pricePerAcre}</p>
+                        <p className={`text-xs ${textMutedClass}`}>/acre</p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className={`text-2xl font-bold text-amber-500`}>₹{item.pricePerAcre}</p>
-                      <p className={`text-xs ${textMutedClass}`}>/acre</p>
-                    </div>
+                    <p className={`text-xs font-semibold ${textMutedClass} flex items-center gap-1`}>💧 {translatedWater}</p>
                   </div>
-                  <p className={`text-xs font-semibold ${textMutedClass} flex items-center gap-1`}>💧 {item.waterAccess}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -177,20 +194,24 @@ export default function Home() {
               🛍️ Product Inventory
             </h2>
             <div className="space-y-3">
-              {shopperData.products.map((item) => (
-                <div key={item.id} className={`${cardClass} border rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow`}>
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex-1">
-                      <p className={`font-bold text-lg ${textClass}`}>{item.name}</p>
-                      <p className={`text-xs font-semibold ${textMutedClass} mt-1`}>{item.category}</p>
+              {shopperData.products.map((item) => {
+                const prodKey = item.name.toLowerCase().replace(/\s+/g, '_').replace(/[()]/g, '');
+                const prodDesc = getTranslatedDesc(`${prodKey}_`, item.name);
+                return (
+                  <div key={item.id} className={`${cardClass} border rounded-2xl p-4 shadow-md hover:shadow-lg transition-shadow`}>
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex-1">
+                        <p className={`font-bold text-lg ${textClass}`}>{prodDesc}</p>
+                        <p className={`text-xs font-semibold ${textMutedClass} mt-1`}>{item.category}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className={`text-2xl font-bold text-purple-500`}>₹{item.price}</p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className={`text-2xl font-bold text-purple-500`}>₹{item.price}</p>
-                    </div>
+                    <p className={`text-xs ${textMutedClass} flex items-center gap-1`}>📦 Stock: <span className="font-bold">{item.quantity} units</span></p>
                   </div>
-                  <p className={`text-xs ${textMutedClass} flex items-center gap-1`}>📦 Stock: <span className="font-bold">{item.quantity} units</span></p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

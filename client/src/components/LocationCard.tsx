@@ -5,7 +5,7 @@ export default function LocationCard() {
   const { darkMode } = useApp();
 
   return (
-    <div className="absolute top-20 left-4 right-4 z-20">
+    <div className="absolute top-4 left-4 right-4 z-20">
       <div className={`${
         darkMode 
           ? 'bg-gray-800/80 border-gray-700/50' 
