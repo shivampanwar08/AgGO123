@@ -122,42 +122,55 @@ interface EquipmentOptionProps {
 
 function EquipmentOption({ icon, name, price, desc, tag, selected, onClick }: EquipmentOptionProps) {
   const { darkMode } = useApp();
-
   return (
-    <div 
-      onClick={onClick} 
-      className={`cursor-pointer relative flex items-center p-4 rounded-2xl border transition-all duration-300 active:scale-[0.98] ${
-        selected 
-          ? `${darkMode ? 'bg-green-900/40 border-green-600' : 'bg-green-50/80 border-green-500'} shadow-lg shadow-green-500/10` 
-          : `${darkMode ? 'bg-gray-700/60 border-gray-600 hover:border-green-600 hover:bg-gray-700/80' : 'bg-white/60 border-gray-100 hover:border-green-200 hover:bg-white/80'}`
+    <div
+      onClick={onClick}
+      className={`relative p-4 rounded-2xl transition-all duration-300 cursor-pointer border-2 ${
+        selected
+          ? darkMode
+            ? 'bg-green-900/30 border-green-500/50 shadow-lg shadow-green-500/20'
+            : 'bg-green-50/80 border-green-400 shadow-lg shadow-green-500/20'
+          : darkMode
+            ? 'bg-gray-700/30 border-gray-600/50 hover:border-gray-500/50 hover:bg-gray-700/50'
+            : 'bg-gray-50/50 border-gray-200 hover:border-gray-300 hover:bg-gray-100/50'
       }`}
     >
-      {tag && (
-        <span className={`absolute -top-2.5 right-4 ${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-black text-white'} text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shadow-md`}>
-          {tag}
-        </span>
-      )}
-      
-      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border mr-4 flex-shrink-0 transition-colors duration-300 ${selected ? `${darkMode ? 'bg-gray-800 border-green-600' : 'bg-white border-green-200'}` : `${darkMode ? 'bg-gray-600 border-gray-500' : 'bg-gray-50 border-gray-100'}`}`}>
-        {icon}
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-start gap-3 flex-1">
+          <div className={`p-3 rounded-xl flex-shrink-0 ${
+            selected
+              ? darkMode
+                ? 'bg-green-900/40'
+                : 'bg-green-100'
+              : darkMode
+                ? 'bg-gray-600/40'
+                : 'bg-gray-100'
+          }`}>
+            {icon}
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <h4 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{name}</h4>
+              {tag && (
+                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-gradient-to-r from-orange-400 to-orange-500 text-white">
+                  {tag}
+                </span>
+              )}
+            </div>
+            <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} mt-0.5`}>{desc}</p>
+            <p className={`text-sm font-bold mt-1 ${darkMode ? 'text-green-400' : 'text-green-600'}`}>{price}</p>
+          </div>
+        </div>
+        <div className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 border-2 transition-all ${
+          selected
+            ? 'bg-green-500 border-green-500'
+            : darkMode
+              ? 'border-gray-500 bg-transparent'
+              : 'border-gray-300 bg-transparent'
+        }`}>
+          {selected && <Check size={14} className="text-white" strokeWidth={3} />}
+        </div>
       </div>
-      
-      <div className="flex-1">
-        <div className="flex justify-between items-start">
-          <h4 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'} text-lg tracking-tight`}>{name}</h4>
-          <span className="font-bold text-green-500 text-lg">{price}</span>
-        </div>
-        
-        <div className="flex justify-between items-center mt-0.5">
-          <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} font-semibold uppercase tracking-wide`}>{desc}</p>
-        </div>
-      </div>
-
-      {selected && (
-        <div className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-green-500 text-white rounded-full p-1.5 shadow-lg shadow-green-500/30 animate-in zoom-in duration-200">
-          <Check size={14} strokeWidth={3} />
-        </div>
-      )}
     </div>
   );
 }

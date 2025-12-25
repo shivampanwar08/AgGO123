@@ -1,27 +1,42 @@
-import { MapPin } from 'lucide-react';
+import { MapPin, Navigation } from 'lucide-react';
 import { useApp } from '@/lib/appContext';
 
 export default function LocationCard() {
   const { darkMode } = useApp();
 
   return (
-    <div className="absolute top-4 left-4 right-4 z-20">
-      <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} rounded-2xl shadow-xl border overflow-hidden transition-colors`}>
-        <div className="p-4 relative flex items-center gap-3">
-          {/* Icon */}
-          <div className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${darkMode ? 'bg-green-900/40' : 'bg-green-50'} rounded-full`}>
-            <div className={`w-3 h-3 ${darkMode ? 'bg-green-400 ring-green-900/40' : 'bg-green-500 ring-green-100'} rounded-full ring-4`}></div>
+    <div className="absolute top-20 left-4 right-4 z-20">
+      <div className={`${
+        darkMode 
+          ? 'bg-gray-800/80 border-gray-700/50' 
+          : 'bg-white/80 border-white/50'
+      } rounded-2xl shadow-2xl border overflow-hidden transition-all duration-300 backdrop-blur-xl hover:shadow-3xl`}>
+        <div className="p-5 relative flex items-center gap-4">
+          {/* Location Indicator */}
+          <div className={`w-12 h-12 flex items-center justify-center flex-shrink-0 ${
+            darkMode 
+              ? 'bg-gradient-to-br from-green-900/60 to-green-900/30' 
+              : 'bg-gradient-to-br from-green-100 to-green-50'
+          } rounded-full ring-2 ${
+            darkMode ? 'ring-green-500/30' : 'ring-green-200'
+          } shadow-lg`}>
+            <Navigation size={20} className={`${darkMode ? 'text-green-400' : 'text-green-600'}`} />
           </div>
           
           {/* Content */}
           <div className="flex-1">
-            <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'} font-medium uppercase tracking-wider mb-0.5`}>Your Current Location</p>
-            <p className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'} truncate`}>HSR Layout, Sector 2</p>
+            <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} font-semibold uppercase tracking-wider mb-1`}>Your Location</p>
+            <p className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'} truncate`}>Sector 2, HSR Layout</p>
+            <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'} mt-0.5`}>📍 ~2.5 km from farmers</p>
           </div>
 
-          {/* Favorite Icon maybe? */}
-          <div className={darkMode ? 'text-gray-600' : 'text-gray-300'}>
-             <MapPin size={20} />
+          {/* Badge */}
+          <div className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
+            darkMode
+              ? 'bg-green-900/40 text-green-300'
+              : 'bg-green-100 text-green-700'
+          }`}>
+            Active
           </div>
         </div>
       </div>
