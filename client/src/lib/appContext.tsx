@@ -57,6 +57,12 @@ interface AppContextType {
   setLandData: (data: LandOwnerData) => void;
   shopperData: ShopperData | null;
   setShopperData: (data: ShopperData) => void;
+  allEquipmentRenters: EquipmentRenterData[];
+  addEquipmentRenter: (data: EquipmentRenterData) => void;
+  allLandOwners: LandOwnerData[];
+  addLandOwner: (data: LandOwnerData) => void;
+  allShoppers: ShopperData[];
+  addShopper: (data: ShopperData) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -88,6 +94,73 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const saved = localStorage.getItem('aggo_shopper_data');
     return saved ? JSON.parse(saved) : null;
   });
+
+  const [allEquipmentRenters, setAllEquipmentRenters] = useState<EquipmentRenterData[]>(() => {
+    const saved = localStorage.getItem('aggo_all_equipment');
+    return saved ? JSON.parse(saved) : [
+      {
+        ownerName: "Ram Lal",
+        village: "Rampur Village",
+        phone: "+91 98765 43210",
+        bankAccount: "1234567890",
+        isDriver: true,
+        equipment: [
+          { id: 1, name: "Tractor", pricePerDay: 1500, quantity: 1, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" },
+          { id: 2, name: "Trolley", pricePerDay: 500, quantity: 2 }
+        ]
+      },
+      {
+        ownerName: "Balwinder Singh",
+        village: "Kishanpur",
+        phone: "+91 98765 43211",
+        bankAccount: "0987654321",
+        isDriver: true,
+        equipment: [
+          { id: 1, name: "Tractor", pricePerDay: 1800, quantity: 1, image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop" },
+          { id: 2, name: "Harvester", pricePerDay: 5000, quantity: 1 }
+        ]
+      },
+      {
+        ownerName: "Mukesh Patel",
+        village: "Shyam Nagar",
+        phone: "+91 98765 43212",
+        bankAccount: "1122334455",
+        isDriver: true,
+        equipment: [
+          { id: 1, name: "Seeder", pricePerDay: 1200, quantity: 1, image: "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=100&h=100&fit=crop" },
+          { id: 2, name: "Rotavator", pricePerDay: 1000, quantity: 1 }
+        ]
+      }
+    ];
+  });
+
+  const [allLandOwners, setAllLandOwners] = useState<LandOwnerData[]>(() => {
+    const saved = localStorage.getItem('aggo_all_lands');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [allShoppers, setAllShoppers] = useState<ShopperData[]>(() => {
+    const saved = localStorage.getItem('aggo_all_shoppers');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const addEquipmentRenter = (data: EquipmentRenterData) => {
+    const updated = [...allEquipmentRenters, data];
+    setAllEquipmentRenters(updated);
+    localStorage.setItem('aggo_all_equipment', JSON.stringify(updated));
+  };
+
+  const addLandOwner = (data: LandOwnerData) => {
+    const updated = [...allLandOwners, data];
+    setAllLandOwners(updated);
+    localStorage.setItem('aggo_all_lands', JSON.stringify(updated));
+  };
+
+  const addShopper = (data: ShopperData) => {
+    const updated = [...allShoppers, data];
+    setAllShoppers(updated);
+    localStorage.setItem('aggo_all_shoppers', JSON.stringify(updated));
+  };
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
@@ -135,7 +208,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AppContext.Provider value={{ language, setLanguage, darkMode, setDarkMode, userRole, setUserRole, equipmentData, setEquipmentData, landData, setLandData, shopperData, setShopperData }}>
+    <AppContext.Provider value={{ 
+      language, setLanguage, 
+      darkMode, setDarkMode, 
+      userRole, setUserRole, 
+      equipmentData, setEquipmentData, 
+      landData, setLandData, 
+      shopperData, setShopperData,
+      allEquipmentRenters, addEquipmentRenter,
+      allLandOwners, addLandOwner,
+      allShoppers, addShopper
+    }}>
       {children}
     </AppContext.Provider>
   );

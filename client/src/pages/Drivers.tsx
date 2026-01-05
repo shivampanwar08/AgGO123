@@ -6,10 +6,17 @@ import { useApp } from '@/lib/appContext';
 import { t } from '@/lib/translations';
 
 export default function Drivers() {
-  const { darkMode, language } = useApp();
+  const { darkMode, language, allEquipmentRenters } = useApp();
   const [searchParams] = useState(new URLSearchParams(window.location.search));
   const itemsParam = searchParams.get('items');
   const selectedTypes = itemsParam ? itemsParam.split(',') : [];
+
+  // Filter drivers based on equipment types if provided
+  const filteredDrivers = allEquipmentRenters.filter(driver => {
+    if (!itemsParam) return true;
+    const driverEquipmentNames = driver.equipment.map(e => e.name);
+    return selectedTypes.some(type => driverEquipmentNames.includes(type));
+  });
 
   return (
     <div className={`${darkMode ? 'bg-gray-900/50' : 'bg-gray-50/50'} min-h-screen pb-24 transition-colors`}>
@@ -46,60 +53,26 @@ export default function Drivers() {
 
         <h2 className={`text-xs font-bold ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-widest mb-3 ml-1`}>{t('available_now', language)}</h2>
         
-        {/* Only show relevant drivers if filtering is active (Mock logic for demo) */}
-        <DriverCard 
-          id="d1"
-          name="Ram Lal"
-          village="Rampur Village"
-          equipment={['Tractor', 'Trolley']}
-          rating="4.9"
-          distance="2.5 km"
-          status="online"
-          image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"
-          itemsParam={itemsParam}
-        />
-        
-        {/* Show others if they match or if no filter */}
-        {(!itemsParam || itemsParam.includes('Tractor')) && (
-           <DriverCard 
-            id="d2"
-            name="Balwinder Singh"
-            village="Kishanpur"
-            equipment={['Tractor', 'Harvester']}
-            rating="4.7"
-            distance="5.2 km"
+        {filteredDrivers.map((driver, idx) => (
+          <DriverCard 
+            key={idx}
+            id={`d-${idx}`}
+            name={driver.ownerName}
+            village={driver.village}
+            equipment={driver.equipment.map(e => e.name)}
+            rating={(4.5 + Math.random() * 0.5).toFixed(1)}
+            distance={`${(1 + Math.random() * 9).toFixed(1)} km`}
             status="online"
-            image="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop"
+            image={driver.equipment.find(e => e.image)?.image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"}
             itemsParam={itemsParam}
           />
-        )}
+        ))}
 
-        {(!itemsParam || itemsParam.includes('Seeder')) && (
-           <DriverCard 
-            id="d3"
-            name="Mukesh Patel"
-            village="Shyam Nagar"
-            equipment={['Seeder', 'Rotavator']}
-            rating="4.5"
-            distance="8.0 km"
-            status="online"
-            image="https://images.unsplash.com/photo-1552058544-f2b08422138a?w=100&h=100&fit=crop"
-            itemsParam={itemsParam}
-          />
+        {filteredDrivers.length === 0 && (
+          <div className="text-center py-10 opacity-50">
+            <p className={darkMode ? 'text-white' : 'text-gray-900'}>No drivers found matching your criteria.</p>
+          </div>
         )}
-
-        <h2 className={`text-xs font-bold ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-widest mt-8 mb-3 ml-1`}>{t('busy_offline', language)}</h2>
-        
-        <DriverCard 
-          id="d4"
-          name="Suresh Kumar"
-          village="Rampur Village"
-          equipment={['Tractor']}
-          rating="4.2"
-          status="offline"
-          image="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop"
-          itemsParam={itemsParam}
-        />
       </div>
       <BottomNav />
     </div>

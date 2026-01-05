@@ -10,7 +10,7 @@ interface ShopperFormProps {
 }
 
 export default function ShopperForm({ onBack, onSubmit }: ShopperFormProps) {
-  const { darkMode, language, setShopperData } = useApp();
+  const { darkMode, language, setShopperData, addShopper } = useApp();
   const [products, setProducts] = useState([
     { id: 1, name: 'Urea Fertilizer', category: 'Fertilizers', price: 650, quantity: 50, image: '' }
   ]);
@@ -66,6 +66,7 @@ export default function ShopperForm({ onBack, onSubmit }: ShopperFormProps) {
       bankAccount: formData.bankAccount,
       products: products
     };
+    addShopper(data);
     setShopperData(data);
     onSubmit();
   };

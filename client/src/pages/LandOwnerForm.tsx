@@ -10,7 +10,7 @@ interface LandOwnerFormProps {
 }
 
 export default function LandOwnerForm({ onBack, onSubmit }: LandOwnerFormProps) {
-  const { darkMode, language, setLandData } = useApp();
+  const { darkMode, language, setLandData, addLandOwner } = useApp();
   const [lands, setLands] = useState([
     { id: 1, size: 2, soilType: 'Black Soil', waterAccess: 'Well + Borewell', pricePerAcre: 800 }
   ]);
@@ -50,6 +50,7 @@ export default function LandOwnerForm({ onBack, onSubmit }: LandOwnerFormProps) 
       bankAccount: formData.bankAccount,
       lands: lands
     };
+    addLandOwner(data);
     setLandData(data);
     onSubmit();
   };

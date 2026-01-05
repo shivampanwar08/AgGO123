@@ -10,7 +10,7 @@ interface EquipmentRenterFormProps {
 }
 
 export default function EquipmentRenterForm({ onBack, onSubmit }: EquipmentRenterFormProps) {
-  const { darkMode, language, setEquipmentData } = useApp();
+  const { darkMode, language, setEquipmentData, addEquipmentRenter } = useApp();
   const [equipment, setEquipment] = useState([
     { id: 1, name: 'Tractor', pricePerDay: 800, quantity: 1 }
   ]);
@@ -76,6 +76,7 @@ export default function EquipmentRenterForm({ onBack, onSubmit }: EquipmentRente
       drivingLicense: formData.drivingLicense,
       equipment: equipment as any
     };
+    addEquipmentRenter(data);
     setEquipmentData(data);
     onSubmit();
   };

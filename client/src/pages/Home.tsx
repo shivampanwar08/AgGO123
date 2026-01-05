@@ -4,10 +4,10 @@ import VehicleSheet from "@/components/VehicleSheet";
 import BottomNav from "@/components/BottomNav";
 import { useApp } from "@/lib/appContext";
 import { t } from "@/lib/translations";
-import { Wrench, Leaf, ShoppingCart } from "lucide-react";
+import { Wrench, Leaf, ShoppingCart, MapPin, Star, Check, Tractor } from "lucide-react";
 
 export default function Home() {
-  const { darkMode, userRole, equipmentData, landData, shopperData, language } = useApp();
+  const { darkMode, userRole, equipmentData, landData, shopperData, language, allEquipmentRenters, allLandOwners, allShoppers } = useApp();
 
   // Helper to translate equipment/land/product descriptions
   const getTranslatedDesc = (key: string, fallback: string) => {
@@ -224,9 +224,117 @@ export default function Home() {
   return (
     <div className={`relative w-full h-[100dvh] overflow-hidden ${bgClass} flex flex-col transition-colors`}>
       {/* Main Visual Area */}
-      <div className="flex-1 relative pb-16">
+      <div className="flex-1 relative pb-16 overflow-y-auto no-scrollbar">
         <MapBackground />
         <LocationCard />
+
+        {/* Dynamic Listings Section */}
+        <div className="relative z-10 p-5 space-y-6 mt-4 pb-20">
+          {/* Active Drivers/Equipment */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className={`text-lg font-bold ${textClass}`}>🚜 Nearby Equipment</h2>
+              <span className="text-[10px] font-bold text-green-500 bg-green-500/10 px-2 py-0.5 rounded-full uppercase tracking-wider">Live</span>
+            </div>
+            <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+              {allEquipmentRenters.map((renter, idx) => (
+                <div key={idx} className={`${cardClass} border rounded-2xl p-3 min-w-[280px] shadow-sm flex flex-col gap-3`}>
+                  <div className="flex gap-3">
+                    <div className="w-16 h-16 rounded-xl bg-blue-500/10 flex items-center justify-center overflow-hidden flex-shrink-0">
+                      {renter.equipment.find(e => e.image)?.image ? (
+                        <img src={renter.equipment.find(e => e.image)?.image} className="w-full h-full object-cover" alt="" />
+                      ) : (
+                        <Tractor className="text-blue-500" size={24} />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className={`font-bold ${textClass} truncate`}>{renter.ownerName}</h3>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <MapPin size={10} className="text-blue-500" />
+                        <span className={`text-[10px] font-bold ${textMutedClass} truncate uppercase tracking-tighter`}>{renter.village}</span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <div className="flex items-center gap-0.5">
+                          <Star size={10} className="text-yellow-400 fill-yellow-400" />
+                          <span className={`text-[10px] font-bold ${textClass}`}>4.8</span>
+                        </div>
+                        <div className="w-1 h-1 rounded-full bg-gray-300"></div>
+                        <div className="flex items-center gap-0.5 text-green-500">
+                          <Check size={10} />
+                          <span className="text-[9px] font-bold uppercase">Verified</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-gray-100/10">
+                    {renter.equipment.slice(0, 3).map((eq, i) => (
+                      <span key={i} className={`text-[9px] font-bold ${darkMode ? 'bg-gray-700/50 text-gray-300' : 'bg-gray-50 text-gray-500'} px-2 py-0.5 rounded-md`}>
+                        {eq.name}
+                      </span>
+                    ))}
+                    {renter.equipment.length > 3 && <span className="text-[9px] font-bold text-blue-500">+{renter.equipment.length - 3} more</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Local Agri Shops */}
+          {allShoppers.length > 0 && (
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <h2 className={`text-lg font-bold ${textClass}`}>🛒 Local Agri Shops</h2>
+              </div>
+              <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+                {allShoppers.map((shop, idx) => (
+                  <div key={idx} className={`${cardClass} border rounded-2xl p-4 min-w-[240px] shadow-sm`}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
+                        <ShoppingCart className="text-purple-500" size={20} />
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className={`font-bold ${textClass} truncate`}>{shop.shopName}</h3>
+                        <p className={`text-[10px] font-bold ${textMutedClass} uppercase tracking-wider`}>{shop.village}</p>
+                      </div>
+                    </div>
+                    <div className="text-[11px] font-medium text-purple-500">
+                      {shop.products.length} Products Available
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Available Lands */}
+          {allLandOwners.length > 0 && (
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <h2 className={`text-lg font-bold ${textClass}`}>🌾 Available Lands</h2>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {allLandOwners.slice(0, 4).map((owner, idx) => (
+                  <div key={idx} className={`${cardClass} border rounded-2xl p-3 shadow-sm`}>
+                    <div className="flex flex-col gap-2">
+                      <div className="w-full aspect-[4/3] rounded-xl bg-amber-500/10 flex items-center justify-center overflow-hidden">
+                        {owner.lands.find(l => l.image)?.image ? (
+                          <img src={owner.lands.find(l => l.image)?.image} className="w-full h-full object-cover" alt="" />
+                        ) : (
+                          <Leaf className="text-amber-500" size={24} />
+                        )}
+                      </div>
+                      <div>
+                        <h3 className={`font-bold ${textClass} text-sm`}>{owner.lands[0].size} Acres</h3>
+                        <p className={`text-[10px] font-bold ${textMutedClass} uppercase truncate`}>{owner.village}</p>
+                        <p className="text-xs font-black text-amber-500 mt-1">₹{owner.lands[0].pricePerAcre}/acre</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Bottom Sheet for Vehicles */}
