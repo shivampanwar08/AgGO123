@@ -230,55 +230,8 @@ export default function Home() {
 
         {/* Dynamic Listings Section */}
         <div className="relative z-10 p-5 space-y-6 mt-4 pb-20">
-          {/* Active Drivers/Equipment */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className={`text-lg font-bold ${textClass}`}>🚜 Nearby Equipment</h2>
-              <span className="text-[10px] font-bold text-green-500 bg-green-500/10 px-2 py-0.5 rounded-full uppercase tracking-wider">Live</span>
-            </div>
-            <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
-              {allEquipmentRenters.map((renter, idx) => (
-                <div key={idx} className={`${cardClass} border rounded-2xl p-3 min-w-[280px] shadow-sm flex flex-col gap-3`}>
-                  <div className="flex gap-3">
-                    <div className="w-16 h-16 rounded-xl bg-blue-500/10 flex items-center justify-center overflow-hidden flex-shrink-0">
-                      {renter.equipment.find(e => e.image)?.image ? (
-                        <img src={renter.equipment.find(e => e.image)?.image} className="w-full h-full object-cover" alt="" />
-                      ) : (
-                        <Tractor className="text-blue-500" size={24} />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className={`font-bold ${textClass} truncate`}>{renter.ownerName}</h3>
-                      <div className="flex items-center gap-1 mt-0.5">
-                        <MapPin size={10} className="text-blue-500" />
-                        <span className={`text-[10px] font-bold ${textMutedClass} truncate uppercase tracking-tighter`}>{renter.village}</span>
-                      </div>
-                      <div className="flex items-center gap-2 mt-2">
-                        <div className="flex items-center gap-0.5">
-                          <Star size={10} className="text-yellow-400 fill-yellow-400" />
-                          <span className={`text-[10px] font-bold ${textClass}`}>4.8</span>
-                        </div>
-                        <div className="w-1 h-1 rounded-full bg-gray-300"></div>
-                        <div className="flex items-center gap-0.5 text-green-500">
-                          <Check size={10} />
-                          <span className="text-[9px] font-bold uppercase">Verified</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-gray-100/10">
-                    {renter.equipment.slice(0, 3).map((eq, i) => (
-                      <span key={i} className={`text-[9px] font-bold ${darkMode ? 'bg-gray-700/50 text-gray-300' : 'bg-gray-50 text-gray-500'} px-2 py-0.5 rounded-md`}>
-                        {eq.name}
-                      </span>
-                    ))}
-                    {renter.equipment.length > 3 && <span className="text-[9px] font-bold text-blue-500">+{renter.equipment.length - 3} more</span>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
+          {/* Active Drivers/Equipment - REMOVED */}
+          
           {/* Local Agri Shops */}
           {allShoppers.length > 0 && (
             <div>
