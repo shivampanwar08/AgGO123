@@ -20,6 +20,7 @@ import RoleSelection from "@/pages/RoleSelection";
 import EquipmentRenterForm from "@/pages/EquipmentRenterForm";
 import LandOwnerForm from "@/pages/LandOwnerForm";
 import ShopperForm from "@/pages/ShopperForm";
+import LandRental from "@/pages/LandRental";
 
 function Router() {
   return (
@@ -29,6 +30,7 @@ function Router() {
       <Route path="/driver/:id" component={DriverProfile}/>
       <Route path="/shops" component={Shops}/>
       <Route path="/marketplace" component={Marketplace}/>
+      <Route path="/land-rental" component={LandRental}/>
       <Route path="/settings" component={Settings}/>
       <Route path="/billing" component={Billing}/>
       <Route path="/tracking" component={Tracking}/>
