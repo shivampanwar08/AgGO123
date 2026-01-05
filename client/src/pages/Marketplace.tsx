@@ -92,7 +92,7 @@ const buyersList = [
 ];
 
 export default function Marketplace() {
-  const { darkMode, language } = useApp();
+  const { darkMode, language, allShoppers } = useApp();
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<'browse' | 'sell'>('browse');
   const [searchQuery, setSearchQuery] = useState('');
@@ -102,7 +102,28 @@ export default function Marketplace() {
     { id: 'm2', name: 'Onions', qty: '300kg', unit: 'kg', image: 'https://images.unsplash.com/photo-1605986753494-3a2e3b03c9d5?w=100&h=100&fit=crop' }
   ]);
 
-  const filteredFarmers = farmersWithCrops.filter(farmer => 
+  // Transform Shopper Data to Marketplace format
+  const shopListings = allShoppers.map(shop => ({
+    id: `shop-${shop.phone}`,
+    name: shop.shopName,
+    village: shop.village,
+    crops: shop.products.map(p => ({
+      id: `prod-${p.id}`,
+      name: p.name,
+      qty: `${p.quantity} units`,
+      pricePerUnit: p.price,
+      buyersOffering: Math.floor(Math.random() * 10) + 1,
+      image: p.image || 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop', // Default image if none
+      category: p.category
+    })),
+    rating: 4.5,
+    image: 'https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=100&h=100&fit=crop',
+    distance: '2.0 km'
+  }));
+
+  const allListings = [...farmersWithCrops, ...shopListings];
+
+  const filteredFarmers = allListings.filter(farmer => 
     farmer.crops.some(crop => crop.name.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
