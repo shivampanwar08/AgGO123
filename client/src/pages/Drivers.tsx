@@ -1,4 +1,4 @@
-import { ArrowLeft, Star, Tractor, MapPin, Phone, User } from 'lucide-react';
+import { ArrowLeft, Star, Tractor, MapPin, Phone, User, Check } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import BottomNav from '@/components/BottomNav';
 import { useEffect, useState } from 'react';
@@ -113,46 +113,52 @@ function DriverCard({ id, name, village, equipment, rating, distance, status, im
   
   return (
     <Link href={link}>
-      <div className={`relative overflow-hidden glass rounded-3xl p-1 transition-all duration-300 ${
+      <div className={`group relative overflow-hidden rounded-2xl transition-all duration-300 ${
         darkMode 
-          ? `border-gray-600 ${isOnline ? 'active:scale-[0.98] hover:shadow-xl hover:border-green-600 cursor-pointer' : 'opacity-60 grayscale cursor-not-allowed'}`
-          : `border-white/40 ${isOnline ? 'active:scale-[0.98] hover:shadow-xl hover:border-green-200 cursor-pointer' : 'opacity-60 grayscale cursor-not-allowed'}`
+          ? `bg-gray-800/40 border border-gray-700/50 ${isOnline ? 'active:scale-[0.98] hover:bg-gray-800/60 hover:border-green-500/50 cursor-pointer shadow-lg' : 'opacity-60 grayscale cursor-not-allowed'}`
+          : `bg-white border border-gray-200 ${isOnline ? 'active:scale-[0.98] hover:shadow-md hover:border-green-300 cursor-pointer shadow-sm' : 'opacity-60 grayscale cursor-not-allowed'}`
       }`}>
-        <div className={`${darkMode ? 'bg-gray-800/50' : 'bg-white/50'} rounded-[1.25rem] p-4 transition-colors`}>
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <div className={`w-16 h-16 rounded-2xl overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} shadow-md`}>
-                <img src={image} alt={name} className="w-full h-full object-cover" />
+        <div className="p-3">
+          <div className="flex items-center gap-3">
+            <div className="relative flex-shrink-0">
+              <div className={`w-14 h-14 rounded-xl overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
+                <img src={image} alt={name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
               </div>
-              <div className={`absolute -bottom-1 -right-1 w-5 h-5 border-4 border-white rounded-full flex items-center justify-center ${isOnline ? 'bg-green-500' : 'bg-gray-400'}`}>
-                {isOnline && <div className="w-full h-full rounded-full animate-ping opacity-20 bg-green-500 absolute"></div>}
+              <div className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 border-2 ${darkMode ? 'border-gray-800' : 'border-white'} rounded-full ${isOnline ? 'bg-green-500' : 'bg-gray-400'}`}>
+                {isOnline && <div className="w-full h-full rounded-full animate-ping opacity-25 bg-green-500 absolute"></div>}
               </div>
             </div>
 
-            <div className="flex-1">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'} text-lg tracking-tight`}>{name}</h3>
-                  <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} font-semibold uppercase tracking-wide`}>{village}</p>
+            <div className="flex-1 min-w-0">
+              <div className="flex justify-between items-start gap-2">
+                <div className="min-w-0">
+                  <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'} text-base truncate leading-tight`}>{name}</h3>
+                  <p className={`text-[10px] ${darkMode ? 'text-gray-400' : 'text-gray-500'} font-bold uppercase tracking-wider truncate mt-0.5`}>{village}</p>
                 </div>
                 {distance && (
-                  <span className={`text-[10px] font-bold text-white ${darkMode ? 'bg-green-600/80' : 'bg-green-500/80'} px-2 py-1 rounded-lg flex items-center gap-1 backdrop-blur-sm`}>
-                    <MapPin size={10} /> {distance}
+                  <span className={`text-[9px] font-black ${darkMode ? 'text-green-400' : 'text-green-600'} flex items-center gap-0.5 whitespace-nowrap`}>
+                    <MapPin size={10} strokeWidth={3} /> {distance}
                   </span>
                 )}
               </div>
               
-              <div className={`flex items-center gap-1 text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-700'} mt-2`}>
-                <Star size={14} className="text-yellow-400 fill-yellow-400 drop-shadow-sm" />
-                <span>{rating} {t('rating', language)}</span>
+              <div className="flex items-center gap-3 mt-1.5">
+                <div className="flex items-center gap-1">
+                  <Star size={12} className="text-yellow-400 fill-yellow-400" />
+                  <span className={`text-[11px] font-bold ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{rating}</span>
+                </div>
+                <div className={`h-3 w-[1px] ${darkMode ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
+                <div className="flex items-center gap-1 text-[10px] font-bold text-green-500">
+                  <Check size={10} strokeWidth={3} /> Verified
+                </div>
               </div>
             </div>
           </div>
 
-          <div className={`flex gap-2 flex-wrap mt-4 pt-3 border-t ${darkMode ? 'border-gray-700/50' : 'border-gray-100/50'}`}>
+          <div className={`flex gap-1.5 flex-wrap mt-3 pt-2.5 border-t ${darkMode ? 'border-gray-700/50' : 'border-gray-100'}`}>
             {equipment.map((item: string, i: number) => (
-              <span key={i} className={`text-[10px] font-bold ${darkMode ? 'bg-gray-700/60 text-gray-300' : 'bg-gray-100/80 text-gray-600'} px-3 py-1.5 rounded-lg flex items-center gap-1.5`}>
-                <Tractor size={12} className={darkMode ? 'text-gray-500' : 'text-gray-400'} /> {item}
+              <span key={i} className={`text-[9px] font-bold ${darkMode ? 'bg-gray-700/50 text-gray-400' : 'bg-gray-50 text-gray-500'} px-2 py-0.5 rounded-md flex items-center gap-1`}>
+                <Tractor size={10} /> {item}
               </span>
             ))}
           </div>

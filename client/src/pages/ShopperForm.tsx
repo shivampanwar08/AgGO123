@@ -12,8 +12,20 @@ interface ShopperFormProps {
 export default function ShopperForm({ onBack, onSubmit }: ShopperFormProps) {
   const { darkMode, language, setShopperData } = useApp();
   const [products, setProducts] = useState([
-    { id: 1, name: 'Urea Fertilizer', category: 'Fertilizers', price: 650, quantity: 50 }
+    { id: 1, name: 'Urea Fertilizer', category: 'Fertilizers', price: 650, quantity: 50, image: '' }
   ]);
+
+  const handleImageUpload = (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateProduct(id, 'image', reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const [formData, setFormData] = useState({
     shopName: 'My Agri Shop',
     shopOwner: '',
@@ -31,7 +43,7 @@ export default function ShopperForm({ onBack, onSubmit }: ShopperFormProps) {
 
   const addProduct = () => {
     const newId = Math.max(...products.map(p => p.id), 0) + 1;
-    setProducts([...products, { id: newId, name: '', category: '', price: 0, quantity: 0 }]);
+    setProducts([...products, { id: newId, name: '', category: '', price: 0, quantity: 0, image: '' }]);
   };
 
   const removeProduct = (id: number) => {
@@ -163,52 +175,50 @@ export default function ShopperForm({ onBack, onSubmit }: ShopperFormProps) {
                   placeholder="Product name"
                   className={`w-full p-2 ${inputClass} border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
                 />
-                <div className="grid grid-cols-2 gap-2">
-                  <input
-                    type="text"
-                    value={item.category}
-                    onChange={(e) => updateProduct(item.id, 'category', e.target.value)}
-                    placeholder="Category"
-                    className={`p-2 ${inputClass} border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
-                  />
-                  <input
-                    type="text"
-                    value={item.category}
-                    onChange={(e) => updateProduct(item.id, 'category', e.target.value)}
-                    placeholder="Category"
-                    className={`p-2 ${inputClass} border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
-                  />
-                </div>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className={`text-xs font-bold ${textMutedClass}`}>Price</label>
-                    <input
-                      type="number"
-                      value={item.price}
-                      onChange={(e) => updateProduct(item.id, 'price', parseInt(e.target.value) || 0)}
-                      placeholder="₹"
-                      className={`w-full p-2 ${inputClass} border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
-                    />
+                    <label className={`text-xs font-bold ${textMutedClass} uppercase tracking-widest`}>Product Photo</label>
+                    <label className={`mt-2 flex flex-col items-center justify-center border-2 border-dashed ${darkMode ? 'border-gray-700 hover:border-purple-500' : 'border-gray-300 hover:border-purple-400'} rounded-xl p-3 transition-colors cursor-pointer group`}>
+                      <input type="file" accept="image/*" onChange={(e) => handleImageUpload(item.id, e)} className="hidden" />
+                      {(item as any).image ? (
+                        <img src={(item as any).image} alt="Product" className="w-full h-20 object-cover rounded-lg" />
+                      ) : (
+                        <>
+                          <ShoppingCart size={20} className={textMutedClass} />
+                          <span className={`text-[10px] font-bold ${textMutedClass} mt-1`}>Upload Photo</span>
+                        </>
+                      )}
+                    </label>
                   </div>
-                  <div>
-                    <label className={`text-xs font-bold ${textMutedClass}`}>Qty</label>
-                    <input
-                      type="number"
-                      value={item.quantity}
-                      onChange={(e) => updateProduct(item.id, 'quantity', parseInt(e.target.value) || 0)}
-                      min="0"
-                      className={`w-full p-2 ${inputClass} border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
-                    />
-                  </div>
-                  <div className="flex items-end">
-                    <button
-                      onClick={() => removeProduct(item.id)}
-                      className="w-full bg-red-500/20 hover:bg-red-500/30 text-red-500 font-bold py-2 rounded-lg flex items-center justify-center gap-1 transition-colors active:scale-95"
-                    >
-                      <Trash2 size={14} />
-                    </button>
+                  <div className="space-y-2">
+                    <div>
+                      <label className={`text-xs font-bold ${textMutedClass}`}>Price</label>
+                      <input
+                        type="number"
+                        value={item.price}
+                        onChange={(e) => updateProduct(item.id, 'price', parseInt(e.target.value) || 0)}
+                        placeholder="₹"
+                        className={`w-full p-2 ${inputClass} border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                      />
+                    </div>
+                    <div>
+                      <label className={`text-xs font-bold ${textMutedClass}`}>Qty</label>
+                      <input
+                        type="number"
+                        value={item.quantity}
+                        onChange={(e) => updateProduct(item.id, 'quantity', parseInt(e.target.value) || 0)}
+                        min="0"
+                        className={`w-full p-2 ${inputClass} border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                      />
+                    </div>
                   </div>
                 </div>
+                <button
+                  onClick={() => removeProduct(item.id)}
+                  className="w-full bg-red-500/10 hover:bg-red-500/20 text-red-500 font-bold py-2 rounded-lg flex items-center justify-center gap-1 transition-colors active:scale-95 text-xs"
+                >
+                  <Trash2 size={12} /> Remove Product
+                </button>
               </div>
             ))}
           </div>
