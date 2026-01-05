@@ -259,34 +259,8 @@ export default function Home() {
             </div>
           )}
 
-          {/* Available Lands */}
-          {allLandOwners.length > 0 && (
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <h2 className={`text-lg font-bold ${textClass}`}>🌾 Available Lands</h2>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                {allLandOwners.slice(0, 4).map((owner, idx) => (
-                  <div key={idx} className={`${cardClass} border rounded-2xl p-3 shadow-sm`}>
-                    <div className="flex flex-col gap-2">
-                      <div className="w-full aspect-[4/3] rounded-xl bg-amber-500/10 flex items-center justify-center overflow-hidden">
-                        {owner.lands.find(l => l.image)?.image ? (
-                          <img src={owner.lands.find(l => l.image)?.image} className="w-full h-full object-cover" alt="" />
-                        ) : (
-                          <Leaf className="text-amber-500" size={24} />
-                        )}
-                      </div>
-                      <div>
-                        <h3 className={`font-bold ${textClass} text-sm`}>{owner.lands[0].size} Acres</h3>
-                        <p className={`text-[10px] font-bold ${textMutedClass} uppercase truncate`}>{owner.village}</p>
-                        <p className="text-xs font-black text-amber-500 mt-1">₹{owner.lands[0].pricePerAcre}/acre</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Available Lands - REMOVED */}
+          
         </div>
       </div>
 
