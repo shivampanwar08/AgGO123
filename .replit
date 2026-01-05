@@ -6,9 +6,10 @@ hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 channel = "stable-24_05"
 
 [deployment]
-deploymentTarget = "static"
+deploymentTarget = "autoscale"
 build = ["npm", "run", "build"]
 publicDir = "dist/public"
+run = ["node", "./dist/index.cjs"]
 
 [[ports]]
 localPort = 5000
@@ -47,11 +48,12 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm run dev:client"
+args = "npm run dev"
 waitForPort = 5000
 
 [agent]
-mockupState = "MOCKUP"
+mockupState = "FULLSTACK"
+integrations = ["javascript_database:1.0.0"]
 
 [objectStorage]
 defaultBucketID = "replit-objstore-e679b80c-a4e1-4346-bd19-281bebc2c5d5"
