@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, Plus, Trash2 } from 'lucide-react';
+import { ChevronLeft, Plus, Trash2, Tractor, User } from 'lucide-react';
 import { useApp } from '@/lib/appContext';
 import { t } from '@/lib/translations';
 import type { EquipmentRenterData } from '@/lib/appContext';
