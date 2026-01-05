@@ -1,4 +1,4 @@
-import { User, Settings as SettingsIcon, Bell, CreditCard, HelpCircle, LogOut, ChevronRight, Edit2, MapPin, Phone, Leaf, Search, Languages, Moon, Sun, Users } from 'lucide-react';
+import { User, Settings as SettingsIcon, Bell, CreditCard, HelpCircle, LogOut, ChevronRight, Edit2, MapPin, Phone, Leaf, Search, Languages, Moon, Sun, Users, Wrench } from 'lucide-react';
 import BottomNav from '@/components/BottomNav';
 import { useState } from 'react';
 import { useApp } from '@/lib/appContext';
@@ -157,6 +157,7 @@ export default function Settings() {
         <div className={`${cardClass} rounded-3xl p-1 border`}>
           <div className={`${darkMode ? 'bg-gray-800/80' : 'bg-white/80'} backdrop-blur-sm rounded-[1.25rem] overflow-hidden`}>
             <MenuItem icon={<Leaf size={20} />} label={t('land_rental', language) || 'Land Rental Marketplace'} onClick={() => setLocation('/land-rental')} darkMode={darkMode} />
+            <MenuItem icon={<Wrench size={20} />} label={'AgGo Garage'} onClick={() => setLocation('/garage')} darkMode={darkMode} />
             <MenuItem icon={<SettingsIcon size={20} />} label={t('app_settings', language)} onClick={() => alert('Settings: Dark Mode, Language, Units')} darkMode={darkMode} />
           </div>
         </div>

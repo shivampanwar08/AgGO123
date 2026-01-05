@@ -21,6 +21,7 @@ import EquipmentRenterForm from "@/pages/EquipmentRenterForm";
 import LandOwnerForm from "@/pages/LandOwnerForm";
 import ShopperForm from "@/pages/ShopperForm";
 import LandRental from "@/pages/LandRental";
+import Garage from "@/pages/Garage";
 
 function Router() {
   return (
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/shops" component={Shops}/>
       <Route path="/marketplace" component={Marketplace}/>
       <Route path="/land-rental" component={LandRental}/>
+      <Route path="/garage" component={Garage}/>
       <Route path="/settings" component={Settings}/>
       <Route path="/billing" component={Billing}/>
       <Route path="/tracking" component={Tracking}/>
