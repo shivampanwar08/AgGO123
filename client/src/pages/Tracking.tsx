@@ -19,7 +19,7 @@ export default function Tracking() {
   }, [withDriver]);
 
   return (
-    <div className="relative w-full h-[100dvh] overflow-hidden bg-white flex flex-col">
+    <div className="relative w-full h-full overflow-hidden bg-white flex flex-col">
       {/* Map Background */}
       <div className="absolute inset-0 z-0">
         <MapBackground />

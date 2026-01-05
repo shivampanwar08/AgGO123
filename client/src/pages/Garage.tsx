@@ -85,8 +85,8 @@ export default function Garage() {
   };
 
   return (
-    <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} min-h-screen pb-24 transition-colors`}>
-      <div className={`${darkMode ? 'bg-gray-800/80 border-gray-700' : 'bg-white/80 border-white/20'} backdrop-blur-xl px-4 py-4 sticky top-0 z-10 shadow-sm border-b transition-colors`}>
+    <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} h-full flex flex-col relative overflow-hidden transition-colors`}>
+      <div className={`${darkMode ? 'bg-gray-800/80 border-gray-700' : 'bg-white/80 border-white/20'} backdrop-blur-xl px-4 py-4 z-10 shadow-sm border-b transition-colors flex-shrink-0`}>
         <div className="flex items-center gap-4">
           <button 
             onClick={() => setLocation('/settings')}
@@ -98,7 +98,7 @@ export default function Garage() {
         </div>
       </div>
 
-      <div className="p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-24 no-scrollbar">
         <div className="relative">
            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} size={18} />
            <input 
@@ -181,7 +181,7 @@ export default function Garage() {
 
       {/* Booking Modal */}
       {selectedMachine && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 animate-in fade-in duration-200 p-4">
+        <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-50 animate-in fade-in duration-200 p-4">
           <div className={`w-full max-w-sm max-h-[90vh] flex flex-col ${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200`}>
             {bookingSuccess ? (
                <div className="p-8 text-center">

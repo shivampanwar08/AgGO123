@@ -42,7 +42,7 @@ export default function RoleSelection({ onRoleSelect }: RoleSelectionProps) {
 
   if (step === 'initial') {
     return (
-      <div className={`${bgClass} min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-300`}>
+      <div className={`${bgClass} h-full flex flex-col items-center justify-center p-4 transition-colors duration-300`}>
         <div className="w-full max-w-md space-y-8">
           <div className="text-center mb-8">
             <h1 className={`text-4xl font-bold ${textClass} mb-2`}>AgGo</h1>
@@ -88,7 +88,7 @@ export default function RoleSelection({ onRoleSelect }: RoleSelectionProps) {
   }
 
   return (
-    <div className={`${bgClass} min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-300`}>
+    <div className={`${bgClass} h-full flex flex-col items-center justify-center p-4 transition-colors duration-300`}>
       <div className="w-full max-w-md space-y-6">
         <button 
           onClick={() => setStep('initial')}

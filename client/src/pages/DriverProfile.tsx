@@ -61,8 +61,10 @@ export default function DriverProfile() {
   };
 
   return (
-    <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} min-h-screen pb-32 transition-colors`}>
-      {/* Header Image Area */}
+    <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} h-full flex flex-col relative overflow-hidden transition-colors`}>
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto no-scrollbar pb-32">
+        {/* Header Image Area */}
       <div className={`relative h-64 ${darkMode ? 'bg-green-700' : 'bg-green-600'} overflow-hidden transition-colors`}>
         <div className="absolute top-4 left-4 z-10">
           <button 
@@ -155,9 +157,11 @@ export default function DriverProfile() {
         </div>
       </div>
 
+      </div>
+
       {/* Checkout Floating Bar */}
       {addedItems.length > 0 && (
-        <div className="fixed bottom-4 left-4 right-4 z-50">
+        <div className="absolute bottom-4 left-4 right-4 z-50">
            <div className="glass-dark rounded-3xl p-1 shadow-2xl animate-in slide-in-from-bottom-10 duration-300">
              <div className={`${darkMode ? 'bg-gray-800/80' : 'bg-black/80'} backdrop-blur-xl rounded-[1.25rem] p-4 flex items-center justify-between transition-colors`}>
                 <div className="flex flex-col pl-2">

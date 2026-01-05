@@ -66,7 +66,7 @@ export default function Auth({ onAuth }: { onAuth: (phone: string) => void }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-gray-50 via-white to-green-50 flex flex-col items-center justify-center z-50 p-4">
+    <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-green-50 flex flex-col items-center justify-center z-50 p-4">
       <div className="w-full max-w-sm space-y-8">
         {/* Logo Section */}
         <div className="text-center pt-8">

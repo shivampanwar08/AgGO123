@@ -19,16 +19,16 @@ export default function Billing() {
   const total = subtotal + driverFee + platformFee;
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-20">
+    <div className="bg-gray-50 h-full flex flex-col relative overflow-hidden">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-xl px-4 py-4 flex items-center gap-4 sticky top-0 z-10 shadow-sm border-b border-white/20">
+      <div className="bg-white/80 backdrop-blur-xl px-4 py-4 flex items-center gap-4 z-10 shadow-sm border-b border-white/20 flex-shrink-0">
         <button onClick={() => setLocation('/drivers')} className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
           <ArrowLeft size={24} className="text-gray-800" />
         </button>
         <h1 className="text-xl font-bold text-gray-900 tracking-tight">Confirm Rental</h1>
       </div>
 
-      <div className="p-4 space-y-6">
+      <div className="flex-1 overflow-y-auto p-4 space-y-6 pb-28 no-scrollbar">
         {/* Duration */}
         <div className="glass rounded-3xl p-1">
           <div className="bg-white/60 backdrop-blur-sm rounded-[1.25rem] p-4">
@@ -120,7 +120,7 @@ export default function Billing() {
       </div>
 
       {/* Confirm Button */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 z-20 bg-gradient-to-t from-white via-white/90 to-transparent pt-10">
+      <div className="absolute bottom-0 left-0 right-0 p-4 z-20 bg-gradient-to-t from-white via-white/90 to-transparent pt-10">
         <button 
           onClick={() => setLocation(`/tracking?driver=${withDriver}`)}
           className="w-full bg-black text-white font-bold text-lg py-4 rounded-2xl shadow-xl active:scale-95 transition-transform flex justify-center items-center gap-2"
