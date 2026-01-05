@@ -92,17 +92,64 @@ const buyersList = [
 ];
 
 export default function Marketplace() {
-  const { darkMode, language, allShoppers } = useApp();
+  const { darkMode, language, allShoppers, marketplaceItems, addMarketplaceItem, removeMarketplaceItem } = useApp();
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<'browse' | 'sell'>('browse');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCrop, setSelectedCrop] = useState<any>(null);
-  const [myCrops, setMyCrops] = useState([
-    { id: 'm1', name: 'Basmati Rice', qty: '800kg', unit: 'kg', image: 'https://images.unsplash.com/photo-1586362891453-8aa3308e6250?w=100&h=100&fit=crop' },
-    { id: 'm2', name: 'Onions', qty: '300kg', unit: 'kg', image: 'https://images.unsplash.com/photo-1605986753494-3a2e3b03c9d5?w=100&h=100&fit=crop' }
-  ]);
 
-  // Transform Shopper Data to Marketplace format
+  // Form State
+  const [newCrop, setNewCrop] = useState({
+    name: '',
+    qty: '',
+    price: '',
+    unit: 'kg'
+  });
+
+  const handleAddCrop = () => {
+    if (!newCrop.name || !newCrop.qty || !newCrop.price) return;
+
+    const newItem = {
+      id: `m-${Date.now()}`,
+      sellerName: 'You', // In a real app, this would be the user's name
+      village: 'Your Village',
+      cropName: newCrop.name,
+      quantity: `${newCrop.qty} ${newCrop.unit}`,
+      price: Number(newCrop.price),
+      image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&h=100&fit=crop', // Default image
+      isUserListing: true
+    };
+
+    addMarketplaceItem(newItem);
+    setNewCrop({ name: '', qty: '', price: '', unit: 'kg' });
+  };
+
+  // Group marketplace items by seller for the "Browse" view
+  const sellersMap = new Map();
+  
+  marketplaceItems.forEach(item => {
+    if (!sellersMap.has(item.sellerName)) {
+      sellersMap.set(item.sellerName, {
+        id: `s-${item.sellerName.replace(/\s+/g, '-')}`,
+        name: item.sellerName,
+        village: item.village,
+        crops: [],
+        rating: 4.8, // Mock rating
+        image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop', // Default avatar
+        distance: '2.5 km' // Mock distance
+      });
+    }
+    sellersMap.get(item.sellerName).crops.push({
+      id: item.id,
+      name: item.cropName,
+      qty: item.quantity,
+      pricePerUnit: item.price,
+      buyersOffering: Math.floor(Math.random() * 5) + 1, // Mock buyers count
+      image: item.image
+    });
+  });
+
+  // Transform Shopper Data to Marketplace format (if we still want to show shops here)
   const shopListings = allShoppers.map(shop => ({
     id: `shop-${shop.phone}`,
     name: shop.shopName,
@@ -113,7 +160,7 @@ export default function Marketplace() {
       qty: `${p.quantity} units`,
       pricePerUnit: p.price,
       buyersOffering: Math.floor(Math.random() * 10) + 1,
-      image: p.image || 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop', // Default image if none
+      image: p.image || 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop',
       category: p.category
     })),
     rating: 4.5,
@@ -121,11 +168,13 @@ export default function Marketplace() {
     distance: '2.0 km'
   }));
 
-  const allListings = [...farmersWithCrops, ...shopListings];
+  const allListings = [...Array.from(sellersMap.values()), ...shopListings];
 
   const filteredFarmers = allListings.filter(farmer => 
-    farmer.crops.some(crop => crop.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    farmer.crops.some((crop: any) => crop.name.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+
+  const myListedCrops = marketplaceItems.filter(item => item.isUserListing);
 
   return (
     <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} min-h-screen pb-24 transition-colors`}>
@@ -211,7 +260,7 @@ export default function Marketplace() {
                   </div>
 
                   <div className={`${darkMode ? 'divide-gray-700' : 'divide-gray-100'} divide-y`}>
-                    {farmer.crops.map(crop => (
+                    {farmer.crops.map((crop: any) => (
                       <div key={crop.id} className={`p-4 ${darkMode ? 'hover:bg-gray-700/50' : 'hover:bg-gray-50/50'} transition-colors cursor-pointer`} onClick={() => setSelectedCrop(crop)}>
                         <div className="flex gap-4">
                           <div className={`w-16 h-16 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} overflow-hidden flex-shrink-0`}>
@@ -246,30 +295,103 @@ export default function Marketplace() {
 
       {activeTab === 'sell' && (
         <div className="p-4 space-y-4">
+          <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} rounded-2xl border p-4 shadow-sm`}>
+            <h2 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4 flex items-center gap-2`}>
+              <Plus size={20} className="text-green-500" />
+              {t('add_crop', language)}
+            </h2>
+            
+            <div className="space-y-3">
+              <div>
+                <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase mb-1 block`}>Crop Name</label>
+                <input 
+                  type="text" 
+                  value={newCrop.name}
+                  onChange={(e) => setNewCrop({...newCrop, name: e.target.value})}
+                  placeholder="e.g. Wheat, Rice, Cotton"
+                  className={`w-full ${darkMode ? 'bg-gray-700 text-white border-gray-600' : 'bg-gray-50 text-gray-900 border-gray-200'} rounded-xl px-4 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-green-500 transition-all border`}
+                />
+              </div>
+              
+              <div className="flex gap-3">
+                <div className="flex-1">
+                  <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase mb-1 block`}>Quantity</label>
+                  <input 
+                    type="number" 
+                    value={newCrop.qty}
+                    onChange={(e) => setNewCrop({...newCrop, qty: e.target.value})}
+                    placeholder="0"
+                    className={`w-full ${darkMode ? 'bg-gray-700 text-white border-gray-600' : 'bg-gray-50 text-gray-900 border-gray-200'} rounded-xl px-4 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-green-500 transition-all border`}
+                  />
+                </div>
+                <div className="w-24">
+                  <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase mb-1 block`}>Unit</label>
+                  <select 
+                    value={newCrop.unit}
+                    onChange={(e) => setNewCrop({...newCrop, unit: e.target.value})}
+                    className={`w-full ${darkMode ? 'bg-gray-700 text-white border-gray-600' : 'bg-gray-50 text-gray-900 border-gray-200'} rounded-xl px-2 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-green-500 transition-all border`}
+                  >
+                    <option value="kg">kg</option>
+                    <option value="quintal">quintal</option>
+                    <option value="ton">ton</option>
+                    <option value="pcs">pcs</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase mb-1 block`}>Expected Price (₹)</label>
+                <input 
+                  type="number" 
+                  value={newCrop.price}
+                  onChange={(e) => setNewCrop({...newCrop, price: e.target.value})}
+                  placeholder="0.00"
+                  className={`w-full ${darkMode ? 'bg-gray-700 text-white border-gray-600' : 'bg-gray-50 text-gray-900 border-gray-200'} rounded-xl px-4 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-green-500 transition-all border`}
+                />
+              </div>
+
+              <button 
+                onClick={handleAddCrop}
+                disabled={!newCrop.name || !newCrop.qty || !newCrop.price}
+                className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 rounded-xl shadow-lg shadow-green-500/20 transition-all active:scale-95 mt-2"
+              >
+                List Crop for Sale
+              </button>
+            </div>
+          </div>
+
           <div className="space-y-4">
             <h2 className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mt-2`}>{t('my_listed_crops', language)}</h2>
             
-            {myCrops.map(crop => (
-              <div key={crop.id} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} rounded-2xl border overflow-hidden shadow-sm`}>
-                <div className="p-4">
-                  <div className="flex gap-4">
-                    <div className={`w-20 h-20 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} overflow-hidden flex-shrink-0`}>
-                      <img src={crop.image} alt={crop.name} className="w-full h-full object-cover" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{crop.name}</h3>
-                      <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} mt-1`}>Available: {crop.qty}</p>
-                      <button className="text-red-500 text-xs font-bold mt-2 hover:text-red-600">Remove</button>
+            {myListedCrops.length === 0 ? (
+               <div className={`text-center py-6 ${darkMode ? 'text-gray-500' : 'text-gray-400'} border-2 border-dashed ${darkMode ? 'border-gray-700' : 'border-gray-200'} rounded-2xl`}>
+                 <Leaf size={32} className="mx-auto mb-2 opacity-50" />
+                 <p>You haven't listed any crops yet.</p>
+               </div>
+            ) : (
+              myListedCrops.map(crop => (
+                <div key={crop.id} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} rounded-2xl border overflow-hidden shadow-sm`}>
+                  <div className="p-4">
+                    <div className="flex gap-4">
+                      <div className={`w-20 h-20 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} overflow-hidden flex-shrink-0`}>
+                        <img src={crop.image} alt={crop.cropName} className="w-full h-full object-cover" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{crop.cropName}</h3>
+                        <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} mt-1`}>Available: {crop.quantity}</p>
+                        <p className={`text-lg font-bold text-green-500 mt-1`}>₹{crop.price}</p>
+                      </div>
+                      <button 
+                        onClick={() => removeMarketplaceItem(crop.id)}
+                        className="text-red-500 text-xs font-bold h-fit px-2 py-1 hover:bg-red-50 rounded"
+                      >
+                        Remove
+                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-
-            <button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:opacity-90 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-green-500/30 transition-all active:scale-95">
-              <Plus size={18} />
-              {t('add_crop', language)}
-            </button>
+              ))
+            )}
           </div>
 
           <h2 className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mt-6 mb-2`}>{t('best_buyers', language)}</h2>

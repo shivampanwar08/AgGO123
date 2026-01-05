@@ -44,6 +44,17 @@ export interface ShopperData {
   }>;
 }
 
+export interface MarketplaceItem {
+  id: string;
+  sellerName: string;
+  village: string;
+  cropName: string;
+  quantity: string;
+  price: number;
+  image?: string;
+  isUserListing?: boolean;
+}
+
 interface AppContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
@@ -63,6 +74,9 @@ interface AppContextType {
   addLandOwner: (data: LandOwnerData) => void;
   allShoppers: ShopperData[];
   addShopper: (data: ShopperData) => void;
+  marketplaceItems: MarketplaceItem[];
+  addMarketplaceItem: (item: MarketplaceItem) => void;
+  removeMarketplaceItem: (id: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -144,6 +158,41 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return saved ? JSON.parse(saved) : [];
   });
 
+  const [marketplaceItems, setMarketplaceItems] = useState<MarketplaceItem[]>(() => {
+    const saved = localStorage.getItem('aggo_marketplace_items');
+    // Default mock data
+    const defaults = [
+      {
+        id: 'f1-c1',
+        sellerName: 'Rajesh Kumar',
+        village: 'Rampur Village',
+        cropName: 'Organic Wheat',
+        quantity: '500kg',
+        price: 28,
+        image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&h=100&fit=crop'
+      },
+      {
+        id: 'f1-c2',
+        sellerName: 'Rajesh Kumar',
+        village: 'Rampur Village',
+        cropName: 'Fresh Tomatoes',
+        quantity: '200kg',
+        price: 12,
+        image: 'https://images.unsplash.com/photo-1592841494149-fd9025c6f9d8?w=100&h=100&fit=crop'
+      },
+      {
+        id: 'f2-c3',
+        sellerName: 'Priya Singh',
+        village: 'Sector 5',
+        cropName: 'Natural Pesticide (Neem)',
+        quantity: '50L',
+        price: 450,
+        image: 'https://images.unsplash.com/photo-1585518419759-87a8d10a1c5e?w=100&h=100&fit=crop'
+      }
+    ];
+    return saved ? JSON.parse(saved) : defaults;
+  });
+
   const addEquipmentRenter = (data: EquipmentRenterData) => {
     const updated = [...allEquipmentRenters, data];
     setAllEquipmentRenters(updated);
@@ -160,6 +209,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const updated = [...allShoppers, data];
     setAllShoppers(updated);
     localStorage.setItem('aggo_all_shoppers', JSON.stringify(updated));
+  };
+
+  const addMarketplaceItem = (item: MarketplaceItem) => {
+    const updated = [item, ...marketplaceItems];
+    setMarketplaceItems(updated);
+    localStorage.setItem('aggo_marketplace_items', JSON.stringify(updated));
+  };
+
+  const removeMarketplaceItem = (id: string) => {
+    const updated = marketplaceItems.filter(i => i.id !== id);
+    setMarketplaceItems(updated);
+    localStorage.setItem('aggo_marketplace_items', JSON.stringify(updated));
   };
 
   const setLanguage = (lang: Language) => {
@@ -217,7 +278,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       shopperData, setShopperData,
       allEquipmentRenters, addEquipmentRenter,
       allLandOwners, addLandOwner,
-      allShoppers, addShopper
+      allShoppers, addShopper,
+      marketplaceItems, addMarketplaceItem, removeMarketplaceItem
     }}>
       {children}
     </AppContext.Provider>
