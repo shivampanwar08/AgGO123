@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Tractor, Truck, Sprout, Leaf, Cloud, CloudRain, Sun, Wind } from 'lucide-react';
-import mapImage from '@assets/generated_images/top-down_rural_farm_map_with_fields_and_dirt_roads.png';
+import mapImage from '@assets/generated_images/satellite_view_of_agricultural_fields_punjab.png';
 
 // Mock vehicle data for simulation
 const vehicles = [

@@ -8,7 +8,15 @@ export interface EquipmentRenterData {
   village: string;
   phone: string;
   bankAccount: string;
-  equipment: Array<{ id: number; name: string; pricePerDay: number; quantity: number }>;
+  isDriver: boolean;
+  drivingLicense?: string;
+  equipment: Array<{ 
+    id: number; 
+    name: string; 
+    pricePerDay: number; 
+    quantity: number;
+    image?: string;
+  }>;
 }
 
 export interface LandOwnerData {
@@ -16,7 +24,7 @@ export interface LandOwnerData {
   village: string;
   phone: string;
   bankAccount: string;
-  lands: Array<{ id: number; size: number; soilType: string; waterAccess: string; pricePerAcre: number }>;
+  lands: Array<{ id: number; size: number; soilType: string; waterAccess: string; pricePerAcre: number; image?: string }>;
 }
 
 export interface ShopperData {
@@ -26,7 +34,14 @@ export interface ShopperData {
   phone: string;
   shopAddress: string;
   bankAccount: string;
-  products: Array<{ id: number; name: string; category: string; price: number; quantity: number }>;
+  products: Array<{ 
+    id: number; 
+    name: string; 
+    category: string; 
+    price: number; 
+    quantity: number;
+    image?: string;
+  }>;
 }
 
 interface AppContextType {
