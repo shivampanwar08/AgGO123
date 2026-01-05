@@ -78,21 +78,37 @@ export default function Shops() {
   const userShops = allShoppers.map((shop, index) => ({
     id: `user-shop-${index}`,
     name: shop.shopName,
-    type: "Local Seller", // Default type
-    rating: "New", // Default rating
-    distance: "Nearby", // Default distance
-    image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=100&h=100&fit=crop", // Default image
-    isOpen: true
+    type: "Local Seller",
+    rating: "New",
+    distance: "Nearby",
+    image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=100&h=100&fit=crop",
+    isOpen: true,
+    products: shop.products // Pass products to the card
   }));
 
   const allShopsList = [...shops, ...userShops];
+
+  // Merge shopper products into the searchable catalog
+  const shopperProducts = allShoppers.flatMap((shopper, shopIndex) => 
+    shopper.products.map(prod => ({
+      id: `sp-${shopIndex}-${prod.id}`,
+      name: prod.name,
+      category: prod.category,
+      image: prod.image || 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop',
+      prices: [
+        { shopId: `user-shop-${shopIndex}`, price: prod.price, inStock: prod.quantity > 0 }
+      ]
+    }))
+  );
+
+  const allProducts = [...productCatalog, ...shopperProducts];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
 
     if (query.length > 1) {
-      const results = productCatalog.filter(product => 
+      const results = allProducts.filter(product => 
         product.name.toLowerCase().includes(query.toLowerCase())
       );
       setSearchResults(results);
@@ -220,40 +236,78 @@ function ProductComparisonCard({ product }: any) {
   );
 }
 
-function ShopCard({ name, type, rating, distance, image, isOpen }: any) {
+function ShopCard({ name, type, rating, distance, image, isOpen, products }: any) {
   const { darkMode } = useApp();
+  const [expanded, setExpanded] = useState(false);
   
   return (
-    <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} p-4 rounded-xl border flex gap-4 shadow-sm hover:shadow-md transition-all`}>
-      <div className={`w-20 h-20 rounded-lg overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} flex-shrink-0`}>
-        <img src={image} alt={name} className="w-full h-full object-cover" />
-      </div>
-
-      <div className="flex-1">
-        <div className="flex justify-between items-start">
-          <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{name}</h3>
-          {isOpen ? (
-             <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">OPEN</span>
-          ) : (
-             <span className="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">CLOSED</span>
-          )}
+    <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} p-4 rounded-xl border shadow-sm hover:shadow-md transition-all`}>
+      <div className="flex gap-4">
+        <div className={`w-20 h-20 rounded-lg overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} flex-shrink-0`}>
+          <img src={image} alt={name} className="w-full h-full object-cover" />
         </div>
-        
-        <p className="text-sm text-gray-500 mb-1">{type}</p>
-        
-        <div className="flex items-center justify-between mt-2">
-           <div className="flex items-center gap-1 text-xs font-medium text-gray-600">
-            <Star size={12} className="text-yellow-400 fill-yellow-400" />
-            <span>{rating}</span>
-            <span className="text-gray-300">•</span>
-            <span>{distance}</span>
+
+        <div className="flex-1">
+          <div className="flex justify-between items-start">
+            <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{name}</h3>
+            {isOpen ? (
+               <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">OPEN</span>
+            ) : (
+               <span className="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">CLOSED</span>
+            )}
           </div>
           
-          <button className="w-8 h-8 bg-green-50 text-green-600 rounded-full flex items-center justify-center hover:bg-green-100">
-            <Phone size={14} />
-          </button>
+          <p className="text-sm text-gray-500 mb-1">{type}</p>
+          
+          <div className="flex items-center justify-between mt-2">
+             <div className="flex items-center gap-1 text-xs font-medium text-gray-600">
+              <Star size={12} className="text-yellow-400 fill-yellow-400" />
+              <span>{rating}</span>
+              <span className="text-gray-300">•</span>
+              <span>{distance}</span>
+            </div>
+            
+            <div className="flex gap-2">
+              {products && products.length > 0 && (
+                <button 
+                  onClick={() => setExpanded(!expanded)}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg ${darkMode ? 'bg-blue-900/30 text-blue-400' : 'bg-blue-50 text-blue-600'}`}
+                >
+                  {expanded ? 'Hide Items' : `View Items (${products.length})`}
+                </button>
+              )}
+              <button className="w-8 h-8 bg-green-50 text-green-600 rounded-full flex items-center justify-center hover:bg-green-100">
+                <Phone size={14} />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+
+      {expanded && products && (
+        <div className={`mt-4 pt-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-100'} grid gap-3 animate-in slide-in-from-top-2 duration-200`}>
+          {products.map((item: any, idx: number) => (
+            <div key={idx} className={`flex justify-between items-center p-2 rounded-lg ${darkMode ? 'bg-gray-700/30' : 'bg-gray-50'}`}>
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded bg-gray-200 flex items-center justify-center overflow-hidden`}>
+                   {item.image ? (
+                     <img src={item.image} className="w-full h-full object-cover" />
+                   ) : (
+                     <ShoppingCart size={16} className="text-gray-400" />
+                   )}
+                </div>
+                <div>
+                  <p className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{item.name}</p>
+                  <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{item.category}</p>
+                </div>
+              </div>
+              <div className={`text-sm font-bold ${darkMode ? 'text-green-400' : 'text-green-600'}`}>
+                ₹{item.price}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
