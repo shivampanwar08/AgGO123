@@ -323,7 +323,6 @@ export default function Settings() {
 
         <div className={`${cardClass} rounded-3xl p-1 border`}>
           <div className={`${darkMode ? 'bg-gray-800/80' : 'bg-white/80'} backdrop-blur-sm rounded-[1.25rem] overflow-hidden`}>
-            <MenuItem icon={<Users size={20} />} label={t('change_role', language)} onClick={() => setShowRoleSelector(true)} darkMode={darkMode} />
             <MenuItem icon={<SettingsIcon size={20} />} label={t('app_settings', language)} onClick={() => alert('Settings: Dark Mode, Language, Units')} darkMode={darkMode} />
           </div>
         </div>

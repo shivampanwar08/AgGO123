@@ -98,6 +98,8 @@ export default function RoleSelection({ onRoleSelect }: RoleSelectionProps) {
           {t('back_to_selection', language) || 'Back'}
         </button>
 
+        {/* Removed Role Change hint as per request */}
+        
         <div className="text-center mb-8">
           <h1 className={`text-3xl font-bold ${textClass} mb-2`}>{t('what_to_offer', language) || 'What to offer?'}</h1>
         </div>
