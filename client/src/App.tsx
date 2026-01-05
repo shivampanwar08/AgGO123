@@ -96,6 +96,8 @@ function App() {
     localStorage.setItem('aggo_user_phone', phone);
     setUserPhone(phone);
     setIsAuthenticated(true);
+    // Force reset role on new login so user sees RoleSelection
+    localStorage.removeItem('aggo_user_role');
   };
 
   const handleLogout = () => {
