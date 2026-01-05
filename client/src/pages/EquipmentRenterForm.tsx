@@ -23,6 +23,12 @@ export default function EquipmentRenterForm({ onBack, onSubmit }: EquipmentRente
     drivingLicense: ''
   });
 
+  const bgClass = darkMode ? 'bg-gray-900' : 'bg-gray-50';
+  const cardClass = darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100';
+  const textClass = darkMode ? 'text-white' : 'text-gray-900';
+  const textMutedClass = darkMode ? 'text-gray-400' : 'text-gray-500';
+  const inputClass = darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-200 text-gray-900';
+
   const handleImageUpload = (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
