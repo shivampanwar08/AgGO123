@@ -70,9 +70,22 @@ const shops = [
 ];
 
 export default function Shops() {
-  const { darkMode, language } = useApp();
+  const { darkMode, language, allShoppers } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
+
+  // Transform allShoppers to match ShopCard props
+  const userShops = allShoppers.map((shop, index) => ({
+    id: `user-shop-${index}`,
+    name: shop.shopName,
+    type: "Local Seller", // Default type
+    rating: "New", // Default rating
+    distance: "Nearby", // Default distance
+    image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=100&h=100&fit=crop", // Default image
+    isOpen: true
+  }));
+
+  const allShopsList = [...shops, ...userShops];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -132,7 +145,7 @@ export default function Shops() {
               <span className={`text-xs ${darkMode ? 'text-green-400' : 'text-green-600'} font-bold`}>{t('view_map', language)}</span>
             </div>
 
-            {shops.map(shop => (
+            {allShopsList.map(shop => (
               <ShopCard key={shop.id} {...shop} />
             ))}
           </>

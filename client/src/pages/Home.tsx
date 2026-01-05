@@ -232,32 +232,7 @@ export default function Home() {
         <div className="relative z-10 p-5 space-y-6 mt-4 pb-20">
           {/* Active Drivers/Equipment - REMOVED */}
           
-          {/* Local Agri Shops */}
-          {allShoppers.length > 0 && (
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <h2 className={`text-lg font-bold ${textClass}`}>🛒 Local Agri Shops</h2>
-              </div>
-              <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
-                {allShoppers.map((shop, idx) => (
-                  <div key={idx} className={`${cardClass} border rounded-2xl p-4 min-w-[240px] shadow-sm`}>
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
-                        <ShoppingCart className="text-purple-500" size={20} />
-                      </div>
-                      <div className="min-w-0">
-                        <h3 className={`font-bold ${textClass} truncate`}>{shop.shopName}</h3>
-                        <p className={`text-[10px] font-bold ${textMutedClass} uppercase tracking-wider`}>{shop.village}</p>
-                      </div>
-                    </div>
-                    <div className="text-[11px] font-medium text-purple-500">
-                      {shop.products.length} Products Available
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Local Agri Shops - REMOVED */}
 
           {/* Available Lands - REMOVED */}
           
