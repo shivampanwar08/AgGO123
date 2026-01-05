@@ -10,7 +10,7 @@ export default function BottomNav() {
   const isActive = (path: string) => location === path;
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 backdrop-blur-2xl border-t shadow-2xl z-50 h-20 px-2 pb-4 transition-colors ${
+    <div className={`fixed bottom-0 left-0 right-0 backdrop-blur-2xl border-t shadow-2xl z-50 h-16 px-2 pb-1 transition-colors ${
       darkMode 
         ? 'bg-gray-900/95 border-gray-800/50' 
         : 'bg-white/95 border-white/40'
