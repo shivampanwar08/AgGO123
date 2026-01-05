@@ -482,8 +482,10 @@ export default function Marketplace() {
         </div>
       )}
 
+      </div>
+
       {selectedCrop && (
-        <div className="fixed inset-0 bg-black/50 flex items-end z-50 animate-in fade-in duration-200">
+        <div className="absolute inset-0 bg-black/50 flex items-end z-50 animate-in fade-in duration-200">
           <div className="w-full bg-white rounded-t-3xl p-6 pb-8 shadow-2xl animate-in slide-in-from-bottom-10 duration-300">
             <button 
               onClick={() => setSelectedCrop(null)}
@@ -504,7 +506,7 @@ export default function Marketplace() {
             </div>
 
             <h4 className="font-bold text-gray-900 mb-3 text-sm">Interested Buyers ({selectedCrop.buyersOffering})</h4>
-            <div className="space-y-2 mb-6">
+            <div className="space-y-2 mb-6 max-h-48 overflow-y-auto no-scrollbar">
               {buyersList.slice(0, selectedCrop.buyersOffering).map(buyer => (
                 <div key={buyer.id} className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg">
                   <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden flex-shrink-0">
@@ -528,7 +530,6 @@ export default function Marketplace() {
           </div>
         </div>
       )}
-      </div>
 
       <BottomNav />
     </div>
