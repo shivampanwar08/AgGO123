@@ -7,12 +7,23 @@ import { z } from "zod";
 // Users table - core user authentication and profile
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
-  phone: text("phone").notNull(),
-  role: text("role").notNull(), // 'equipment-renter', 'land-owner', 'shopper', 'user'
+  phone: text("phone").unique(),
+  email: text("email").unique(),
   name: text("name").notNull(),
+  role: text("role").notNull().default('user'), // 'equipment-renter', 'land-owner', 'shopper', 'user'
   village: text("village"),
+  isVerified: boolean("is_verified").notNull().default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// OTP verification codes
+export const otpCodes = pgTable("otp_codes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  identifier: text("identifier").notNull(), // phone or email
+  type: text("type").notNull(), // 'phone' or 'email'
+  code: text("code").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  verified: boolean("verified").notNull().default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -102,6 +113,13 @@ export const productsRelations = relations(products, ({ one }) => ({
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
+  isVerified: true,
+});
+
+export const insertOtpSchema = createInsertSchema(otpCodes).omit({
+  id: true,
+  createdAt: true,
+  verified: true,
 });
 
 export const insertEquipmentSchema = createInsertSchema(equipment).omit({
@@ -140,3 +158,6 @@ export type MarketplaceItem = typeof marketplaceItems.$inferSelect;
 
 export type InsertProduct = z.infer<typeof insertProductSchema>;
 export type Product = typeof products.$inferSelect;
+
+export type InsertOtp = z.infer<typeof insertOtpSchema>;
+export type OtpCode = typeof otpCodes.$inferSelect;

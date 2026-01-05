@@ -5,6 +5,7 @@ import {
   lands, 
   marketplaceItems, 
   products,
+  otpCodes,
   type User, 
   type InsertUser,
   type Equipment,
@@ -14,17 +15,28 @@ import {
   type MarketplaceItem,
   type InsertMarketplaceItem,
   type Product,
-  type InsertProduct
+  type InsertProduct,
+  type OtpCode,
+  type InsertOtp
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and, gt, lt } from "drizzle-orm";
 
 export interface IStorage {
   // Users
   getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
+  getUserByPhone(phone: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: string, updates: Partial<InsertUser>): Promise<User | undefined>;
+  setUserVerified(id: string): Promise<User | undefined>;
+  
+  // OTP
+  createOtp(otp: InsertOtp): Promise<OtpCode>;
+  getValidOtp(identifier: string, code: string): Promise<OtpCode | undefined>;
+  getVerifiedOtp(identifier: string, code: string): Promise<OtpCode | undefined>;
+  markOtpVerified(id: string): Promise<void>;
+  deleteExpiredOtps(): Promise<void>;
   
   // Equipment
   getEquipment(id: string): Promise<Equipment | undefined>;
@@ -66,8 +78,13 @@ export class DatabaseStorage implements IStorage {
     return user || undefined;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
+  async getUserByPhone(phone: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.phone, phone));
+    return user || undefined;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
     return user || undefined;
   }
 
@@ -86,6 +103,64 @@ export class DatabaseStorage implements IStorage {
       .where(eq(users.id, id))
       .returning();
     return user || undefined;
+  }
+
+  async setUserVerified(id: string): Promise<User | undefined> {
+    const [user] = await db
+      .update(users)
+      .set({ isVerified: true })
+      .where(eq(users.id, id))
+      .returning();
+    return user || undefined;
+  }
+
+  // OTP
+  async createOtp(insertOtp: InsertOtp): Promise<OtpCode> {
+    const [otp] = await db
+      .insert(otpCodes)
+      .values(insertOtp)
+      .returning();
+    return otp;
+  }
+
+  async getValidOtp(identifier: string, code: string): Promise<OtpCode | undefined> {
+    const [otp] = await db
+      .select()
+      .from(otpCodes)
+      .where(
+        and(
+          eq(otpCodes.identifier, identifier),
+          eq(otpCodes.code, code),
+          eq(otpCodes.verified, false),
+          gt(otpCodes.expiresAt, new Date())
+        )
+      );
+    return otp || undefined;
+  }
+
+  async markOtpVerified(id: string): Promise<void> {
+    await db
+      .update(otpCodes)
+      .set({ verified: true })
+      .where(eq(otpCodes.id, id));
+  }
+
+  async getVerifiedOtp(identifier: string, code: string): Promise<OtpCode | undefined> {
+    const [otp] = await db
+      .select()
+      .from(otpCodes)
+      .where(
+        and(
+          eq(otpCodes.identifier, identifier),
+          eq(otpCodes.code, code),
+          eq(otpCodes.verified, true)
+        )
+      );
+    return otp || undefined;
+  }
+
+  async deleteExpiredOtps(): Promise<void> {
+    await db.delete(otpCodes).where(lt(otpCodes.expiresAt, new Date()));
   }
 
   // Equipment

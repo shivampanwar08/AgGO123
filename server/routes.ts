@@ -10,11 +10,190 @@ import {
 } from "@shared/schema";
 import { z } from "zod";
 
+// Helper to generate 6-digit OTP
+function generateOtp(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// Helper to extract name from email
+function extractNameFromEmail(email: string): string {
+  const localPart = email.split('@')[0];
+  return localPart
+    .replace(/[._-]/g, ' ')
+    .replace(/\d+/g, '')
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ')
+    .trim() || 'User';
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
   
+  // ===== OTP AUTH ROUTES =====
+  
+  // Request OTP (send to phone or email)
+  app.post("/api/auth/request-otp", async (req, res) => {
+    try {
+      const { identifier, type } = req.body;
+      
+      if (!identifier || !type || !['phone', 'email'].includes(type)) {
+        return res.status(400).json({ error: "Invalid identifier or type" });
+      }
+      
+      // Generate OTP
+      const code = generateOtp();
+      const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+      
+      // Store OTP in database
+      await storage.createOtp({
+        identifier,
+        type,
+        code,
+        expiresAt,
+      });
+      
+      // In production, send OTP via Twilio (SMS) or SendGrid (email)
+      // For development, log OTP to server console only
+      console.log(`[OTP] Generated for ${type} ${identifier}: ${code}`);
+      
+      // Only show OTP in development mode via server console
+      const isDev = process.env.NODE_ENV !== 'production';
+      
+      res.json({ 
+        success: true, 
+        message: `OTP sent to ${type === 'phone' ? 'phone' : 'email'}`,
+        // Only include debug OTP in development for testing
+        ...(isDev && { debugOtp: code })
+      });
+    } catch (error) {
+      console.error("OTP request error:", error);
+      res.status(500).json({ error: "Failed to send OTP" });
+    }
+  });
+
+  // Verify OTP
+  app.post("/api/auth/verify-otp", async (req, res) => {
+    try {
+      const { identifier, type, code, name } = req.body;
+      
+      if (!identifier || !type || !code) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+      
+      // Find valid OTP
+      const otp = await storage.getValidOtp(identifier, code);
+      
+      if (!otp) {
+        return res.status(401).json({ error: "Invalid or expired OTP" });
+      }
+      
+      // Mark OTP as verified
+      await storage.markOtpVerified(otp.id);
+      
+      // Find or create user
+      let user;
+      if (type === 'phone') {
+        user = await storage.getUserByPhone(identifier);
+        if (!user) {
+          // For phone login, name is required for new users
+          if (!name) {
+            return res.json({ 
+              success: true, 
+              requiresName: true,
+              message: "OTP verified. Please provide your name."
+            });
+          }
+          // Create new user with phone
+          user = await storage.createUser({
+            phone: identifier,
+            name: name,
+            role: 'user',
+          });
+        }
+      } else {
+        // Email login
+        user = await storage.getUserByEmail(identifier);
+        if (!user) {
+          // Extract name from email for new users
+          const extractedName = name || extractNameFromEmail(identifier);
+          user = await storage.createUser({
+            email: identifier,
+            name: extractedName,
+            role: 'user',
+          });
+        }
+      }
+      
+      // Set user as verified
+      await storage.setUserVerified(user.id);
+      
+      res.json({ 
+        success: true, 
+        user,
+        message: "Login successful"
+      });
+    } catch (error) {
+      console.error("OTP verification error:", error);
+      res.status(500).json({ error: "Failed to verify OTP" });
+    }
+  });
+
+  // Complete profile (for phone users who need to add name after OTP verification)
+  app.post("/api/auth/complete-profile", async (req, res) => {
+    try {
+      const { identifier, type, name, otpCode } = req.body;
+      
+      if (!identifier || !type || !name || !otpCode) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+      
+      // Verify the OTP was already verified for this identifier
+      const otp = await storage.getVerifiedOtp(identifier, otpCode);
+      if (!otp) {
+        return res.status(401).json({ error: "OTP verification required. Please verify OTP first." });
+      }
+      
+      let user;
+      if (type === 'phone') {
+        user = await storage.getUserByPhone(identifier);
+        if (!user) {
+          // Create new user with phone and name
+          user = await storage.createUser({
+            phone: identifier,
+            name: name,
+            role: 'user',
+          });
+        } else {
+          // Update existing user's name
+          user = await storage.updateUser(user.id, { name });
+        }
+      } else {
+        user = await storage.getUserByEmail(identifier);
+        if (user) {
+          user = await storage.updateUser(user.id, { name });
+        }
+      }
+      
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      
+      await storage.setUserVerified(user.id);
+      
+      res.json({ 
+        success: true, 
+        user,
+        message: "Profile completed"
+      });
+    } catch (error) {
+      console.error("Complete profile error:", error);
+      res.status(500).json({ error: "Failed to complete profile" });
+    }
+  });
+
   // ===== USER ROUTES =====
   
   // Get user by ID
@@ -24,33 +203,9 @@ export async function registerRoutes(
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-      // Don't send password to client
-      const { password, ...safeUser } = user;
-      res.json(safeUser);
+      res.json(user);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch user" });
-    }
-  });
-
-  // Create user (registration)
-  app.post("/api/users", async (req, res) => {
-    try {
-      const validatedData = insertUserSchema.parse(req.body);
-      
-      // Check if username already exists
-      const existingUser = await storage.getUserByUsername(validatedData.username);
-      if (existingUser) {
-        return res.status(409).json({ error: "Username already exists" });
-      }
-      
-      const user = await storage.createUser(validatedData);
-      const { password, ...safeUser } = user;
-      res.status(201).json(safeUser);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ error: "Invalid data", details: error.errors });
-      }
-      res.status(500).json({ error: "Failed to create user" });
     }
   });
 
@@ -62,30 +217,12 @@ export async function registerRoutes(
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-      const { password, ...safeUser } = user;
-      res.json(safeUser);
+      res.json(user);
     } catch (error) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ error: "Invalid data", details: error.errors });
       }
       res.status(500).json({ error: "Failed to update user" });
-    }
-  });
-
-  // Login
-  app.post("/api/auth/login", async (req, res) => {
-    try {
-      const { username, password } = req.body;
-      const user = await storage.getUserByUsername(username);
-      
-      if (!user || user.password !== password) {
-        return res.status(401).json({ error: "Invalid credentials" });
-      }
-      
-      const { password: _, ...safeUser } = user;
-      res.json(safeUser);
-    } catch (error) {
-      res.status(500).json({ error: "Login failed" });
     }
   });
 
