@@ -124,7 +124,11 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Toaster />
-          <AppContent />
+          <div className="bg-gray-100 min-h-screen flex justify-center items-center dark:bg-black">
+            <div className="mobile-container w-full">
+              <AppContent />
+            </div>
+          </div>
         </TooltipProvider>
       </QueryClientProvider>
     </AppProvider>

@@ -125,4 +125,8 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  .mobile-container {
+    @apply mx-auto max-w-md min-h-screen bg-background relative shadow-2xl overflow-hidden;
+  }
 }
