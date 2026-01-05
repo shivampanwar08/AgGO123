@@ -29,6 +29,21 @@ export default function EquipmentRenterForm({ onBack, onSubmit }: EquipmentRente
   const textMutedClass = darkMode ? 'text-gray-400' : 'text-gray-500';
   const inputClass = darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-200 text-gray-900';
 
+  const addEquipment = () => {
+    const newId = Math.max(...equipment.map(e => e.id), 0) + 1;
+    setEquipment([...equipment, { id: newId, name: '', pricePerDay: 0, quantity: 1 }]);
+  };
+
+  const removeEquipment = (id: number) => {
+    setEquipment(equipment.filter(e => e.id !== id));
+  };
+
+  const updateEquipment = (id: number, field: string, value: any) => {
+    setEquipment(equipment.map(e => 
+      e.id === id ? { ...e, [field]: value } : e
+    ));
+  };
+
   const handleImageUpload = (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
