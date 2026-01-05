@@ -88,27 +88,66 @@ export default function Shops() {
 
   const allShopsList = [...shops, ...userShops];
 
-  // Merge shopper products into the searchable catalog
-  const shopperProducts = allShoppers.flatMap((shopper, shopIndex) => 
-    shopper.products.map(prod => ({
-      id: `sp-${shopIndex}-${prod.id}`,
-      name: prod.name,
-      category: prod.category,
-      image: prod.image || 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop',
-      prices: [
-        { shopId: `user-shop-${shopIndex}`, price: prod.price, inStock: prod.quantity > 0 }
-      ]
-    }))
-  );
+  // Logic to merge products for comparison
+  const getAllProductsForComparison = () => {
+    // Start with the base catalog (deep copy to avoid mutation)
+    const mergedCatalog = JSON.parse(JSON.stringify(productCatalog));
+    
+    allShoppers.forEach((shopper, shopIndex) => {
+      shopper.products.forEach(prod => {
+        // Check if this product already exists in the catalog (fuzzy match by name)
+        const existingProduct = mergedCatalog.find((p: any) => 
+          p.name.toLowerCase().includes(prod.name.toLowerCase()) || 
+          prod.name.toLowerCase().includes(p.name.toLowerCase())
+        );
 
-  const allProducts = [...productCatalog, ...shopperProducts];
+        const shopId = `user-shop-${shopIndex}`;
+        const priceEntry = { 
+          shopId, 
+          price: prod.price, 
+          inStock: prod.quantity > 0 
+        };
+
+        if (existingProduct) {
+          // Add this shopper's price to the existing product
+          // Check if this shop already has a price listed (update it if so)
+          const existingPriceIndex = existingProduct.prices.findIndex((p: any) => p.shopId === shopId);
+          if (existingPriceIndex >= 0) {
+            existingProduct.prices[existingPriceIndex] = priceEntry;
+          } else {
+            existingProduct.prices.push(priceEntry);
+          }
+        } else {
+          // Product doesn't exist in catalog, add it as a new entry
+          // But first check if we already added this "new" product from another shopper
+          const alreadyAddedProduct = mergedCatalog.find((p: any) => p.name === prod.name);
+          
+          if (alreadyAddedProduct) {
+             alreadyAddedProduct.prices.push(priceEntry);
+          } else {
+            mergedCatalog.push({
+              id: `sp-${shopIndex}-${prod.id}`,
+              name: prod.name,
+              category: prod.category,
+              image: prod.image || 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop',
+              prices: [priceEntry]
+            });
+          }
+        }
+      });
+    });
+
+    return mergedCatalog;
+  };
+
+  const allProducts = getAllProductsForComparison();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
 
     if (query.length > 1) {
-      const results = allProducts.filter(product => 
+      const results = allProducts.filter((product: any) => 
         product.name.toLowerCase().includes(query.toLowerCase())
       );
       setSearchResults(results);
@@ -173,10 +212,31 @@ export default function Shops() {
 }
 
 function ProductComparisonCard({ product }: any) {
-  const { darkMode, language } = useApp();
+  const { darkMode, language, allShoppers } = useApp();
   // Sort prices low to high
-  const sortedPrices = [...product.prices].sort((a, b) => a.price - b.price);
+  const sortedPrices = [...product.prices].sort((a: any, b: any) => a.price - b.price);
   const bestPrice = sortedPrices[0];
+
+  // Helper to find shop name
+  const getShopDetails = (shopId: string) => {
+    // Check static shops
+    const staticShop = shops.find(s => s.id === shopId);
+    if (staticShop) return staticShop;
+
+    // Check shopper shops (format: user-shop-{index})
+    if (shopId.startsWith('user-shop-')) {
+      const index = parseInt(shopId.split('-')[2]);
+      const shopper = allShoppers[index];
+      if (shopper) {
+        return {
+          name: shopper.shopName,
+          distance: "Nearby", // Or calculate real distance if we had coords
+          isOpen: true
+        };
+      }
+    }
+    return { name: "Unknown Shop", distance: "?", isOpen: false };
+  };
 
   return (
     <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} rounded-xl border overflow-hidden shadow-sm transition-colors`}>
@@ -197,8 +257,8 @@ function ProductComparisonCard({ product }: any) {
 
       {/* Price List */}
       <div className={`${darkMode ? 'divide-gray-700' : 'divide-gray-50'} divide-y`}>
-        {sortedPrices.map((offer, index) => {
-          const shop = shops.find(s => s.id === offer.shopId);
+        {sortedPrices.map((offer: any, index: number) => {
+          const shop = getShopDetails(offer.shopId);
           const isCheapest = index === 0;
 
           return (
@@ -206,10 +266,10 @@ function ProductComparisonCard({ product }: any) {
               <div className="flex items-center gap-3">
                  <div className="flex flex-col">
                     <span className={`text-sm font-bold ${isCheapest ? darkMode ? 'text-white' : 'text-gray-900' : darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                      {shop?.name}
+                      {shop.name}
                     </span>
                     <span className={`text-[10px] ${darkMode ? 'text-gray-500' : 'text-gray-400'} flex items-center gap-1`}>
-                      <MapPin size={10} /> {shop?.distance}
+                      <MapPin size={10} /> {shop.distance}
                     </span>
                  </div>
               </div>
