@@ -216,7 +216,7 @@ export default function Garage() {
 
                   <div className={`rounded-xl border ${darkMode ? 'bg-gray-900/50 border-gray-700' : 'bg-gray-50 border-gray-200'} p-2 mb-4 flex justify-center`}>
                     <style>{`
-                      .rdp { --rdp-cell-size: 36px; --rdp-accent-color: #3b82f6; --rdp-background-color: #eff6ff; margin: 0; }
+                      .rdp { --rdp-cell-size: 30px; --rdp-accent-color: #3b82f6; --rdp-background-color: #eff6ff; margin: 0; font-size: 0.85rem; }
                       ${darkMode ? '.rdp { --rdp-accent-color: #3b82f6; --rdp-background-color: #1e293b; color: #e2e8f0; } .rdp-day_selected:not([disabled]) { color: white; } .rdp-button:hover:not([disabled]):not(.rdp-day_selected) { background-color: #374151; }' : ''}
                     `}</style>
                     <DayPicker
