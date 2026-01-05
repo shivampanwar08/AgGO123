@@ -1,45 +1,56 @@
 import { ArrowLeft, Star, MapPin, Tractor, Plus, Check, ShieldCheck } from 'lucide-react';
-import { useLocation } from 'wouter';
+import { useLocation, useRoute } from 'wouter';
 import { useState, useEffect } from 'react';
 import { useApp } from '@/lib/appContext';
 
-// Mock data for a specific driver
-const driverData = {
-  id: 'd1',
-  name: 'Ram Lal',
-  village: 'Rampur Village',
-  image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
-  rating: 4.9,
-  trips: 124,
-  joined: '2021',
-  equipment: [
-    { id: 'e1', name: 'Mahindra 575 DI Tractor', type: 'Tractor', price: 800, image: 'https://images.unsplash.com/photo-1592600584051-38a3c93d8065?w=100&h=100&fit=crop' },
-    { id: 'e2', name: 'Hydraulic Trolley', type: 'Trolley', price: 300, image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop' }, 
-    { id: 'e3', name: '7ft Rotavator', type: 'Rotavator', price: 500, image: 'https://images.unsplash.com/photo-1530267981375-273474d11e61?w=100&h=100&fit=crop' }, 
-    { id: 'e4', name: 'Seed Drill', type: 'Seeder', price: 400, image: 'https://images.unsplash.com/photo-1595842878568-388444927064?w=100&h=100&fit=crop' }, 
-  ]
-};
-
 export default function DriverProfile() {
-  const { darkMode } = useApp();
+  const { darkMode, allEquipmentRenters } = useApp();
   const [, setLocation] = useLocation();
+  const [match, params] = useRoute("/driver/:id");
   const [addedItems, setAddedItems] = useState<string[]>([]);
+  
+  // Find driver based on ID from URL
+  const driverIndex = params?.id ? parseInt(params.id.replace('d-', '')) : 0;
+  const driver = allEquipmentRenters[driverIndex];
+
+  // If driver not found, fallback or redirect (handled gracefully by optional chaining in UI for now)
+  const driverData = driver ? {
+    id: params?.id || 'd0',
+    name: driver.ownerName,
+    village: driver.village,
+    image: driver.equipment[0]?.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
+    rating: 4.8, // Mock rating as it's not in context yet
+    trips: 124, // Mock trips
+    joined: '2023',
+    equipment: driver.equipment.map(e => ({
+      id: `e-${driverIndex}-${e.id}`,
+      name: e.name,
+      type: e.name, // Using name as type for now or map properly if type exists
+      price: e.pricePerDay / 8, // Converting day price to approx hourly for display or just use day price
+      image: e.image || 'https://images.unsplash.com/photo-1592600584051-38a3c93d8065?w=100&h=100&fit=crop',
+      rawPrice: e.pricePerDay
+    }))
+  } : null;
 
   useEffect(() => {
     // Read items from URL query params
     const searchParams = new URLSearchParams(window.location.search);
     const itemsParam = searchParams.get('items');
     
-    if (itemsParam) {
+    if (itemsParam && driverData) {
       const selectedTypes = itemsParam.split(',');
       // Find matching equipment IDs based on types selected on home screen
       const initialIds = driverData.equipment
-        .filter(e => selectedTypes.includes(e.type))
+        .filter(e => selectedTypes.some(t => e.name.toLowerCase().includes(t.toLowerCase())))
         .map(e => e.id);
       
       setAddedItems(initialIds);
     }
-  }, []);
+  }, [driverData]);
+
+  if (!driverData) {
+    return <div className="p-10 text-center">Driver not found</div>;
+  }
 
   const toggleItem = (id: string) => {
     setAddedItems(prev => 
@@ -115,6 +126,7 @@ export default function DriverProfile() {
                     <div>
                        <span className={`font-bold text-xl ${darkMode ? 'text-white' : 'text-gray-900'}`}>₹{item.price}</span>
                        <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'} font-medium`}>/hr</span>
+                       <p className={`text-[10px] ${darkMode ? 'text-gray-500' : 'text-gray-500'} mt-0.5`}>₹{item.rawPrice}/day</p>
                     </div>
                     
                     <button 
