@@ -182,7 +182,7 @@ export default function Garage() {
       {/* Booking Modal */}
       {selectedMachine && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 animate-in fade-in duration-200 p-4">
-          <div className={`w-full max-w-sm ${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200`}>
+          <div className={`w-full max-w-sm max-h-[90vh] flex flex-col ${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200`}>
             {bookingSuccess ? (
                <div className="p-8 text-center">
                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -195,7 +195,7 @@ export default function Garage() {
                </div>
             ) : (
               <>
-                <div className={`p-4 border-b ${darkMode ? 'border-gray-700' : 'border-gray-100'} flex justify-between items-center bg-gradient-to-r from-blue-500 to-blue-600 text-white`}>
+                <div className={`p-4 border-b ${darkMode ? 'border-gray-700' : 'border-gray-100'} flex justify-between items-center bg-gradient-to-r from-blue-500 to-blue-600 text-white shrink-0`}>
                   <div>
                     <h3 className="font-bold text-lg">Book Equipment</h3>
                     <p className="text-xs text-blue-100 opacity-90">{selectedMachine.garageName}</p>
@@ -205,7 +205,7 @@ export default function Garage() {
                   </button>
                 </div>
                 
-                <div className="p-4">
+                <div className="p-4 overflow-y-auto">
                   <div className="flex gap-3 mb-4">
                     <img src={selectedMachine.image} className="w-12 h-12 rounded-lg object-cover" />
                     <div>
@@ -216,7 +216,9 @@ export default function Garage() {
 
                   <div className={`rounded-xl border ${darkMode ? 'bg-gray-900/50 border-gray-700' : 'bg-gray-50 border-gray-200'} p-2 mb-4 flex justify-center`}>
                     <style>{`
-                      .rdp { --rdp-cell-size: 30px; --rdp-accent-color: #3b82f6; --rdp-background-color: #eff6ff; margin: 0; font-size: 0.85rem; }
+                      .rdp { --rdp-cell-size: 32px; --rdp-accent-color: #3b82f6; --rdp-background-color: #eff6ff; margin: 0; font-size: 0.85rem; }
+                      .rdp-month { width: 100%; }
+                      .rdp-table { max-width: 100%; }
                       ${darkMode ? '.rdp { --rdp-accent-color: #3b82f6; --rdp-background-color: #1e293b; color: #e2e8f0; } .rdp-day_selected:not([disabled]) { color: white; } .rdp-button:hover:not([disabled]):not(.rdp-day_selected) { background-color: #374151; }' : ''}
                     `}</style>
                     <DayPicker
