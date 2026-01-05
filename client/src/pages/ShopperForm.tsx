@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, Plus, Trash2 } from 'lucide-react';
+import { ChevronLeft, Plus, Trash2, ShoppingCart } from 'lucide-react';
 import { useApp } from '@/lib/appContext';
 import { t } from '@/lib/translations';
 import type { ShopperData } from '@/lib/appContext';
