@@ -98,6 +98,40 @@ export default function Marketplace() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCrop, setSelectedCrop] = useState<any>(null);
 
+  // Helper to get user profile info
+  const getUserProfile = () => {
+    // Try to get name from role-specific data in local storage
+    const role = localStorage.getItem('aggo_user_role');
+    const phone = localStorage.getItem('aggo_user_phone') || 'Unknown';
+    let name = 'Farmer';
+    let village = 'Local Village';
+
+    if (role === 'equipment-renter') {
+      const data = localStorage.getItem('aggo_equipment_data');
+      if (data) {
+        const parsed = JSON.parse(data);
+        name = parsed.ownerName || name;
+        village = parsed.village || village;
+      }
+    } else if (role === 'land-owner') {
+      const data = localStorage.getItem('aggo_land_data');
+      if (data) {
+        const parsed = JSON.parse(data);
+        name = parsed.ownerName || name;
+        village = parsed.village || village;
+      }
+    } else if (role === 'shopper') {
+      const data = localStorage.getItem('aggo_shopper_data');
+      if (data) {
+        const parsed = JSON.parse(data);
+        name = parsed.shopOwner || name;
+        village = parsed.village || village;
+      }
+    }
+
+    return { name, village, phone };
+  };
+
   // Form State
   const [newCrop, setNewCrop] = useState({
     name: '',
@@ -109,10 +143,12 @@ export default function Marketplace() {
   const handleAddCrop = () => {
     if (!newCrop.name || !newCrop.qty || !newCrop.price) return;
 
+    const userProfile = getUserProfile();
+
     const newItem = {
       id: `m-${Date.now()}`,
-      sellerName: 'You', // In a real app, this would be the user's name
-      village: 'Your Village',
+      sellerName: userProfile.name,
+      village: userProfile.village,
       cropName: newCrop.name,
       quantity: `${newCrop.qty} ${newCrop.unit}`,
       price: Number(newCrop.price),
@@ -149,28 +185,13 @@ export default function Marketplace() {
     });
   });
 
-  // Transform Shopper Data to Marketplace format (if we still want to show shops here)
-  const shopListings = allShoppers.map(shop => ({
-    id: `shop-${shop.phone}`,
-    name: shop.shopName,
-    village: shop.village,
-    crops: shop.products.map(p => ({
-      id: `prod-${p.id}`,
-      name: p.name,
-      qty: `${p.quantity} units`,
-      pricePerUnit: p.price,
-      buyersOffering: Math.floor(Math.random() * 10) + 1,
-      image: p.image || 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop',
-      category: p.category
-    })),
-    rating: 4.5,
-    image: 'https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=100&h=100&fit=crop',
-    distance: '2.0 km'
-  }));
+  // Combine ONLY farmers and user listings (no shops as per request)
+  const allListings = [...farmersWithCrops, ...Array.from(sellersMap.values())];
 
-  const allListings = [...Array.from(sellersMap.values()), ...shopListings];
+  // De-duplicate if mock data overlaps with context data (just in case)
+  const uniqueListings = Array.from(new Map(allListings.map(item => [item.name, item])).values());
 
-  const filteredFarmers = allListings.filter(farmer => 
+  const filteredFarmers = uniqueListings.filter(farmer => 
     farmer.crops.some((crop: any) => crop.name.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
