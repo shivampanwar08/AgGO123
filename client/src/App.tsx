@@ -125,7 +125,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <div className="bg-gray-100 min-h-screen flex justify-center items-center dark:bg-black">
-            <div className="mobile-container w-full">
+            <div className="mobile-container w-full h-[100dvh] flex flex-col overflow-hidden">
               <AppContent />
             </div>
           </div>

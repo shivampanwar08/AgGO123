@@ -198,8 +198,8 @@ export default function Marketplace() {
   const myListedCrops = marketplaceItems.filter(item => item.isUserListing);
 
   return (
-    <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} min-h-screen pb-24 transition-colors`}>
-      <div className={`${darkMode ? 'bg-gray-800/80 border-gray-700' : 'bg-white/80 border-white/20'} backdrop-blur-xl px-4 py-4 sticky top-0 z-10 shadow-sm border-b transition-colors`}>
+    <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} h-full flex flex-col relative overflow-hidden transition-colors`}>
+      <div className={`${darkMode ? 'bg-gray-800/80 border-gray-700' : 'bg-white/80 border-white/20'} backdrop-blur-xl px-4 py-4 z-10 shadow-sm border-b transition-colors flex-shrink-0`}>
         <div className="flex items-center gap-4 mb-4">
           <button 
             onClick={() => setLocation('/')}
@@ -234,6 +234,7 @@ export default function Marketplace() {
         </div>
       </div>
 
+      <div className="flex-1 overflow-y-auto pb-24 no-scrollbar">
       {activeTab === 'browse' && (
         <div className="p-4 space-y-4">
           <div className="relative">
@@ -527,6 +528,7 @@ export default function Marketplace() {
           </div>
         </div>
       )}
+      </div>
 
       <BottomNav />
     </div>

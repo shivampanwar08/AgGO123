@@ -19,8 +19,8 @@ export default function Drivers() {
   });
 
   return (
-    <div className={`${darkMode ? 'bg-gray-900/50' : 'bg-gray-50/50'} min-h-screen pb-24 transition-colors`}>
-      <div className={`${darkMode ? 'bg-gray-800/80 border-gray-700' : 'bg-white/80 border-white/20'} backdrop-blur-xl px-4 py-4 sticky top-0 z-10 shadow-sm flex items-center gap-4 border-b transition-colors`}>
+    <div className={`${darkMode ? 'bg-gray-900/50' : 'bg-gray-50/50'} h-full flex flex-col relative overflow-hidden transition-colors`}>
+      <div className={`${darkMode ? 'bg-gray-800/80 border-gray-700' : 'bg-white/80 border-white/20'} backdrop-blur-xl px-4 py-4 z-10 shadow-sm flex items-center gap-4 border-b transition-colors flex-shrink-0`}>
         <Link href="/">
           <button className={`w-10 h-10 ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'} rounded-full flex items-center justify-center transition-colors`}>
             <ArrowLeft size={20} className={darkMode ? 'text-gray-300' : 'text-gray-800'} />
@@ -34,7 +34,7 @@ export default function Drivers() {
         </div>
       </div>
 
-      <div className="p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-24 no-scrollbar">
         {/* Filter Tags */}
         <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
           {selectedTypes.length > 0 ? (

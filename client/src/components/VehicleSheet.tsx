@@ -26,7 +26,7 @@ export default function EquipmentSheet() {
       modal={false}
       open={true}
     >
-      <Drawer.Content className={`fixed bottom-16 left-0 right-0 z-30 flex flex-col ${darkMode ? 'bg-gray-800/90' : 'bg-white/90'} backdrop-blur-xl rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] h-[85vh] max-h-[96%] outline-none pb-16 border-t ${darkMode ? 'border-gray-700/50' : 'border-white/50'} transition-colors`}>
+      <Drawer.Content className={`fixed bottom-16 max-w-md mx-auto left-0 right-0 z-30 flex flex-col ${darkMode ? 'bg-gray-800/90' : 'bg-white/90'} backdrop-blur-xl rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] h-[85vh] max-h-[96%] outline-none pb-16 border-t ${darkMode ? 'border-gray-700/50' : 'border-white/50'} transition-colors`}>
         {/* Handle */}
         <div className="p-4 pb-0 flex justify-center flex-shrink-0">
           <div className={`w-16 h-1.5 ${darkMode ? 'bg-gray-600/50' : 'bg-gray-300/50'} rounded-full mb-2 backdrop-blur-sm`} />

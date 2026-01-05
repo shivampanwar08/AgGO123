@@ -37,8 +37,9 @@ export default function Settings() {
   }
 
   return (
-    <div className={`${bgClass} min-h-screen pb-24 transition-colors duration-300`}>
+    <div className={`${bgClass} h-full flex flex-col relative overflow-hidden transition-colors duration-300`}>
       {/* Profile Section - Always Visible */}
+      <div className="flex-1 overflow-y-auto pb-24 no-scrollbar">
       <div className={`${cardClass} rounded-b-3xl p-1 shadow-lg border`}>
         <div className={`${darkMode ? 'bg-gray-800/80' : 'bg-white/80'} backdrop-blur-sm rounded-b-[1.25rem] p-6`}>
           <div className="flex items-start gap-4 justify-between">
@@ -183,6 +184,7 @@ export default function Settings() {
         </button>
 
         <p className={`text-center text-xs ${textMutedClass} pt-4`}>{t('version', language)}</p>
+      </div>
       </div>
 
       <BottomNav />

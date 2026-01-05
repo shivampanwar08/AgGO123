@@ -157,8 +157,8 @@ export default function Shops() {
   };
 
   return (
-    <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} min-h-screen pb-20 transition-colors`}>
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} px-4 py-4 sticky top-0 z-10 shadow-sm space-y-3 transition-colors`}>
+    <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} h-full flex flex-col relative overflow-hidden transition-colors`}>
+      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} px-4 py-4 z-10 shadow-sm space-y-3 transition-colors flex-shrink-0`}>
         <h1 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{t('agri_shops', language)}</h1>
         
         {/* Search Bar */}
@@ -174,7 +174,7 @@ export default function Shops() {
         </div>
       </div>
 
-      <div className="p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-24 no-scrollbar">
         {searchQuery.length > 1 ? (
           // Search Results View (Comparison)
           <div className="space-y-6">
