@@ -320,17 +320,12 @@ export default function Home() {
     );
   }
 
-  // Default Regular User View
+  // Default Regular User View (I Want to Hire - clean view)
   return (
     <div className={`relative w-full h-[100dvh] overflow-hidden ${bgClass} flex flex-col transition-colors`}>
       <div className="flex-1 relative pb-16 overflow-y-auto no-scrollbar">
         <MapBackground />
         <LocationCard />
-
-        <div className="relative z-10 p-5 space-y-6 mt-4 pb-20">
-          <QuickAccessSection />
-          <NearbyListingsSection />
-        </div>
       </div>
 
       <VehicleSheet />
