@@ -1,13 +1,50 @@
 import { Link, useLocation } from 'wouter';
-import { Home, Users, ShoppingBag, Settings, Leaf } from 'lucide-react';
+import { Home, Users, ShoppingBag, Settings, Leaf, MapPin } from 'lucide-react';
 import { useApp } from '@/lib/appContext';
 import { t } from '@/lib/translations';
 
 export default function BottomNav() {
   const [location] = useLocation();
-  const { language, darkMode } = useApp();
+  const { language, darkMode, userRole } = useApp();
 
   const isActive = (path: string) => location === path;
+
+  const getNavItems = () => {
+    if (userRole === 'equipment-renter') {
+      return [
+        { to: "/", icon: <Home size={22} />, label: t('home', language) },
+        { to: "/drivers", icon: <Users size={22} />, label: t('drivers', language) },
+        { to: "/settings", icon: <Settings size={22} />, label: t('settings', language) },
+      ];
+    }
+    
+    if (userRole === 'land-owner') {
+      return [
+        { to: "/", icon: <Home size={22} />, label: t('home', language) },
+        { to: "/land-rental", icon: <MapPin size={22} />, label: "Land" },
+        { to: "/settings", icon: <Settings size={22} />, label: t('settings', language) },
+      ];
+    }
+    
+    if (userRole === 'shopper') {
+      return [
+        { to: "/", icon: <Home size={22} />, label: t('home', language) },
+        { to: "/shops", icon: <ShoppingBag size={22} />, label: t('shops', language) },
+        { to: "/settings", icon: <Settings size={22} />, label: t('settings', language) },
+      ];
+    }
+
+    return [
+      { to: "/", icon: <Home size={22} />, label: t('home', language) },
+      { to: "/drivers", icon: <Users size={22} />, label: t('drivers', language) },
+      { to: "/marketplace", icon: <Leaf size={22} />, label: t('market', language) },
+      { to: "/shops", icon: <ShoppingBag size={22} />, label: t('shops', language) },
+      { to: "/settings", icon: <Settings size={22} />, label: t('settings', language) },
+    ];
+  };
+
+  const navItems = getNavItems();
+  const gridCols = navItems.length === 3 ? 'grid-cols-3' : 'grid-cols-5';
 
   return (
     <div className={`absolute bottom-0 left-0 right-0 w-full max-w-md mx-auto backdrop-blur-2xl border-t shadow-2xl z-50 h-16 px-2 pb-1 transition-colors ${
@@ -15,42 +52,17 @@ export default function BottomNav() {
         ? 'bg-gray-900/95 border-gray-800/50' 
         : 'bg-white/95 border-white/40'
     }`}>
-      <div className="grid grid-cols-5 h-full items-center gap-1">
-        <NavItem 
-          to="/" 
-          icon={<Home size={22} />} 
-          label={t('home', language)} 
-          active={isActive('/')} 
-          darkMode={darkMode}
-        />
-        <NavItem 
-          to="/drivers" 
-          icon={<Users size={22} />} 
-          label={t('drivers', language)} 
-          active={isActive('/drivers')} 
-          darkMode={darkMode}
-        />
-        <NavItem 
-          to="/marketplace" 
-          icon={<Leaf size={22} />} 
-          label={t('market', language)} 
-          active={isActive('/marketplace')} 
-          darkMode={darkMode}
-        />
-        <NavItem 
-          to="/shops" 
-          icon={<ShoppingBag size={22} />} 
-          label={t('shops', language)} 
-          active={isActive('/shops')} 
-          darkMode={darkMode}
-        />
-        <NavItem 
-          to="/settings" 
-          icon={<Settings size={22} />} 
-          label={t('settings', language)} 
-          active={isActive('/settings')} 
-          darkMode={darkMode}
-        />
+      <div className={`grid ${gridCols} h-full items-center gap-1`}>
+        {navItems.map((item) => (
+          <NavItem 
+            key={item.to}
+            to={item.to} 
+            icon={item.icon} 
+            label={item.label} 
+            active={isActive(item.to)} 
+            darkMode={darkMode}
+          />
+        ))}
       </div>
     </div>
   );

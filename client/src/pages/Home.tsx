@@ -21,63 +21,75 @@ export default function Home() {
   const textClass = darkMode ? 'text-white' : 'text-gray-900';
   const textMutedClass = darkMode ? 'text-gray-400' : 'text-gray-500';
 
-  const QuickAccessSection = () => (
-    <div className="space-y-4 mt-6">
-      <h2 className={`text-lg font-bold ${textClass} flex items-center gap-2`}>
-        🚀 Quick Access
-      </h2>
-      <div className="grid grid-cols-2 gap-3">
-        <button
-          onClick={() => setLocation('/drivers')}
-          className={`${cardClass} border rounded-2xl p-4 flex items-center gap-3 hover:shadow-lg transition-shadow active:scale-95`}
-        >
-          <div className="p-2.5 bg-green-100 rounded-xl">
-            <Users size={20} className="text-green-600" />
-          </div>
-          <div className="text-left">
-            <p className={`font-bold ${textClass}`}>{t('drivers', language)}</p>
-            <p className={`text-xs ${textMutedClass}`}>Find drivers</p>
-          </div>
-        </button>
-        <button
-          onClick={() => setLocation('/marketplace')}
-          className={`${cardClass} border rounded-2xl p-4 flex items-center gap-3 hover:shadow-lg transition-shadow active:scale-95`}
-        >
-          <div className="p-2.5 bg-green-100 rounded-xl">
-            <Leaf size={20} className="text-green-600" />
-          </div>
-          <div className="text-left">
-            <p className={`font-bold ${textClass}`}>{t('marketplace', language)}</p>
-            <p className={`text-xs ${textMutedClass}`}>Buy/Sell crops</p>
-          </div>
-        </button>
-        <button
-          onClick={() => setLocation('/shops')}
-          className={`${cardClass} border rounded-2xl p-4 flex items-center gap-3 hover:shadow-lg transition-shadow active:scale-95`}
-        >
-          <div className="p-2.5 bg-purple-100 rounded-xl">
-            <Store size={20} className="text-purple-600" />
-          </div>
-          <div className="text-left">
-            <p className={`font-bold ${textClass}`}>{t('shops', language)}</p>
-            <p className={`text-xs ${textMutedClass}`}>Agri supplies</p>
-          </div>
-        </button>
-        <button
-          onClick={() => setLocation('/land-rental')}
-          className={`${cardClass} border rounded-2xl p-4 flex items-center gap-3 hover:shadow-lg transition-shadow active:scale-95`}
-        >
-          <div className="p-2.5 bg-amber-100 rounded-xl">
-            <MapPin size={20} className="text-amber-600" />
-          </div>
-          <div className="text-left">
-            <p className={`font-bold ${textClass}`}>Land</p>
-            <p className={`text-xs ${textMutedClass}`}>Rent farmland</p>
-          </div>
-        </button>
-      </div>
-    </div>
-  );
+  const QuickAccessSection = () => {
+    if (userRole === 'equipment-renter') {
+      return (
+        <div className="space-y-4 mt-6">
+          <h2 className={`text-lg font-bold ${textClass} flex items-center gap-2`}>
+            🚀 Quick Access
+          </h2>
+          <button
+            onClick={() => setLocation('/drivers')}
+            className={`${cardClass} border rounded-2xl p-4 flex items-center gap-3 hover:shadow-lg transition-shadow active:scale-95 w-full`}
+          >
+            <div className="p-2.5 bg-green-100 rounded-xl">
+              <Users size={20} className="text-green-600" />
+            </div>
+            <div className="text-left">
+              <p className={`font-bold ${textClass}`}>{t('drivers', language)}</p>
+              <p className={`text-xs ${textMutedClass}`}>Find drivers nearby</p>
+            </div>
+          </button>
+        </div>
+      );
+    }
+    
+    if (userRole === 'land-owner') {
+      return (
+        <div className="space-y-4 mt-6">
+          <h2 className={`text-lg font-bold ${textClass} flex items-center gap-2`}>
+            🚀 Quick Access
+          </h2>
+          <button
+            onClick={() => setLocation('/land-rental')}
+            className={`${cardClass} border rounded-2xl p-4 flex items-center gap-3 hover:shadow-lg transition-shadow active:scale-95 w-full`}
+          >
+            <div className="p-2.5 bg-amber-100 rounded-xl">
+              <MapPin size={20} className="text-amber-600" />
+            </div>
+            <div className="text-left">
+              <p className={`font-bold ${textClass}`}>Land Marketplace</p>
+              <p className={`text-xs ${textMutedClass}`}>Browse available lands</p>
+            </div>
+          </button>
+        </div>
+      );
+    }
+    
+    if (userRole === 'shopper') {
+      return (
+        <div className="space-y-4 mt-6">
+          <h2 className={`text-lg font-bold ${textClass} flex items-center gap-2`}>
+            🚀 Quick Access
+          </h2>
+          <button
+            onClick={() => setLocation('/shops')}
+            className={`${cardClass} border rounded-2xl p-4 flex items-center gap-3 hover:shadow-lg transition-shadow active:scale-95 w-full`}
+          >
+            <div className="p-2.5 bg-purple-100 rounded-xl">
+              <Store size={20} className="text-purple-600" />
+            </div>
+            <div className="text-left">
+              <p className={`font-bold ${textClass}`}>{t('shops', language)}</p>
+              <p className={`text-xs ${textMutedClass}`}>Browse all shops</p>
+            </div>
+          </button>
+        </div>
+      );
+    }
+
+    return null;
+  };
 
   const NearbyListingsSection = () => (
     <div className="space-y-4 mt-6">
