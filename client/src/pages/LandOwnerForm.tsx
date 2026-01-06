@@ -56,8 +56,8 @@ export default function LandOwnerForm({ onBack, onSubmit }: LandOwnerFormProps) 
   };
 
   return (
-    <div className={`${bgClass} min-h-screen pb-24 transition-colors duration-300`}>
-      <div className="sticky top-0 z-10 bg-gradient-to-r from-amber-500 to-amber-600 text-white p-4 flex items-center gap-3 shadow-lg">
+    <div className={`${bgClass} h-screen flex flex-col transition-colors duration-300`}>
+      <div className="flex-shrink-0 bg-gradient-to-r from-amber-500 to-amber-600 text-white p-4 flex items-center gap-3 shadow-lg">
         <button onClick={onBack} className="active:scale-95 transition-transform">
           <ChevronLeft size={24} />
         </button>
@@ -67,7 +67,7 @@ export default function LandOwnerForm({ onBack, onSubmit }: LandOwnerFormProps) 
         </div>
       </div>
 
-      <div className="p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-24">
         <div className={`${cardClass} rounded-2xl p-4 border space-y-4`}>
           <h2 className={`font-bold ${textClass} text-lg`}>{t('personal_info', language)}</h2>
           
