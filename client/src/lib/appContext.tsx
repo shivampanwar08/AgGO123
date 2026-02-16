@@ -4,6 +4,7 @@ import type { Language } from './translations';
 export type UserRole = 'user' | 'equipment-renter' | 'land-owner' | 'shopper';
 
 export interface EquipmentRenterData {
+  id: string;
   ownerName: string;
   village: string;
   phone: string;
@@ -20,6 +21,7 @@ export interface EquipmentRenterData {
 }
 
 export interface LandOwnerData {
+  id: string;
   ownerName: string;
   village: string;
   phone: string;
@@ -28,6 +30,7 @@ export interface LandOwnerData {
 }
 
 export interface ShopperData {
+  id: string;
   shopName: string;
   shopOwner: string;
   village: string;
@@ -113,6 +116,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const saved = localStorage.getItem('aggo_all_equipment');
     return saved ? JSON.parse(saved) : [
       {
+        id: "d1",
         ownerName: "Ram Lal",
         village: "Rampur Village",
         phone: "+91 98765 43210",
@@ -124,6 +128,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         ]
       },
       {
+        id: "d2",
         ownerName: "Balwinder Singh",
         village: "Kishanpur",
         phone: "+91 98765 43211",
@@ -135,6 +140,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         ]
       },
       {
+        id: "d3",
         ownerName: "Mukesh Patel",
         village: "Shyam Nagar",
         phone: "+91 98765 43212",

@@ -44,6 +44,7 @@ export default function LandOwnerForm({ onBack, onSubmit }: LandOwnerFormProps) 
 
   const handleSubmit = () => {
     const data: LandOwnerData = {
+      id: `l-${Date.now()}`,
       ownerName: formData.ownerName,
       village: formData.village,
       phone: formData.phone,

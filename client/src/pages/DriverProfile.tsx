@@ -10,12 +10,11 @@ export default function DriverProfile() {
   const [addedItems, setAddedItems] = useState<string[]>([]);
   
   // Find driver based on ID from URL
-  const driverIndex = params?.id ? parseInt(params.id.replace('d-', '')) : 0;
-  const driver = allEquipmentRenters[driverIndex];
+  const driver = allEquipmentRenters.find(d => d.id === params?.id);
 
   // If driver not found, fallback or redirect (handled gracefully by optional chaining in UI for now)
   const driverData = driver ? {
-    id: params?.id || 'd0',
+    id: driver.id,
     name: driver.ownerName,
     village: driver.village,
     image: driver.equipment[0]?.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
@@ -23,7 +22,7 @@ export default function DriverProfile() {
     trips: 124, // Mock trips
     joined: '2023',
     equipment: driver.equipment.map(e => ({
-      id: `e-${driverIndex}-${e.id}`,
+      id: `e-${driver.id}-${e.id}`,
       name: e.name,
       type: e.name, // Using name as type for now or map properly if type exists
       price: e.pricePerDay / 8, // Converting day price to approx hourly for display or just use day price

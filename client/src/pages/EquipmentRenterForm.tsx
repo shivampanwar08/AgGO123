@@ -68,6 +68,7 @@ export default function EquipmentRenterForm({ onBack, onSubmit }: EquipmentRente
 
   const handleSubmit = () => {
     const data: EquipmentRenterData = {
+      id: `d-${Date.now()}`,
       ownerName: formData.ownerName,
       village: formData.village,
       phone: formData.phone,

@@ -55,8 +55,8 @@ export default function Drivers() {
         
         {filteredDrivers.map((driver, idx) => (
           <DriverCard 
-            key={idx}
-            id={`d-${idx}`}
+            key={driver.id || idx}
+            id={driver.id || `d-${idx}`}
             name={driver.ownerName}
             village={driver.village}
             equipment={driver.equipment.map(e => e.name)}

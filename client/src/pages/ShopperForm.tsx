@@ -58,6 +58,7 @@ export default function ShopperForm({ onBack, onSubmit }: ShopperFormProps) {
 
   const handleSubmit = () => {
     const data: ShopperData = {
+      id: `s-${Date.now()}`,
       shopName: formData.shopName,
       shopOwner: formData.shopOwner,
       village: formData.village,
