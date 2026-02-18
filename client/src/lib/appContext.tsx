@@ -51,11 +51,18 @@ export interface MarketplaceItem {
   id: string;
   sellerName: string;
   village: string;
+  phone?: string;
   cropName: string;
   quantity: string;
   price: number;
   image?: string;
   isUserListing?: boolean;
+  comments?: Array<{
+    id: string;
+    userName: string;
+    text: string;
+    timestamp: string;
+  }>;
 }
 
 interface AppContextType {

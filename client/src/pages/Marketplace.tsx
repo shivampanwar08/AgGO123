@@ -10,8 +10,19 @@ const farmersWithCrops = [
     id: 'f1',
     name: 'Rajesh Kumar',
     village: 'Rampur Village',
+    phone: '+91 98765 43210',
     crops: [
-      { id: 'c1', name: 'Organic Wheat', qty: '500kg', pricePerUnit: 28, buyersOffering: 5, image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&h=100&fit=crop' },
+      { 
+        id: 'c1', 
+        name: 'Organic Wheat', 
+        qty: '500kg', 
+        pricePerUnit: 28, 
+        buyersOffering: 5, 
+        image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&h=100&fit=crop',
+        comments: [
+          { id: 'com1', userName: 'Amit', text: 'Is this 100% organic?', timestamp: '2h ago' }
+        ]
+      },
       { id: 'c2', name: 'Fresh Tomatoes', qty: '200kg', pricePerUnit: 12, buyersOffering: 3, image: 'https://images.unsplash.com/photo-1592841494149-fd9025c6f9d8?w=100&h=100&fit=crop' }
     ],
     rating: 4.8,
@@ -22,6 +33,7 @@ const farmersWithCrops = [
     id: 'f2',
     name: 'Priya Singh',
     village: 'Sector 5',
+    phone: '+91 87654 32109',
     crops: [
       { id: 'c3', name: 'Natural Pesticide (Neem)', qty: '50L', pricePerUnit: 450, buyersOffering: 8, image: 'https://images.unsplash.com/photo-1585518419759-87a8d10a1c5e?w=100&h=100&fit=crop' },
       { id: 'c4', name: 'Organic Rice', qty: '1000kg', pricePerUnit: 45, buyersOffering: 6, image: 'https://images.unsplash.com/photo-1586362891453-8aa3308e6250?w=100&h=100&fit=crop' }
@@ -29,18 +41,6 @@ const farmersWithCrops = [
     rating: 4.9,
     image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop',
     distance: '5.1 km'
-  },
-  {
-    id: 'f3',
-    name: 'Mukesh Patel',
-    village: 'Kishanpur',
-    crops: [
-      { id: 'c5', name: 'Cow Dung Fertilizer', qty: '100kg', pricePerUnit: 8, buyersOffering: 4, image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop' },
-      { id: 'c6', name: 'Fresh Maize', qty: '300kg', pricePerUnit: 18, buyersOffering: 2, image: 'https://images.unsplash.com/photo-1605027521069-43cb207b3c06?w=100&h=100&fit=crop' }
-    ],
-    rating: 4.6,
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop',
-    distance: '6.8 km'
   }
 ];
 
@@ -149,11 +149,13 @@ export default function Marketplace() {
       id: `m-${Date.now()}`,
       sellerName: userProfile.name,
       village: userProfile.village,
+      phone: userProfile.phone,
       cropName: newCrop.name,
       quantity: `${newCrop.qty} ${newCrop.unit}`,
       price: Number(newCrop.price),
       image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&h=100&fit=crop', // Default image
-      isUserListing: true
+      isUserListing: true,
+      comments: []
     };
 
     addMarketplaceItem(newItem);
@@ -169,6 +171,7 @@ export default function Marketplace() {
         id: `s-${item.sellerName.replace(/\s+/g, '-')}`,
         name: item.sellerName,
         village: item.village,
+        phone: item.phone,
         crops: [],
         rating: 4.8, // Mock rating
         image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop', // Default avatar
@@ -181,7 +184,8 @@ export default function Marketplace() {
       qty: item.quantity,
       pricePerUnit: item.price,
       buyersOffering: Math.floor(Math.random() * 5) + 1, // Mock buyers count
-      image: item.image
+      image: item.image,
+      comments: item.comments || []
     });
   });
 
@@ -270,6 +274,11 @@ export default function Marketplace() {
                         <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} flex items-center gap-1`}>
                           <MapPin size={12} /> {farmer.village} • {farmer.distance}
                         </p>
+                        {farmer.phone && (
+                          <p className={`text-[10px] font-bold text-green-500 mt-1 flex items-center gap-1`}>
+                            <Phone size={10} /> {farmer.phone}
+                          </p>
+                        )}
                       </div>
                       <div className="text-right">
                         <div className="flex items-center gap-1 text-xs font-bold">
@@ -524,7 +533,34 @@ export default function Marketplace() {
               ))}
             </div>
 
-            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-500/30 transition-all active:scale-95">
+            <div className="mt-6 border-t pt-4">
+              <h4 className={`font-bold text-sm mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Comments</h4>
+              <div className="space-y-3 max-h-40 overflow-y-auto mb-4 no-scrollbar">
+                {selectedCrop.comments && selectedCrop.comments.length > 0 ? (
+                  selectedCrop.comments.map((c: any) => (
+                    <div key={c.id} className={`${darkMode ? 'bg-gray-700/50' : 'bg-gray-50'} p-2 rounded-lg`}>
+                      <div className="flex justify-between items-center mb-1">
+                        <span className={`text-[10px] font-bold ${darkMode ? 'text-gray-200' : 'text-gray-900'}`}>{c.userName}</span>
+                        <span className="text-[9px] text-gray-400">{c.timestamp}</span>
+                      </div>
+                      <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{c.text}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-xs text-gray-400 italic">No comments yet</p>
+                )}
+              </div>
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  placeholder="Add a comment..."
+                  className={`flex-1 ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-200'} rounded-lg px-3 py-2 text-xs outline-none focus:ring-1 focus:ring-green-500`}
+                />
+                <button className="bg-green-600 text-white px-3 py-2 rounded-lg text-xs font-bold">Post</button>
+              </div>
+            </div>
+
+            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-500/30 transition-all active:scale-95 mt-4">
               Contact All Buyers
             </button>
           </div>
