@@ -168,7 +168,10 @@ export default function DriverProfile() {
                   <span className={`font-bold text-xl ${darkMode ? 'text-white' : 'text-white'}`}>₹{addedItems.reduce((acc, id) => acc + (driverData.equipment.find(e => e.id === id)?.price || 0), 0)}<span className="text-sm font-normal text-gray-500">/hr</span></span>
                 </div>
                 <button 
-                  onClick={() => setLocation('/billing')}
+                  onClick={() => {
+                    const itemIds = addedItems.map(id => id.split('-').pop()).join(',');
+                    setLocation(`/billing?driverId=${driverData.id}&items=${itemIds}`);
+                  }}
                   className="bg-green-500 hover:bg-green-400 text-white font-bold text-base py-3 px-8 rounded-xl shadow-lg shadow-green-500/40 transition-all active:scale-95 neon-glow"
                 >
                   Book Now

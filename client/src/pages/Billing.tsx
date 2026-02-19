@@ -1,12 +1,34 @@
 import { ArrowLeft, Trash2, CheckCircle2, Circle, User, Carrot, Plus, Minus } from 'lucide-react';
 import { useLocation } from 'wouter';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useApp } from '@/lib/appContext';
 
 export default function Billing() {
   const [, setLocation] = useLocation();
+  const { allEquipmentRenters } = useApp();
   const [withDriver, setWithDriver] = useState(true);
-  const [items, setItems] = useState([{ name: 'Tractor', price: 800 }, { name: 'Trolley', price: 300 }]);
+  
+  const searchParams = new URLSearchParams(window.location.search);
+  const driverId = searchParams.get('driverId');
+  const itemIdsParam = searchParams.get('items');
+  const selectedItemIds = itemIdsParam ? itemIdsParam.split(',') : [];
+
+  const driver = allEquipmentRenters.find(d => d.id === driverId);
+  const initialItems = driver 
+    ? driver.equipment
+        .filter(e => selectedItemIds.includes(e.id.toString()))
+        .map(e => ({ name: e.name, price: e.pricePerDay / 8 })) // Approx hourly
+    : [];
+
+  const [items, setItems] = useState(initialItems.length > 0 ? initialItems : [{ name: 'Tractor', price: 800 }]);
   const [hours, setHours] = useState(4);
+
+  // Sync items if they haven't been initialized
+  useEffect(() => {
+    if (initialItems.length > 0 && (items.length === 1 && items[0].name === 'Tractor' && items[0].price === 800)) {
+      setItems(initialItems);
+    }
+  }, [initialItems]);
 
   const removeItem = (itemToRemove: string) => {
     setItems(prev => prev.filter(i => i.name !== itemToRemove));
