@@ -89,6 +89,7 @@ export default function Shops() {
   const { darkMode, language, allShoppers } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const [highlightedShopId, setHighlightedShopId] = useState<string | null>(null);
 
   const handleSelectShop = (shopId: string) => {
@@ -101,6 +102,10 @@ export default function Shops() {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }, 100);
+  };
+
+  const openProductDetails = (product: any) => {
+    setSelectedProduct(product);
   };
 
   // Transform allShoppers to match ShopCard props
@@ -239,11 +244,83 @@ export default function Shops() {
                 key={shop.id} 
                 {...shop} 
                 highlighted={highlightedShopId === shop.id}
+                onProductClick={openProductDetails}
               />
             ))}
           </>
         )}
       </div>
+
+      {/* Product Details Modal */}
+      {selectedProduct && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedProduct(null)}></div>
+          <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} w-full max-w-md rounded-t-[2.5rem] sm:rounded-[2.5rem] overflow-hidden relative z-10 shadow-2xl animate-in slide-in-from-bottom-20 duration-300 max-h-[90vh] flex flex-col`}>
+            <div className="p-6 overflow-y-auto no-scrollbar">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold tracking-tight">{selectedProduct.name}</h2>
+                  <p className={`${darkMode ? 'text-gray-400' : 'text-gray-500'} font-medium uppercase tracking-widest text-xs mt-1`}>{selectedProduct.category}</p>
+                </div>
+                <button 
+                  onClick={() => setSelectedProduct(null)}
+                  className={`w-10 h-10 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'} rounded-full flex items-center justify-center`}
+                >
+                  <ArrowLeft className="rotate-90" size={20} />
+                </button>
+              </div>
+
+              {/* Image Gallery */}
+              <div className="space-y-4">
+                <div className="aspect-square rounded-3xl overflow-hidden shadow-inner bg-gray-100">
+                  <img 
+                    src={selectedProduct.image} 
+                    alt={selectedProduct.name} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-3 gap-3">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="aspect-square rounded-2xl overflow-hidden bg-gray-100 shadow-sm">
+                      <img 
+                        src={`${selectedProduct.image}?sig=${i}`} 
+                        alt={`${selectedProduct.name} detail ${i}`} 
+                        className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-8 space-y-6">
+                <div className="flex justify-between items-end">
+                  <div>
+                    <span className="text-sm font-bold uppercase tracking-widest text-gray-500 block mb-1">Price</span>
+                    <span className="text-3xl font-black text-green-500">₹{selectedProduct.price}</span>
+                  </div>
+                  <div className={`px-4 py-2 rounded-2xl font-bold text-sm ${selectedProduct.quantity > 0 ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+                    {selectedProduct.quantity > 0 ? `In Stock (${selectedProduct.quantity})` : 'Out of Stock'}
+                  </div>
+                </div>
+
+                <div className={`p-4 rounded-3xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'} border ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
+                  <h4 className="font-bold text-sm mb-2">Product Description</h4>
+                  <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    High-quality {selectedProduct.name} suitable for all agricultural needs. Tested for performance and reliability in local conditions.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mt-8 pb-4">
+                <button className="w-full bg-green-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-green-500/30 active:scale-[0.98] transition-all">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <BottomNav />
     </div>
   );
@@ -339,7 +416,7 @@ function ProductComparisonCard({ product, onSelectShop }: any) {
   );
 }
 
-function ShopCard({ id, name, type, rating, distance, image, isOpen, products, phone, highlighted }: any) {
+function ShopCard({ id, name, type, rating, distance, image, isOpen, products, phone, highlighted, onProductClick }: any) {
   const { darkMode } = useApp();
   const [expanded, setExpanded] = useState(highlighted || false);
   
@@ -400,7 +477,11 @@ function ShopCard({ id, name, type, rating, distance, image, isOpen, products, p
       {expanded && products && (
         <div className={`mt-4 pt-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-100'} grid gap-3 animate-in slide-in-from-top-2 duration-200`}>
           {products.map((item: any, idx: number) => (
-            <div key={idx} className={`flex justify-between items-center p-2 rounded-lg ${darkMode ? 'bg-gray-700/30' : 'bg-gray-50'}`}>
+            <div 
+              key={idx} 
+              onClick={() => onProductClick?.(item)}
+              className={`flex justify-between items-center p-2 rounded-lg cursor-pointer hover:bg-opacity-80 transition-all ${darkMode ? 'bg-gray-700/30 hover:bg-gray-700/50' : 'bg-gray-50 hover:bg-gray-100'}`}
+            >
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 rounded bg-gray-200 flex items-center justify-center overflow-hidden`}>
                    {item.image ? (
