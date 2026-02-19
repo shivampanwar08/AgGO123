@@ -47,7 +47,13 @@ const shops = [
     rating: "4.8",
     distance: "1.2 km",
     image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop",
-    isOpen: true
+    isOpen: true,
+    phone: "+91 98765 00001",
+    products: [
+      { name: 'Urea Fertilizer (45kg)', category: 'Fertilizers', price: 270, quantity: 100, image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop' },
+      { name: 'DAP Fertilizer (50kg)', category: 'Fertilizers', price: 1350, quantity: 50, image: 'https://images.unsplash.com/photo-1563456022-c63b540133b3?w=100&h=100&fit=crop' },
+      { name: 'Tractor Engine Oil (5L)', category: 'Spare Parts', price: 1850, quantity: 20, image: 'https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?w=100&h=100&fit=crop' }
+    ]
   },
   {
     id: 's2',
@@ -56,7 +62,12 @@ const shops = [
     rating: "4.5",
     distance: "2.5 km",
     image: "https://images.unsplash.com/photo-1589923188900-85dae523342b?w=100&h=100&fit=crop",
-    isOpen: true
+    isOpen: true,
+    phone: "+91 98765 00002",
+    products: [
+      { name: 'Urea Fertilizer (45kg)', category: 'Fertilizers', price: 266, quantity: 80, image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop' },
+      { name: 'Tractor Engine Oil (5L)', category: 'Spare Parts', price: 1800, quantity: 15, image: 'https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?w=100&h=100&fit=crop' }
+    ]
   },
   {
     id: 's3',
@@ -65,7 +76,12 @@ const shops = [
     rating: "4.9",
     distance: "3.8 km",
     image: "https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?w=100&h=100&fit=crop",
-    isOpen: false
+    isOpen: false,
+    phone: "+91 98765 00003",
+    products: [
+      { name: 'Urea Fertilizer (45kg)', category: 'Fertilizers', price: 285, quantity: 0, image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&h=100&fit=crop' },
+      { name: 'DAP Fertilizer (50kg)', category: 'Fertilizers', price: 1380, quantity: 30, image: 'https://images.unsplash.com/photo-1563456022-c63b540133b3?w=100&h=100&fit=crop' }
+    ]
   }
 ];
 
@@ -73,6 +89,19 @@ export default function Shops() {
   const { darkMode, language, allShoppers } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [highlightedShopId, setHighlightedShopId] = useState<string | null>(null);
+
+  const handleSelectShop = (shopId: string) => {
+    setSearchQuery(''); // Clear search to show shops list
+    setHighlightedShopId(shopId);
+    // Scroll to the shop
+    setTimeout(() => {
+      const element = document.getElementById(shopId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
+  };
 
   // Transform allShoppers to match ShopCard props
   const userShops = allShoppers.map((shop, index) => ({
@@ -83,6 +112,7 @@ export default function Shops() {
     distance: "Nearby",
     image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=100&h=100&fit=crop",
     isOpen: true,
+    phone: shop.phone,
     products: shop.products // Pass products to the card
   }));
 
@@ -183,7 +213,11 @@ export default function Shops() {
             </h2>
             
             {searchResults.map(product => (
-              <ProductComparisonCard key={product.id} product={product} />
+              <ProductComparisonCard 
+                key={product.id} 
+                product={product} 
+                onSelectShop={handleSelectShop}
+              />
             ))}
 
             {searchResults.length === 0 && (
@@ -201,7 +235,11 @@ export default function Shops() {
             </div>
 
             {allShopsList.map(shop => (
-              <ShopCard key={shop.id} {...shop} />
+              <ShopCard 
+                key={shop.id} 
+                {...shop} 
+                highlighted={highlightedShopId === shop.id}
+              />
             ))}
           </>
         )}
@@ -211,7 +249,7 @@ export default function Shops() {
   );
 }
 
-function ProductComparisonCard({ product }: any) {
+function ProductComparisonCard({ product, onSelectShop }: any) {
   const { darkMode, language, allShoppers } = useApp();
   // Sort prices low to high
   const sortedPrices = [...product.prices].sort((a: any, b: any) => a.price - b.price);
@@ -231,11 +269,12 @@ function ProductComparisonCard({ product }: any) {
         return {
           name: shopper.shopName,
           distance: "Nearby", // Or calculate real distance if we had coords
-          isOpen: true
+          isOpen: true,
+          id: shopId
         };
       }
     }
-    return { name: "Unknown Shop", distance: "?", isOpen: false };
+    return { name: "Unknown Shop", distance: "?", isOpen: false, id: shopId };
   };
 
   return (
@@ -262,7 +301,11 @@ function ProductComparisonCard({ product }: any) {
           const isCheapest = index === 0;
 
           return (
-            <div key={offer.shopId} className={`p-3 flex items-center justify-between ${isCheapest ? darkMode ? 'bg-green-900/20' : 'bg-green-50/30' : ''}`}>
+            <div 
+              key={offer.shopId} 
+              className={`p-3 flex items-center justify-between cursor-pointer hover:bg-opacity-80 transition-all ${isCheapest ? darkMode ? 'bg-green-900/20' : 'bg-green-50/30' : ''}`}
+              onClick={() => onSelectShop(offer.shopId)}
+            >
               <div className="flex items-center gap-3">
                  <div className="flex flex-col">
                     <span className={`text-sm font-bold ${isCheapest ? darkMode ? 'text-white' : 'text-gray-900' : darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -284,9 +327,9 @@ function ProductComparisonCard({ product }: any) {
               </div>
               
               {offer.inStock && (
-                 <button className="ml-2 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center shadow-sm active:scale-90 transition-transform">
+                 <div className="ml-2 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center shadow-sm">
                    <ShoppingCart size={14} />
-                 </button>
+                 </div>
               )}
             </div>
           );
@@ -296,12 +339,15 @@ function ProductComparisonCard({ product }: any) {
   );
 }
 
-function ShopCard({ name, type, rating, distance, image, isOpen, products }: any) {
+function ShopCard({ id, name, type, rating, distance, image, isOpen, products, phone, highlighted }: any) {
   const { darkMode } = useApp();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(highlighted || false);
   
   return (
-    <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} p-4 rounded-xl border shadow-sm hover:shadow-md transition-all`}>
+    <div 
+      id={id}
+      className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} p-4 rounded-xl border shadow-sm hover:shadow-md transition-all ${highlighted ? 'ring-2 ring-green-500' : ''}`}
+    >
       <div className="flex gap-4">
         <div className={`w-20 h-20 rounded-lg overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} flex-shrink-0`}>
           <img src={image} alt={name} className="w-full h-full object-cover" />
@@ -318,6 +364,11 @@ function ShopCard({ name, type, rating, distance, image, isOpen, products }: any
           </div>
           
           <p className="text-sm text-gray-500 mb-1">{type}</p>
+          {phone && (
+            <p className="text-[10px] font-bold text-green-600 flex items-center gap-1 mt-1">
+              <Phone size={10} /> {phone}
+            </p>
+          )}
           
           <div className="flex items-center justify-between mt-2">
              <div className="flex items-center gap-1 text-xs font-medium text-gray-600">
@@ -336,9 +387,11 @@ function ShopCard({ name, type, rating, distance, image, isOpen, products }: any
                   {expanded ? 'Hide Items' : `View Items (${products.length})`}
                 </button>
               )}
-              <button className="w-8 h-8 bg-green-50 text-green-600 rounded-full flex items-center justify-center hover:bg-green-100">
-                <Phone size={14} />
-              </button>
+              {phone && (
+                <a href={`tel:${phone}`} className="w-8 h-8 bg-green-50 text-green-600 rounded-full flex items-center justify-center hover:bg-green-100">
+                  <Phone size={14} />
+                </a>
+              )}
             </div>
           </div>
         </div>
