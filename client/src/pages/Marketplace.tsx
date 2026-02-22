@@ -136,7 +136,8 @@ export default function Marketplace() {
     name: '',
     qty: '',
     price: '',
-    unit: 'kg'
+    unit: 'kg',
+    image: ''
   });
 
   const handleAddCrop = () => {
@@ -150,12 +151,12 @@ export default function Marketplace() {
       cropName: newCrop.name,
       quantity: `${newCrop.qty} ${newCrop.unit}`,
       price: Number(newCrop.price),
-      image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&h=100&fit=crop',
+      image: newCrop.image || 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&h=100&fit=crop',
       isUserListing: true,
       comments: []
     };
     addMarketplaceItem(newItem);
-    setNewCrop({ name: '', qty: '', price: '', unit: 'kg' });
+    setNewCrop({ name: '', qty: '', price: '', unit: 'kg', image: '' });
   };
 
   const sellersMap = new Map();
@@ -259,7 +260,77 @@ export default function Marketplace() {
                   <div className="w-32"><label className="text-[10px] font-black uppercase mb-2 block ml-1 text-gray-400">Unit</label><select value={newCrop.unit} onChange={(e) => setNewCrop({...newCrop, unit: e.target.value})} className="w-full rounded-2xl px-4 py-4 text-sm font-bold border outline-none"><option value="kg">kg</option><option value="quintal">quintal</option><option value="ton">ton</option></select></div>
                 </div>
                 <div><label className="text-[10px] font-black uppercase mb-2 block ml-1 text-gray-400">Expected Price</label><input type="number" value={newCrop.price} onChange={(e) => setNewCrop({...newCrop, price: e.target.value})} className="w-full rounded-2xl px-6 py-4 text-sm font-bold border outline-none" /></div>
+                <div>
+                  <label className="text-[10px] font-black uppercase mb-2 block ml-1 text-gray-400">Crop Image URL</label>
+                  <input 
+                    type="text" 
+                    value={newCrop.image} 
+                    onChange={(e) => setNewCrop({...newCrop, image: e.target.value})} 
+                    placeholder="Paste image link here..." 
+                    className="w-full rounded-2xl px-6 py-4 text-sm font-bold border outline-none" 
+                  />
+                </div>
                 <button onClick={handleAddCrop} className="w-full bg-green-500 text-white font-black py-5 rounded-2xl shadow-2xl mt-4">List Crop for Sale</button>
+              </div>
+            </div>
+
+            {/* Best Buyers Section */}
+            <div className="space-y-4">
+              <h2 className={`text-lg font-black ${darkMode ? 'text-white' : 'text-gray-900'} mt-10 mb-4 px-2 tracking-tight`}>{t('best_buyers', language)}</h2>
+              <div className="space-y-4">
+                {buyersList.map(buyer => (
+                  <div key={buyer.id} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} rounded-[2.5rem] border overflow-hidden shadow-xl hover:shadow-green-500/5 hover:-translate-y-1 transition-all group`}>
+                    <div className="p-8">
+                      <div className="flex items-start gap-6 mb-8">
+                        <div className={`w-16 h-16 rounded-2xl ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} overflow-hidden flex-shrink-0 shadow-xl group-hover:scale-110 transition-transform`}>
+                          <img src={buyer.image} alt={buyer.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex justify-between items-start mb-1">
+                            <div>
+                              <h3 className={`text-lg font-black ${darkMode ? 'text-white' : 'text-gray-900'} tracking-tight leading-none mb-1 group-hover:text-green-500 transition-colors`}>{buyer.name}</h3>
+                              <p className={`text-[10px] font-black uppercase tracking-[0.2em] ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>{buyer.type}</p>
+                            </div>
+                            <div className="flex items-center gap-1.5 bg-yellow-500/10 px-2 py-1 rounded-lg">
+                              <Star size={12} className="text-yellow-500 fill-yellow-500" />
+                              <span className="text-xs font-black text-yellow-600">{buyer.rating}</span>
+                            </div>
+                          </div>
+                          <p className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} flex items-center gap-1 mt-2`}>
+                            <MapPin size={12} /> {buyer.location}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className={`${darkMode ? 'bg-green-500/5' : 'bg-green-50/30'} rounded-3xl p-6 mb-8 border border-green-500/10`}>
+                        <p className={`text-[10px] font-black uppercase tracking-[0.2em] ${darkMode ? 'text-gray-500' : 'text-gray-400'} mb-4 flex items-center gap-2`}>
+                          <TrendingUp size={12} /> Current Market Offers
+                        </p>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="text-center group/price">
+                            <div className={`text-xl font-black ${darkMode ? 'text-green-400' : 'text-green-600'} tracking-tighter group-hover:scale-110 transition-transform`}>₹{buyer.priceOffer.wheat}</div>
+                            <span className={`text-[9px] font-black uppercase tracking-widest ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>Wheat/kg</span>
+                          </div>
+                          <div className="text-center group/price">
+                            <div className={`text-xl font-black ${darkMode ? 'text-green-400' : 'text-green-600'} tracking-tighter group-hover:scale-110 transition-transform`}>₹{buyer.priceOffer.rice}</div>
+                            <span className={`text-[9px] font-black uppercase tracking-widest ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>Rice/kg</span>
+                          </div>
+                          <div className="text-center group/price">
+                            <div className={`text-xl font-black ${darkMode ? 'text-green-400' : 'text-green-600'} tracking-tighter group-hover:scale-110 transition-transform`}>₹{buyer.priceOffer.tomatoes}</div>
+                            <span className={`text-[9px] font-black uppercase tracking-widest ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>Veg/kg</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-4">
+                        <a href={`tel:${buyer.contact}`} className={`flex-1 ${darkMode ? 'bg-gray-800 text-white border-gray-700' : 'bg-white text-gray-900 border-gray-200'} border font-black py-4 rounded-2xl text-xs tracking-widest uppercase flex items-center justify-center gap-2 shadow-xl active:scale-95 transition-all`}>
+                          <Phone size={16} fill="currentColor" strokeWidth={0} />
+                          Contact
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
