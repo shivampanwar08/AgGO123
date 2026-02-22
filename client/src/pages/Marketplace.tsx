@@ -1,4 +1,4 @@
-import { ArrowLeft, Star, MapPin, Phone, TrendingUp, Plus, Check, Search, Leaf, Droplet, Users, MessageSquare, Send, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Star, MapPin, Phone, TrendingUp, Plus, Check, Search, Leaf, Droplet, Users, MessageSquare, Send, ChevronDown, Camera } from 'lucide-react';
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import BottomNav from '@/components/BottomNav';
@@ -140,6 +140,17 @@ export default function Marketplace() {
     image: ''
   });
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewCrop(prev => ({ ...prev, image: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleAddCrop = () => {
     if (!newCrop.name || !newCrop.qty || !newCrop.price) return;
     const userProfile = getUserProfile();
@@ -261,14 +272,31 @@ export default function Marketplace() {
                 </div>
                 <div><label className="text-[10px] font-black uppercase mb-2 block ml-1 text-gray-400">Expected Price</label><input type="number" value={newCrop.price} onChange={(e) => setNewCrop({...newCrop, price: e.target.value})} className="w-full rounded-2xl px-6 py-4 text-sm font-bold border outline-none" /></div>
                 <div>
-                  <label className="text-[10px] font-black uppercase mb-2 block ml-1 text-gray-400">Crop Image URL</label>
-                  <input 
-                    type="text" 
-                    value={newCrop.image} 
-                    onChange={(e) => setNewCrop({...newCrop, image: e.target.value})} 
-                    placeholder="Paste image link here..." 
-                    className="w-full rounded-2xl px-6 py-4 text-sm font-bold border outline-none" 
-                  />
+                  <label className="text-[10px] font-black uppercase mb-2 block ml-1 text-gray-400">Add Crop Photo</label>
+                  <div className="flex items-center gap-4">
+                    <label className={`flex-1 flex flex-col items-center justify-center border-2 border-dashed ${darkMode ? 'border-gray-700 bg-gray-800/50' : 'border-gray-200 bg-gray-50'} rounded-2xl p-6 cursor-pointer hover:border-green-500 transition-colors`}>
+                      {newCrop.image ? (
+                        <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-inner">
+                          <img src={newCrop.image} className="w-full h-full object-cover" alt="Preview" />
+                          <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                            <Camera className="text-white" size={24} />
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <Camera className="text-gray-400 mb-2" size={32} />
+                          <span className="text-xs font-bold text-gray-500">Tap to take or pick photo</span>
+                        </>
+                      )}
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        capture="environment"
+                        className="hidden" 
+                        onChange={handleImageUpload}
+                      />
+                    </label>
+                  </div>
                 </div>
                 <button onClick={handleAddCrop} className="w-full bg-green-500 text-white font-black py-5 rounded-2xl shadow-2xl mt-4">List Crop for Sale</button>
               </div>
