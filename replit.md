@@ -14,8 +14,8 @@ AgGo is a comprehensive agriculture rental and marketplace mobile application fe
 - ✅ Database schema implemented with 5 main tables (users, equipment, lands, marketplaceItems, products)
 - ✅ Complete RESTful API endpoints for all resources
 - ✅ Backend storage layer using Drizzle ORM with PostgreSQL
-- ✅ Database migrations pushed successfully
-- ✅ Server running on port 5000
+- ✅ Image upload method changed from URL input to direct mobile camera/gallery for crop listings
+- ✅ Land rental marketplace expanded with "Workers/Renters" section showing profiles, pricing per acre, and extra requirements.
 
 ## Project Architecture
 
