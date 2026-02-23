@@ -41,11 +41,40 @@ const demoWorkers = [
   }
 ];
 
+const demoWorkerGroups = [
+  {
+    id: 'g1',
+    name: 'Ekta Farmer Group',
+    members: 8,
+    experience: '12 years',
+    location: 'Sirsa, Haryana',
+    rentOffer: 15000,
+    endYearBonus: '20% of net profit',
+    specialty: 'Large Scale Wheat & Cotton',
+    requirements: 'Minimum 50 acres, irrigation must be ready',
+    phone: '+91 94160 55667',
+    image: 'https://images.unsplash.com/photo-1590682680695-43b964a3ae17?w=100&h=100&fit=crop'
+  },
+  {
+    id: 'g2',
+    name: 'Punjab Youth Workers',
+    members: 12,
+    experience: '5 years',
+    location: 'Moga, Punjab',
+    rentOffer: 18000,
+    endYearBonus: '₹5,000 fixed per acre',
+    specialty: 'Rice Paddy & Potato',
+    requirements: 'Storage room for equipment, electricity for pump',
+    phone: '+91 98123 99887',
+    image: 'https://images.unsplash.com/photo-1523348830342-d01f9fc9d53e?w=100&h=100&fit=crop'
+  }
+];
+
 export default function LandRental() {
   const { darkMode, language, allLandOwners } = useApp();
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'lands' | 'workers'>('lands');
+  const [activeTab, setActiveTab] = useState<'lands' | 'workers' | 'groups'>('lands');
 
   return (
     <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} h-full flex flex-col relative overflow-hidden transition-colors`}>
@@ -60,18 +89,24 @@ export default function LandRental() {
           <h1 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} tracking-tight`}>{t('land_rental', language) || 'Land Rental'}</h1>
         </div>
 
-        <div className={`flex gap-2 ${darkMode ? 'bg-gray-900/50' : 'bg-gray-100/50'} p-1 rounded-xl`}>
+        <div className={`flex gap-2 ${darkMode ? 'bg-gray-900/50' : 'bg-gray-100/50'} p-1 rounded-xl overflow-x-auto no-scrollbar`}>
           <button 
             onClick={() => setActiveTab('lands')} 
-            className={`flex-1 py-2.5 px-4 rounded-lg font-bold text-sm transition-all duration-200 ${activeTab === 'lands' ? `${darkMode ? 'bg-gray-800 text-amber-400' : 'bg-white text-amber-600 shadow-md'}` : `${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-600 hover:text-gray-800'}`}`}
+            className={`flex-1 min-w-[80px] py-2.5 px-4 rounded-lg font-bold text-[11px] whitespace-nowrap transition-all duration-200 ${activeTab === 'lands' ? `${darkMode ? 'bg-gray-800 text-amber-400' : 'bg-white text-amber-600 shadow-md'}` : `${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-600 hover:text-gray-800'}`}`}
           >
             Find Land
           </button>
           <button 
             onClick={() => setActiveTab('workers')} 
-            className={`flex-1 py-2.5 px-4 rounded-lg font-bold text-sm transition-all duration-200 ${activeTab === 'workers' ? `${darkMode ? 'bg-gray-800 text-amber-400' : 'bg-white text-amber-600 shadow-md'}` : `${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-600 hover:text-gray-800'}`}`}
+            className={`flex-1 min-w-[80px] py-2.5 px-4 rounded-lg font-bold text-[11px] whitespace-nowrap transition-all duration-200 ${activeTab === 'workers' ? `${darkMode ? 'bg-gray-800 text-amber-400' : 'bg-white text-amber-600 shadow-md'}` : `${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-600 hover:text-gray-800'}`}`}
           >
-            Find Workers
+            Single Workers
+          </button>
+          <button 
+            onClick={() => setActiveTab('groups')} 
+            className={`flex-1 min-w-[80px] py-2.5 px-4 rounded-lg font-bold text-[11px] whitespace-nowrap transition-all duration-200 ${activeTab === 'groups' ? `${darkMode ? 'bg-gray-800 text-amber-400' : 'bg-white text-amber-600 shadow-md'}` : `${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-600 hover:text-gray-800'}`}`}
+          >
+            Worker Groups
           </button>
         </div>
       </div>
@@ -157,7 +192,7 @@ export default function LandRental() {
               ))
             )}
           </div>
-        ) : (
+        ) : activeTab === 'workers' ? (
           <div className="space-y-4">
             <h2 className={`text-xs font-bold ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-widest mt-2`}>
               Available Workers ({demoWorkers.length})
@@ -212,6 +247,76 @@ export default function LandRental() {
                   <a href={`tel:${worker.phone}`} className={`w-full ${darkMode ? 'bg-amber-500/10 text-amber-400' : 'bg-amber-500 text-white'} py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all`}>
                     <Phone size={16} fill="currentColor" strokeWidth={0} />
                     Hire Worker
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <h2 className={`text-xs font-bold ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-widest mt-2`}>
+              Available Groups ({demoWorkerGroups.length})
+            </h2>
+            
+            <div className="space-y-4">
+              {demoWorkerGroups
+                .filter(group => 
+                  !searchQuery || 
+                  group.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  group.specialty.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  group.location.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .map(group => (
+                <div key={group.id} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} rounded-2xl border overflow-hidden shadow-sm p-4`}>
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-200">
+                      <img src={group.image} alt={group.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className={`font-bold text-lg ${darkMode ? 'text-white' : 'text-gray-900'}`}>{group.name}</h3>
+                          <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} flex items-center gap-1`}>
+                            <Users size={12} /> {group.members} members • {group.specialty}
+                          </p>
+                        </div>
+                      </div>
+                      <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} mt-1 flex items-center gap-1`}>
+                        <MapPin size={12} /> {group.location}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className={`${darkMode ? 'bg-gray-900/50' : 'bg-green-500/5'} rounded-xl p-3 border border-green-500/10 mb-4`}>
+                    <div className="grid grid-cols-2 gap-4 mb-3">
+                      <div>
+                        <p className={`text-[10px] font-black uppercase tracking-wider ${darkMode ? 'text-gray-500' : 'text-gray-400'} mb-1`}>Rent Offer</p>
+                        <div className="flex items-center gap-1">
+                          <IndianRupee size={12} className="text-green-600" />
+                          <span className={`text-sm font-black ${darkMode ? 'text-green-400' : 'text-green-700'}`}>₹{group.rentOffer}</span>
+                          <span className="text-[9px] text-gray-500 font-bold uppercase">/ acre</span>
+                        </div>
+                      </div>
+                      <div>
+                        <p className={`text-[10px] font-black uppercase tracking-wider ${darkMode ? 'text-gray-500' : 'text-gray-400'} mb-1`}>Yearly Bonus</p>
+                        <div className="flex items-center gap-1">
+                          <TrendingUp size={12} className="text-blue-500" />
+                          <span className={`text-sm font-black ${darkMode ? 'text-blue-400' : 'text-blue-700'}`}>{group.endYearBonus}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 pt-2 border-t border-dashed border-gray-200">
+                      <Info size={14} className="text-blue-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className={`text-[10px] font-black uppercase tracking-wider ${darkMode ? 'text-gray-500' : 'text-gray-400'} mb-0.5`}>Conditions</p>
+                        <p className={`text-xs font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{group.requirements}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <a href={`tel:${group.phone}`} className={`w-full ${darkMode ? 'bg-green-500/10 text-green-400' : 'bg-green-500 text-white'} py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all`}>
+                    <Phone size={16} fill="currentColor" strokeWidth={0} />
+                    Call to Rent
                   </a>
                 </div>
               ))}
