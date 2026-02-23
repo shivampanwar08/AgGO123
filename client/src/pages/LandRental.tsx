@@ -1,4 +1,4 @@
-import { ArrowLeft, Leaf, MapPin, Phone, Search, Droplet, Users, Briefcase, IndianRupee, Info } from 'lucide-react';
+import { ArrowLeft, Leaf, MapPin, Phone, Search, Droplet, Users, Briefcase, IndianRupee, Info, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import BottomNav from '@/components/BottomNav';
