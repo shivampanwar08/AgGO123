@@ -87,6 +87,8 @@ interface AppContextType {
   marketplaceItems: MarketplaceItem[];
   addMarketplaceItem: (item: MarketplaceItem) => void;
   removeMarketplaceItem: (id: string) => void;
+  profileName: string;
+  setProfileName: (name: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -281,11 +283,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const [profileName, setProfileNameState] = useState(() => {
+    return localStorage.getItem('aggo_profile_name') || 'Farmer John';
+  });
+
+  const setProfileName = (name: string) => {
+    setProfileNameState(name);
+    localStorage.setItem('aggo_profile_name', name);
+  };
+
   return (
     <AppContext.Provider value={{ 
       language, setLanguage, 
       darkMode, setDarkMode, 
       userRole, setUserRole, 
+      profileName, setProfileName,
       equipmentData, setEquipmentData, 
       landData, setLandData, 
       shopperData, setShopperData,

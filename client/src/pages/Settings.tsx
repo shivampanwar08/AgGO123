@@ -8,20 +8,25 @@ import RoleChangeFlow from './RoleChangeFlow';
 import { useLocation } from 'wouter';
 
 export default function Settings() {
-  const { language, setLanguage, darkMode, setDarkMode, setUserRole } = useApp();
+  const { language, setLanguage, darkMode, setDarkMode, setUserRole, profileName, setProfileName } = useApp();
   const [isEditing, setIsEditing] = useState(false);
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [showRoleSelector, setShowRoleSelector] = useState(false);
   const [, setLocation] = useLocation();
 
   const [profile, setProfile] = useState({
-    name: 'Farmer John',
+    name: profileName,
     phone: '+91 98765 43210',
     email: 'farmer.john@aggo.com',
     village: 'Rampur Village',
     bankAccount: '****1234',
     walletBalance: 2450
   });
+
+  const handleSaveProfile = () => {
+    setProfileName(profile.name);
+    setIsEditing(false);
+  };
 
   const bgClass = darkMode ? 'bg-gray-900' : 'bg-gray-50';
   const cardClass = darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100';
@@ -78,7 +83,7 @@ export default function Settings() {
                 <label className={`text-xs font-bold ${textMutedClass} uppercase tracking-widest`}>{t('village', language)}</label>
                 <input type="text" value={profile.village} onChange={(e) => setProfile({...profile, village: e.target.value})} className={`w-full mt-2 p-3 ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-200 text-gray-900'} border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500`} />
               </div>
-              <button onClick={() => setIsEditing(false)} className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-xl mt-4 active:scale-95 transition-transform shadow-lg shadow-green-500/20">{t('save_changes', language)}</button>
+              <button onClick={handleSaveProfile} className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-xl mt-4 active:scale-95 transition-transform shadow-lg shadow-green-500/20">{t('save_changes', language)}</button>
             </div>
           </div>
         </div>
