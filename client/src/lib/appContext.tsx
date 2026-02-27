@@ -89,6 +89,8 @@ interface AppContextType {
   removeMarketplaceItem: (id: string) => void;
   profileName: string;
   setProfileName: (name: string) => void;
+  bookings: any[];
+  addBooking: (booking: any) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -292,12 +294,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('aggo_profile_name', name);
   };
 
+  const [bookings, setBookingsState] = useState<any[]>(() => {
+    const saved = localStorage.getItem('aggo_bookings');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const addBooking = (booking: any) => {
+    const updated = [booking, ...bookings];
+    setBookingsState(updated);
+    localStorage.setItem('aggo_bookings', JSON.stringify(updated));
+  };
+
   return (
     <AppContext.Provider value={{ 
       language, setLanguage, 
       darkMode, setDarkMode, 
       userRole, setUserRole, 
       profileName, setProfileName,
+      bookings, addBooking,
       equipmentData, setEquipmentData, 
       landData, setLandData, 
       shopperData, setShopperData,

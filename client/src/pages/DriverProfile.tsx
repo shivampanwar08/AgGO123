@@ -1,13 +1,16 @@
-import { ArrowLeft, Star, MapPin, Tractor, Plus, Check, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Star, MapPin, Tractor, Plus, Check, ShieldCheck, Calendar, Clock } from 'lucide-react';
 import { useLocation, useRoute } from 'wouter';
 import { useState, useEffect } from 'react';
 import { useApp } from '@/lib/appContext';
 
 export default function DriverProfile() {
-  const { darkMode, allEquipmentRenters } = useApp();
+  const { darkMode, allEquipmentRenters, addBooking } = useApp();
   const [, setLocation] = useLocation();
   const [match, params] = useRoute("/driver/:id");
   const [addedItems, setAddedItems] = useState<string[]>([]);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [bookingDate, setBookingDate] = useState('');
+  const [bookingTime, setBookingTime] = useState('');
   
   // Find driver based on ID from URL
   const driver = allEquipmentRenters.find(d => d.id === params?.id);
@@ -58,6 +61,34 @@ export default function DriverProfile() {
         : [...prev, id]
     );
   };
+
+  const handleConfirmBooking = () => {
+    if (addedItems.length === 0) return;
+    
+    const selectedDate = bookingDate || new Date().toISOString().split('T')[0];
+    const selectedTime = bookingTime || '10:00';
+
+    addedItems.forEach(itemId => {
+      const item = driverData.equipment.find(e => e.id === itemId);
+      if (item) {
+        addBooking({
+          id: `b-${Date.now()}-${item.id}`,
+          equipmentName: item.name,
+          providerName: driverData.name,
+          date: selectedDate,
+          time: selectedTime,
+          status: 'confirmed'
+        });
+      }
+    });
+
+    alert('Booking Confirmed!');
+    setShowBookingModal(false);
+    setLocation('/bookings');
+  };
+
+  const textClass = darkMode ? 'text-white' : 'text-gray-900';
+  const textMutedClass = darkMode ? 'text-gray-400' : 'text-gray-500';
 
   return (
     <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} h-full flex flex-col relative overflow-hidden transition-colors`}>
@@ -162,22 +193,73 @@ export default function DriverProfile() {
       {addedItems.length > 0 && (
         <div className="absolute bottom-4 left-4 right-4 z-50">
            <div className="glass-dark rounded-3xl p-1 shadow-2xl animate-in slide-in-from-bottom-10 duration-300">
-             <div className={`${darkMode ? 'bg-gray-800/80' : 'bg-black/80'} backdrop-blur-xl rounded-[1.25rem] p-4 flex items-center justify-between transition-colors`}>
-                <div className="flex flex-col pl-2">
-                  <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-400'} font-medium uppercase tracking-wide`}>{addedItems.length} items</span>
-                  <span className={`font-bold text-xl ${darkMode ? 'text-white' : 'text-white'}`}>₹{addedItems.reduce((acc, id) => acc + (driverData.equipment.find(e => e.id === id)?.price || 0), 0)}<span className="text-sm font-normal text-gray-500">/hr</span></span>
+             <div className={`${darkMode ? 'bg-gray-800/80' : 'bg-black/80'} backdrop-blur-xl rounded-[1.25rem] p-4 flex flex-col gap-3 transition-colors`}>
+                <div className="flex items-center justify-between pl-2">
+                  <div className="flex flex-col">
+                    <span className={`text-xs text-gray-400 font-medium uppercase tracking-wide`}>{addedItems.length} items</span>
+                    <span className={`font-bold text-xl text-white`}>₹{addedItems.reduce((acc, id) => acc + (driverData.equipment.find(e => e.id === id)?.price || 0), 0)}<span className="text-sm font-normal text-gray-500">/hr</span></span>
+                  </div>
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={() => setShowBookingModal(true)}
+                      className="bg-gray-700 hover:bg-gray-600 text-white font-bold text-sm py-3 px-6 rounded-xl shadow-lg transition-all active:scale-95"
+                    >
+                      Book Later
+                    </button>
+                    <button 
+                      onClick={handleConfirmBooking}
+                      className="bg-green-500 hover:bg-green-400 text-white font-bold text-sm py-3 px-6 rounded-xl shadow-lg shadow-green-500/40 transition-all active:scale-95 neon-glow"
+                    >
+                      Book Now
+                    </button>
+                  </div>
                 </div>
-                <button 
-                  onClick={() => {
-                    const itemIds = addedItems.map(id => id.split('-').pop()).join(',');
-                    setLocation(`/billing?driverId=${driverData.id}&items=${itemIds}`);
-                  }}
-                  className="bg-green-500 hover:bg-green-400 text-white font-bold text-base py-3 px-8 rounded-xl shadow-lg shadow-green-500/40 transition-all active:scale-95 neon-glow"
-                >
-                  Book Now
-                </button>
              </div>
            </div>
+        </div>
+      )}
+
+      {showBookingModal && (
+        <div className="fixed inset-0 z-[60] flex items-end justify-center">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowBookingModal(false)} />
+          <div className={`${darkMode ? 'bg-gray-900' : 'bg-white'} w-full rounded-t-[2.5rem] p-8 relative z-10 animate-in slide-in-from-bottom duration-300`}>
+            <h2 className={`text-2xl font-black ${textClass} mb-6`}>Schedule Booking</h2>
+            
+            <div className="space-y-6">
+              <div>
+                <label className={`text-[10px] font-black uppercase tracking-widest ${textMutedClass} mb-2 block`}>Select Date</label>
+                <div className="relative">
+                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                  <input 
+                    type="date" 
+                    value={bookingDate}
+                    onChange={(e) => setBookingDate(e.target.value)}
+                    className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} border rounded-2xl pl-12 pr-4 py-4 font-bold text-sm ${textClass}`} 
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className={`text-[10px] font-black uppercase tracking-widest ${textMutedClass} mb-2 block`}>Select Time</label>
+                <div className="relative">
+                  <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                  <input 
+                    type="time" 
+                    value={bookingTime}
+                    onChange={(e) => setBookingTime(e.target.value)}
+                    className={`w-full ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} border rounded-2xl pl-12 pr-4 py-4 font-bold text-sm ${textClass}`} 
+                  />
+                </div>
+              </div>
+
+              <button 
+                onClick={handleConfirmBooking}
+                className="w-full bg-green-500 text-white font-black py-5 rounded-2xl shadow-xl shadow-green-500/20 active:scale-95 transition-transform mt-4"
+              >
+                Confirm Booking
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
