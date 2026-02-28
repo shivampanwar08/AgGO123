@@ -325,7 +325,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       darkMode, setDarkMode, 
       userRole, setUserRole, 
       profileName, setProfileName,
-      bookings, addBooking,
+      bookings, addBooking, updateBookingStatus, deleteBooking,
       equipmentData, setEquipmentData, 
       landData, setLandData, 
       shopperData, setShopperData,

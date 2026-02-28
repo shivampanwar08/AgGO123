@@ -12,6 +12,22 @@ export default function Bookings() {
   const textClass = darkMode ? 'text-white' : 'text-gray-900';
   const textMutedClass = darkMode ? 'text-gray-400' : 'text-gray-500';
 
+  const getCountdown = (dateStr: string) => {
+    const now = new Date();
+    const bookingDate = new Date(dateStr);
+    
+    // Reset hours for comparison
+    const d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const d2 = new Date(bookingDate.getFullYear(), bookingDate.getMonth(), bookingDate.getDate());
+    
+    const diffTime = d2.getTime() - d1.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return "Today is the day!";
+    if (diffDays < 0) return "Date passed";
+    return `${diffDays} days remaining`;
+  };
+
   return (
     <div className={`${bgClass} h-full flex flex-col transition-colors duration-300`}>
       <div className={`${darkMode ? 'bg-gray-800/80' : 'bg-white/80'} backdrop-blur-md p-4 flex items-center gap-4 border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
@@ -44,9 +60,12 @@ export default function Bookings() {
               </div>
               
               <div className="grid grid-cols-2 gap-4 py-3 border-y border-dashed border-gray-200">
-                <div className="flex items-center gap-2">
-                  <CalendarIcon size={14} className="text-blue-500" />
-                  <span className={`text-xs font-medium ${textClass}`}>{booking.date}</span>
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    <CalendarIcon size={14} className="text-blue-500" />
+                    <span className={`text-xs font-medium ${textClass}`}>{booking.date}</span>
+                  </div>
+                  <p className="text-[10px] font-bold text-blue-500 ml-5">{getCountdown(booking.date)}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock size={14} className="text-blue-500" />
