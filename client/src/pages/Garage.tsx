@@ -56,7 +56,7 @@ const garageData = [
 ];
 
 export default function Garage() {
-  const { darkMode, language } = useApp();
+  const { darkMode, language, addBooking } = useApp();
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMachine, setSelectedMachine] = useState<any>(null);
@@ -72,11 +72,22 @@ export default function Garage() {
 
   const handleBook = () => {
     if (!selectedDate || !selectedMachine) return;
+    
+    addBooking({
+      id: `g-b-${Date.now()}-${selectedMachine.id}`,
+      equipmentName: selectedMachine.type,
+      providerName: selectedMachine.garageName,
+      date: format(selectedDate, 'yyyy-MM-dd'),
+      time: '09:00 AM', // Default for garage bookings
+      status: 'confirmed'
+    });
+
     setBookingSuccess(true);
     setTimeout(() => {
       setBookingSuccess(false);
       setSelectedMachine(null);
-    }, 2000);
+      setLocation('/bookings');
+    }, 1500);
   };
 
   const isDateDisabled = (date: Date) => {
