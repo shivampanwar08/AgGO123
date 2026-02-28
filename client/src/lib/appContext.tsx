@@ -91,6 +91,8 @@ interface AppContextType {
   setProfileName: (name: string) => void;
   bookings: any[];
   addBooking: (booking: any) => void;
+  updateBookingStatus: (id: string, status: string) => void;
+  deleteBooking: (id: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -301,6 +303,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const addBooking = (booking: any) => {
     const updated = [booking, ...bookings];
+    setBookingsState(updated);
+    localStorage.setItem('aggo_bookings', JSON.stringify(updated));
+  };
+
+  const updateBookingStatus = (id: string, status: string) => {
+    const updated = bookings.map(b => b.id === id ? { ...b, status } : b);
+    setBookingsState(updated);
+    localStorage.setItem('aggo_bookings', JSON.stringify(updated));
+  };
+
+  const deleteBooking = (id: string) => {
+    const updated = bookings.filter(b => b.id !== id);
     setBookingsState(updated);
     localStorage.setItem('aggo_bookings', JSON.stringify(updated));
   };
