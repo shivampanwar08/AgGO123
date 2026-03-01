@@ -91,8 +91,32 @@ export default function Home() {
     return null;
   };
 
-  const NearbyListingsSection = () => (
+  const NearbyListingsSection = () => {
+    const { bookings } = useApp();
+    const pendingBookings = bookings.filter(b => b.status === 'confirmed');
+    
+    return (
     <div className="space-y-4 mt-6">
+      {pendingBookings.length > 0 && (
+        <div className={`${cardClass} border-2 border-blue-500 bg-blue-500/5 rounded-2xl p-4 mb-6 animate-pulse`}>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-500 rounded-lg text-white">
+              <Bell size={18} />
+            </div>
+            <div>
+              <p className={`font-black ${textClass} text-sm`}>New Rental Request!</p>
+              <p className="text-xs text-blue-500 font-bold">{pendingBookings.length} booking(s) pending for your attention</p>
+            </div>
+          </div>
+          <button 
+            onClick={() => setLocation('/bookings')}
+            className="w-full mt-3 bg-blue-500 text-white text-xs font-black py-2 rounded-lg uppercase tracking-wider"
+          >
+            View Requests
+          </button>
+        </div>
+      )}
+
       <h2 className={`text-lg font-bold ${textClass} flex items-center gap-2`}>
         📍 Nearby Listings
       </h2>
@@ -142,7 +166,8 @@ export default function Home() {
         </div>
       )}
     </div>
-  );
+    );
+  };
 
   // Equipment Renter View - Now includes quick access to other sections
   if (userRole === 'equipment-renter' && equipmentData) {

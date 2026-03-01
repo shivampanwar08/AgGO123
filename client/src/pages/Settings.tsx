@@ -165,6 +165,10 @@ export default function Settings() {
             <MenuItem icon={<Leaf size={20} />} label={t('land_rental', language) || 'Land Rental Marketplace'} onClick={() => setLocation('/land-rental')} darkMode={darkMode} />
             <MenuItem icon={<Wrench size={20} />} label={'AgGo Garage'} onClick={() => setLocation('/garage')} darkMode={darkMode} />
             <MenuItem icon={<CreditCard size={20} />} label={'My Bookings'} onClick={() => setLocation('/bookings')} darkMode={darkMode} />
+            <MenuItem icon={<Users size={20} />} label={'Update Renter Profile'} onClick={() => {
+              localStorage.removeItem('aggo_user_role');
+              window.location.reload();
+            }} darkMode={darkMode} />
             <MenuItem icon={<SettingsIcon size={20} />} label={t('app_settings', language)} onClick={() => alert('Settings: Dark Mode, Language, Units')} darkMode={darkMode} />
           </div>
         </div>
