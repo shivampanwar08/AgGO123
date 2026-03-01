@@ -71,7 +71,7 @@ interface AppContextType {
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
   userRole: UserRole | null;
-  setUserRole: (role: UserRole) => void;
+  setUserRole: (role: UserRole | null) => void;
   equipmentData: EquipmentRenterData | null;
   setEquipmentData: (data: EquipmentRenterData) => void;
   landData: LandOwnerData | null;
@@ -258,9 +258,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const setUserRole = (role: UserRole) => {
+  const setUserRole = (role: UserRole | null) => {
     setUserRoleState(role);
-    localStorage.setItem('aggo_user_role', role);
+    if (role) {
+      localStorage.setItem('aggo_user_role', role);
+    } else {
+      localStorage.removeItem('aggo_user_role');
+    }
   };
 
   const setEquipmentData = (data: EquipmentRenterData) => {
