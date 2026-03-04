@@ -4,7 +4,7 @@ import VehicleSheet from "@/components/VehicleSheet";
 import BottomNav from "@/components/BottomNav";
 import { useApp } from "@/lib/appContext";
 import { t } from "@/lib/translations";
-import { Wrench, Leaf, ShoppingCart, MapPin, Star, Check, Tractor, Users, Store, ChevronRight } from "lucide-react";
+import { Wrench, Leaf, ShoppingCart, MapPin, Star, Check, Tractor, Users, Store, ChevronRight, Bell } from "lucide-react";
 import { useLocation } from "wouter";
 
 export default function Home() {
@@ -169,8 +169,11 @@ export default function Home() {
     );
   };
 
-  // Equipment Renter View - Now includes quick access to other sections
+  // Equipment Renter View
   if (userRole === 'equipment-renter' && equipmentData) {
+    const { bookings, updateBookingStatus } = useApp();
+    const myRequests = bookings.filter(b => b.status === 'confirmed');
+
     return (
       <div className={`${bgClass} h-screen flex flex-col transition-colors duration-300`}>
         <div className="flex-shrink-0 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white p-5 shadow-2xl">
@@ -179,32 +182,54 @@ export default function Home() {
               <Wrench size={24} />
             </div>
             <div>
-              <h1 className="text-xl font-bold">My Equipment</h1>
+              <h1 className="text-xl font-bold">Renter Dashboard</h1>
               <p className="text-xs text-blue-100 font-semibold">{equipmentData.ownerName}</p>
             </div>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-5 space-y-4 pb-24">
+        <div className="flex-1 overflow-y-auto p-5 space-y-6 pb-24">
           <div className={`${cardClass} rounded-2xl border p-4 shadow-lg`}>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <p className={`text-xs font-bold ${textMutedClass} uppercase tracking-wider`}>Location</p>
-                <p className={`text-sm font-bold ${textClass} mt-1`}>{equipmentData.village}</p>
-              </div>
-              <div>
-                <p className={`text-xs font-bold ${textMutedClass} uppercase tracking-wider`}>Phone</p>
-                <p className={`text-sm font-bold ${textClass} mt-1 font-mono`}>{equipmentData.phone.slice(-6)}</p>
-              </div>
-              <div>
-                <p className={`text-xs font-bold ${textMutedClass} uppercase tracking-wider`}>Listings</p>
-                <p className={`text-sm font-bold text-blue-500 mt-1`}>{equipmentData.equipment.length}</p>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className={`text-lg font-black ${textClass}`}>Incoming Requests</h2>
+              <div className="bg-blue-500 text-white text-[10px] font-black px-2 py-1 rounded-full animate-bounce">
+                {myRequests.length} NEW
               </div>
             </div>
+
+            {myRequests.length === 0 ? (
+              <div className="text-center py-8 opacity-50">
+                <Bell size={32} className="mx-auto mb-2" />
+                <p className="text-sm font-bold">No active requests</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {myRequests.map((req) => (
+                  <div key={req.id} className={`${darkMode ? 'bg-gray-700/50' : 'bg-blue-50'} rounded-2xl p-4 border border-blue-200/50`}>
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className={`font-black ${textClass}`}>{req.equipmentName}</p>
+                        <p className={`text-[10px] font-bold ${textMutedClass} uppercase`}>Scheduled for {req.date}</p>
+                      </div>
+                      <p className="text-blue-600 font-black text-sm">₹500/hr</p>
+                    </div>
+                    <div className="flex gap-2 mt-4">
+                      <button 
+                        onClick={() => updateBookingStatus(req.id, 'accepted')}
+                        className="flex-1 bg-green-500 text-white text-xs font-black py-2.5 rounded-xl shadow-lg active:scale-95 transition-transform"
+                      >
+                        Accept Trip
+                      </button>
+                      <button className={`px-4 ${darkMode ? 'bg-gray-600' : 'bg-white'} border text-xs font-bold rounded-xl`}>Details</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div>
-            <h2 className={`text-lg font-bold ${textClass} mb-3`}>📦 My Equipment</h2>
+            <h2 className={`text-lg font-bold ${textClass} mb-3`}>📦 My Inventory</h2>
             <div className="space-y-3">
               {equipmentData.equipment.map((item) => (
                 <div key={item.id} className={`${cardClass} border rounded-2xl p-4 shadow-md`}>
@@ -223,15 +248,17 @@ export default function Home() {
           </div>
 
           <QuickAccessSection />
-          <NearbyListingsSection />
         </div>
         <BottomNav />
       </div>
     );
   }
 
-  // Land Owner View - Now includes quick access to other sections
+  // Land Owner View
   if (userRole === 'land-owner' && landData) {
+    const { bookings, updateBookingStatus } = useApp();
+    const myRequests = bookings.filter(b => b.status === 'confirmed');
+
     return (
       <div className={`${bgClass} h-screen flex flex-col transition-colors duration-300`}>
         <div className="flex-shrink-0 bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 text-white p-5 shadow-2xl">
@@ -240,28 +267,49 @@ export default function Home() {
               <Leaf size={24} />
             </div>
             <div>
-              <h1 className="text-xl font-bold">My Lands</h1>
+              <h1 className="text-xl font-bold">Landlord Dashboard</h1>
               <p className="text-xs text-amber-100 font-semibold">{landData.ownerName}</p>
             </div>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-5 space-y-4 pb-24">
+        <div className="flex-1 overflow-y-auto p-5 space-y-6 pb-24">
           <div className={`${cardClass} rounded-2xl border p-4 shadow-lg`}>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <p className={`text-xs font-bold ${textMutedClass} uppercase tracking-wider`}>Location</p>
-                <p className={`text-sm font-bold ${textClass} mt-1`}>{landData.village}</p>
-              </div>
-              <div>
-                <p className={`text-xs font-bold ${textMutedClass} uppercase tracking-wider`}>Total</p>
-                <p className={`text-sm font-bold text-amber-500 mt-1`}>{landData.lands.reduce((sum, l) => sum + l.size, 0)} acres</p>
-              </div>
-              <div>
-                <p className={`text-xs font-bold ${textMutedClass} uppercase tracking-wider`}>Listings</p>
-                <p className={`text-sm font-bold text-amber-500 mt-1`}>{landData.lands.length}</p>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className={`text-lg font-black ${textClass}`}>Rental Interests</h2>
+              <div className="bg-amber-500 text-white text-[10px] font-black px-2 py-1 rounded-full animate-bounce">
+                {myRequests.length} NEW
               </div>
             </div>
+
+            {myRequests.length === 0 ? (
+              <div className="text-center py-8 opacity-50">
+                <Bell size={32} className="mx-auto mb-2" />
+                <p className="text-sm font-bold">No active interests</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {myRequests.map((req) => (
+                  <div key={req.id} className={`${darkMode ? 'bg-gray-700/50' : 'bg-amber-50'} rounded-2xl p-4 border border-amber-200/50`}>
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className={`font-black ${textClass}`}>{req.equipmentName}</p>
+                        <p className={`text-[10px] font-bold ${textMutedClass} uppercase`}>Inquiry for {req.date}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 mt-4">
+                      <button 
+                        onClick={() => updateBookingStatus(req.id, 'accepted')}
+                        className="flex-1 bg-amber-500 text-white text-xs font-black py-2.5 rounded-xl shadow-lg active:scale-95 transition-transform"
+                      >
+                        Accept Inquiry
+                      </button>
+                      <button className={`px-4 ${darkMode ? 'bg-gray-600' : 'bg-white'} border text-xs font-bold rounded-xl`}>Call</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div>
@@ -279,22 +327,23 @@ export default function Home() {
                       <p className={`text-xs ${textMutedClass}`}>/acre</p>
                     </div>
                   </div>
-                  <p className={`text-xs ${textMutedClass}`}>💧 {item.waterAccess}</p>
                 </div>
               ))}
             </div>
           </div>
 
           <QuickAccessSection />
-          <NearbyListingsSection />
         </div>
         <BottomNav />
       </div>
     );
   }
 
-  // Shopper View - Now includes quick access to other sections
+  // Shopper View
   if (userRole === 'shopper' && shopperData) {
+    const { bookings, updateBookingStatus } = useApp();
+    const myOrders = bookings.filter(b => b.status === 'confirmed');
+
     return (
       <div className={`${bgClass} h-screen flex flex-col transition-colors duration-300`}>
         <div className="flex-shrink-0 bg-gradient-to-r from-purple-600 via-purple-500 to-pink-500 text-white p-5 shadow-2xl">
@@ -303,30 +352,49 @@ export default function Home() {
               <ShoppingCart size={24} />
             </div>
             <div>
-              <h1 className="text-xl font-bold">{shopperData.shopName}</h1>
-              <p className="text-xs text-purple-100 font-semibold">{shopperData.shopOwner}</p>
+              <h1 className="text-xl font-bold">Shop Manager</h1>
+              <p className="text-xs text-purple-100 font-semibold">{shopperData.shopName}</p>
             </div>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-5 space-y-4 pb-24">
+        <div className="flex-1 overflow-y-auto p-5 space-y-6 pb-24">
           <div className={`${cardClass} rounded-2xl border p-4 shadow-lg`}>
-            <div className="space-y-2">
-              <div>
-                <p className={`text-xs font-bold ${textMutedClass} uppercase tracking-wider`}>Address</p>
-                <p className={`text-sm font-bold ${textClass} mt-1`}>{shopperData.shopAddress}, {shopperData.village}</p>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className={`text-xs font-bold ${textMutedClass} uppercase tracking-wider`}>Phone</p>
-                  <p className={`text-sm font-bold ${textClass} mt-1 font-mono`}>{shopperData.phone.slice(-6)}</p>
-                </div>
-                <div>
-                  <p className={`text-xs font-bold ${textMutedClass} uppercase tracking-wider`}>Products</p>
-                  <p className={`text-sm font-bold text-purple-500 mt-1`}>{shopperData.products.length}</p>
-                </div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className={`text-lg font-black ${textClass}`}>New Orders</h2>
+              <div className="bg-purple-500 text-white text-[10px] font-black px-2 py-1 rounded-full animate-bounce">
+                {myOrders.length} NEW
               </div>
             </div>
+
+            {myOrders.length === 0 ? (
+              <div className="text-center py-8 opacity-50">
+                <Bell size={32} className="mx-auto mb-2" />
+                <p className="text-sm font-bold">No pending orders</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {myOrders.map((req) => (
+                  <div key={req.id} className={`${darkMode ? 'bg-gray-700/50' : 'bg-purple-50'} rounded-2xl p-4 border border-purple-200/50`}>
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className={`font-black ${textClass}`}>{req.equipmentName}</p>
+                        <p className={`text-[10px] font-bold ${textMutedClass} uppercase`}>Pickup: {req.date}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 mt-4">
+                      <button 
+                        onClick={() => updateBookingStatus(req.id, 'accepted')}
+                        className="flex-1 bg-purple-500 text-white text-xs font-black py-2.5 rounded-xl shadow-lg active:scale-95 transition-transform"
+                      >
+                        Accept Order
+                      </button>
+                      <button className={`px-4 ${darkMode ? 'bg-gray-600' : 'bg-white'} border text-xs font-bold rounded-xl`}>Chat</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div>
@@ -343,14 +411,12 @@ export default function Home() {
                       <p className={`text-xl font-bold text-purple-500`}>₹{item.price}</p>
                     </div>
                   </div>
-                  <p className={`text-xs ${textMutedClass}`}>📦 Stock: {item.quantity} units</p>
                 </div>
               ))}
             </div>
           </div>
 
           <QuickAccessSection />
-          <NearbyListingsSection />
         </div>
         <BottomNav />
       </div>
