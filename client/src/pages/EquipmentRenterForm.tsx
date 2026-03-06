@@ -10,14 +10,14 @@ interface EquipmentRenterFormProps {
 }
 
 export default function EquipmentRenterForm({ onBack, onSubmit }: EquipmentRenterFormProps) {
-  const { darkMode, language, setEquipmentData, addEquipmentRenter } = useApp();
+  const { darkMode, language, setEquipmentData, addEquipmentRenter, profileName } = useApp();
   const [equipment, setEquipment] = useState([
     { id: 1, name: 'Tractor', pricePerDay: 800, quantity: 1 }
   ]);
   const [formData, setFormData] = useState({
-    ownerName: '',
+    ownerName: profileName || '',
     village: '',
-    phone: '',
+    phone: localStorage.getItem('aggo_user_phone') || '',
     bankAccount: '',
     isDriver: false,
     drivingLicense: ''

@@ -10,7 +10,7 @@ interface ShopperFormProps {
 }
 
 export default function ShopperForm({ onBack, onSubmit }: ShopperFormProps) {
-  const { darkMode, language, setShopperData, addShopper } = useApp();
+  const { darkMode, language, setShopperData, addShopper, profileName } = useApp();
   const [products, setProducts] = useState([
     { id: 1, name: 'Urea Fertilizer', category: 'Fertilizers', price: 650, quantity: 50, image: '' }
   ]);
@@ -26,13 +26,25 @@ export default function ShopperForm({ onBack, onSubmit }: ShopperFormProps) {
     }
   };
 
+  const handleShopImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({ ...prev, shopImage: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const [formData, setFormData] = useState({
     shopName: 'My Agri Shop',
-    shopOwner: '',
+    shopOwner: profileName || '',
     village: '',
-    phone: '',
+    phone: localStorage.getItem('aggo_user_phone') || '',
     shopAddress: '',
-    bankAccount: ''
+    bankAccount: '',
+    shopImage: ''
   });
 
   const bgClass = darkMode ? 'bg-gray-900' : 'bg-gray-50';
@@ -97,6 +109,21 @@ export default function ShopperForm({ onBack, onSubmit }: ShopperFormProps) {
               placeholder="My Agri Shop"
               className={`w-full mt-2 p-3 ${inputClass} border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500`}
             />
+          </div>
+
+          <div>
+            <label className={`text-xs font-bold ${textMutedClass} uppercase tracking-widest`}>Shop Photo</label>
+            <label className={`mt-2 flex flex-col items-center justify-center border-2 border-dashed ${darkMode ? 'border-gray-700 hover:border-purple-500' : 'border-gray-300 hover:border-purple-400'} rounded-xl p-4 transition-colors cursor-pointer group`}>
+              <input type="file" accept="image/*" onChange={handleShopImageUpload} className="hidden" />
+              {formData.shopImage ? (
+                <img src={formData.shopImage} alt="Shop" className="w-full h-32 object-cover rounded-lg" />
+              ) : (
+                <div className="py-2 flex flex-col items-center">
+                  <Plus size={24} className={textMutedClass} />
+                  <span className={`text-xs font-bold ${textMutedClass} mt-2`}>Upload Shop Banner</span>
+                </div>
+              )}
+            </label>
           </div>
 
           <div>

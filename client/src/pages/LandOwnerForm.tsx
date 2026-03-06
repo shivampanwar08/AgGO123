@@ -10,16 +10,27 @@ interface LandOwnerFormProps {
 }
 
 export default function LandOwnerForm({ onBack, onSubmit }: LandOwnerFormProps) {
-  const { darkMode, language, setLandData, addLandOwner } = useApp();
+  const { darkMode, language, setLandData, addLandOwner, profileName } = useApp();
   const [lands, setLands] = useState([
-    { id: 1, size: 2, soilType: 'Black Soil', waterAccess: 'Well + Borewell', pricePerAcre: 800 }
+    { id: 1, size: 2, soilType: 'Black Soil', waterAccess: 'Well + Borewell', pricePerAcre: 800, image: '' }
   ]);
   const [formData, setFormData] = useState({
-    ownerName: '',
+    ownerName: profileName || '',
     village: '',
-    phone: '',
+    phone: localStorage.getItem('aggo_user_phone') || '',
     bankAccount: ''
   });
+
+  const handleLandImageUpload = (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateLand(id, 'image', reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const bgClass = darkMode ? 'bg-gray-900' : 'bg-gray-50';
   const cardClass = darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100';
@@ -178,6 +189,20 @@ export default function LandOwnerForm({ onBack, onSubmit }: LandOwnerFormProps) 
                     placeholder="Water Access"
                     className={`p-2 ${inputClass} border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500`}
                   />
+                </div>
+                <div>
+                  <label className={`text-xs font-bold ${textMutedClass} uppercase tracking-widest`}>Land Photo</label>
+                  <label className={`mt-2 flex flex-col items-center justify-center border-2 border-dashed ${darkMode ? 'border-gray-700 hover:border-amber-500' : 'border-gray-300 hover:border-amber-400'} rounded-xl p-3 transition-colors cursor-pointer group`}>
+                    <input type="file" accept="image/*" onChange={(e) => handleLandImageUpload(item.id, e)} className="hidden" />
+                    {(item as any).image ? (
+                      <img src={(item as any).image} alt="Land" className="w-full h-24 object-cover rounded-lg" />
+                    ) : (
+                      <div className="py-2 flex flex-col items-center">
+                        <Plus size={20} className={textMutedClass} />
+                        <span className={`text-[10px] font-bold ${textMutedClass} mt-1`}>Upload Land Photo</span>
+                      </div>
+                    )}
+                  </label>
                 </div>
               </div>
             ))}
