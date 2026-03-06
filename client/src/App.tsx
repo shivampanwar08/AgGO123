@@ -23,6 +23,7 @@ import ShopperForm from "@/pages/ShopperForm";
 import LandRental from "@/pages/LandRental";
 import Garage from "@/pages/Garage";
 import Bookings from "@/pages/Bookings";
+import Notifications from "@/pages/Notifications";
 
 function Router() {
   return (
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/land-rental" component={LandRental}/>
       <Route path="/garage" component={Garage}/>
       <Route path="/bookings" component={Bookings}/>
+      <Route path="/notifications" component={Notifications}/>
       <Route path="/settings" component={Settings}/>
       <Route path="/billing" component={Billing}/>
       <Route path="/tracking" component={Tracking}/>

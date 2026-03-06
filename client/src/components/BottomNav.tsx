@@ -1,35 +1,33 @@
 import { Link, useLocation } from 'wouter';
-import { Home, Users, ShoppingBag, Settings, Leaf, MapPin } from 'lucide-react';
+import { Home, Users, ShoppingBag, Settings, Leaf, MapPin, Bell } from 'lucide-react';
 import { useApp } from '@/lib/appContext';
 import { t } from '@/lib/translations';
 
 export default function BottomNav() {
   const [location] = useLocation();
-  const { language, darkMode, userRole } = useApp();
+  const { language, darkMode, userRole, bookings } = useApp();
 
   const isActive = (path: string) => location === path;
+  const pendingCount = bookings.filter(b => b.status === 'confirmed').length;
 
   const getNavItems = () => {
-    if (userRole === 'equipment-renter') {
+    if (userRole && userRole !== 'user') {
       return [
         { to: "/", icon: <Home size={22} />, label: t('home', language) },
-        { to: "/drivers", icon: <Users size={22} />, label: t('drivers', language) },
-        { to: "/settings", icon: <Settings size={22} />, label: t('settings', language) },
-      ];
-    }
-    
-    if (userRole === 'land-owner') {
-      return [
-        { to: "/", icon: <Home size={22} />, label: t('home', language) },
-        { to: "/land-rental", icon: <MapPin size={22} />, label: "Land" },
-        { to: "/settings", icon: <Settings size={22} />, label: t('settings', language) },
-      ];
-    }
-    
-    if (userRole === 'shopper') {
-      return [
-        { to: "/", icon: <Home size={22} />, label: t('home', language) },
-        { to: "/shops", icon: <ShoppingBag size={22} />, label: t('shops', language) },
+        { 
+          to: "/notifications", 
+          icon: (
+            <div className="relative">
+              <Bell size={22} />
+              {pendingCount > 0 && (
+                <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center animate-pulse border-2 border-white dark:border-gray-900">
+                  {pendingCount}
+                </div>
+              )}
+            </div>
+          ), 
+          label: "Activity" 
+        },
         { to: "/settings", icon: <Settings size={22} />, label: t('settings', language) },
       ];
     }
