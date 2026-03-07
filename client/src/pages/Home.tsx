@@ -173,74 +173,98 @@ export default function Home() {
   if (userRole === 'equipment-renter' && equipmentData) {
     const { bookings, updateBookingStatus } = useApp();
     const myRequests = bookings.filter(b => b.status === 'confirmed');
+    const acceptedCount = bookings.filter(b => b.status === 'accepted').length;
+    const completedCount = bookings.filter(b => b.status === 'completed').length;
 
     return (
       <div className={`${bgClass} h-screen flex flex-col transition-colors duration-300`}>
-        <div className="flex-shrink-0 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white p-5 shadow-2xl">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-white/20 rounded-xl backdrop-blur-sm">
-              <Wrench size={24} />
+        <div className="flex-shrink-0 bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white p-6 shadow-2xl">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm">
+              <Wrench size={28} />
             </div>
             <div>
-              <h1 className="text-xl font-bold">Renter Dashboard</h1>
-              <p className="text-xs text-blue-100 font-semibold">{equipmentData.ownerName}</p>
+              <h1 className="text-2xl font-black">Equipment Rental</h1>
+              <p className="text-sm text-blue-100 font-bold">{equipmentData.ownerName}</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-3">
+              <p className="text-[10px] font-bold text-blue-100 uppercase">Active</p>
+              <p className="text-2xl font-black mt-1">{acceptedCount}</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-3">
+              <p className="text-[10px] font-bold text-blue-100 uppercase">Pending</p>
+              <p className="text-2xl font-black mt-1">{myRequests.length}</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-3">
+              <p className="text-[10px] font-bold text-blue-100 uppercase">Completed</p>
+              <p className="text-2xl font-black mt-1">{completedCount}</p>
             </div>
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto p-5 space-y-6 pb-24">
-          <div className={`${cardClass} rounded-2xl border p-4 shadow-lg`}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className={`text-lg font-black ${textClass}`}>Incoming Requests</h2>
-              <div className="bg-blue-500 text-white text-[10px] font-black px-2 py-1 rounded-full animate-bounce">
-                {myRequests.length} NEW
+          {myRequests.length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between px-1">
+                <h2 className={`text-lg font-black ${textClass}`}>📋 New Requests</h2>
+                <span className="bg-red-500 text-white text-[10px] font-black px-3 py-1 rounded-full animate-pulse">{myRequests.length}</span>
               </div>
-            </div>
-
-            {myRequests.length === 0 ? (
-              <div className="text-center py-8 opacity-50">
-                <Bell size={32} className="mx-auto mb-2" />
-                <p className="text-sm font-bold">No active requests</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {myRequests.map((req) => (
-                  <div key={req.id} className={`${darkMode ? 'bg-gray-700/50' : 'bg-blue-50'} rounded-2xl p-4 border border-blue-200/50`}>
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <p className={`font-black ${textClass}`}>{req.equipmentName}</p>
-                        <p className={`text-[10px] font-bold ${textMutedClass} uppercase`}>Scheduled for {req.date}</p>
-                      </div>
-                      <p className="text-blue-600 font-black text-sm">₹500/hr</p>
+              {myRequests.map((req) => (
+                <div key={req.id} className={`${cardClass} rounded-2xl border-2 border-blue-200/50 p-5 shadow-lg hover:shadow-xl transition-all`}>
+                  <div className="flex gap-4 mb-4">
+                    <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex-shrink-0">
+                      <Tractor className="text-blue-600" size={20} />
                     </div>
-                    <div className="flex gap-2 mt-4">
-                      <button 
-                        onClick={() => updateBookingStatus(req.id, 'accepted')}
-                        className="flex-1 bg-green-500 text-white text-xs font-black py-2.5 rounded-xl shadow-lg active:scale-95 transition-transform"
-                      >
-                        Accept Trip
-                      </button>
-                      <button className={`px-4 ${darkMode ? 'bg-gray-600' : 'bg-white'} border text-xs font-bold rounded-xl`}>Details</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div>
-            <h2 className={`text-lg font-bold ${textClass} mb-3`}>📦 My Inventory</h2>
-            <div className="space-y-3">
-              {equipmentData.equipment.map((item) => (
-                <div key={item.id} className={`${cardClass} border rounded-2xl p-4 shadow-md`}>
-                  <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <p className={`font-bold ${textClass}`}>{item.name}</p>
+                      <p className={`font-black ${textClass} text-lg`}>{req.equipmentName}</p>
+                      <p className={`text-xs ${textMutedClass} font-bold`}>📅 {req.date} • ⏰ {req.time}</p>
                     </div>
                     <div className="text-right">
-                      <p className={`text-xl font-bold text-blue-500`}>₹{item.pricePerDay}</p>
-                      <p className={`text-xs ${textMutedClass}`}>/day</p>
+                      <p className="text-2xl font-black text-blue-600">₹500</p>
+                      <p className="text-[10px] font-bold text-blue-500">/rental</p>
                     </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={() => updateBookingStatus(req.id, 'accepted')}
+                      className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-black py-3 rounded-xl shadow-lg active:scale-95 transition-all hover:shadow-xl"
+                    >
+                      ✓ Accept Request
+                    </button>
+                    <button className="px-4 bg-red-500/10 text-red-600 text-xs font-black rounded-xl hover:bg-red-500/20 transition-colors">
+                      ✕ Decline
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="space-y-4">
+            <h2 className={`text-lg font-black ${textClass} px-1`}>🔧 My Equipment</h2>
+            <div className="grid gap-4">
+              {equipmentData.equipment.map((item) => (
+                <div key={item.id} className={`${cardClass} rounded-2xl border p-5 shadow-md hover:shadow-lg transition-all`}>
+                  <div className="flex gap-4">
+                    <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex-shrink-0">
+                      <Tractor className="text-blue-600" size={24} />
+                    </div>
+                    <div className="flex-1">
+                      <p className={`font-black ${textClass} text-base`}>{item.name}</p>
+                      <p className={`text-xs ${textMutedClass} mt-1`}>Qty: {item.quantity}</p>
+                    </div>
+                    <div className="text-right flex flex-col justify-center">
+                      <p className="text-xl font-black text-blue-600">₹{item.pricePerDay}</p>
+                      <p className={`text-[10px] font-bold ${textMutedClass}`}>per day</p>
+                    </div>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <button className="w-full text-xs font-black text-blue-600 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+                      Edit Listing →
+                    </button>
                   </div>
                 </div>
               ))}
@@ -258,74 +282,101 @@ export default function Home() {
   if (userRole === 'land-owner' && landData) {
     const { bookings, updateBookingStatus } = useApp();
     const myRequests = bookings.filter(b => b.status === 'confirmed');
+    const acceptedCount = bookings.filter(b => b.status === 'accepted').length;
+    const totalAcres = landData.lands.reduce((sum, l) => sum + l.size, 0);
 
     return (
       <div className={`${bgClass} h-screen flex flex-col transition-colors duration-300`}>
-        <div className="flex-shrink-0 bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 text-white p-5 shadow-2xl">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-white/20 rounded-xl backdrop-blur-sm">
-              <Leaf size={24} />
+        <div className="flex-shrink-0 bg-gradient-to-br from-amber-600 via-amber-500 to-yellow-500 text-white p-6 shadow-2xl">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm">
+              <Leaf size={28} />
             </div>
             <div>
-              <h1 className="text-xl font-bold">Landlord Dashboard</h1>
-              <p className="text-xs text-amber-100 font-semibold">{landData.ownerName}</p>
+              <h1 className="text-2xl font-black">Land Rentals</h1>
+              <p className="text-sm text-amber-100 font-bold">{landData.ownerName}</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-3">
+              <p className="text-[10px] font-bold text-amber-100 uppercase">Total</p>
+              <p className="text-2xl font-black mt-1">{totalAcres}</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-3">
+              <p className="text-[10px] font-bold text-amber-100 uppercase">Pending</p>
+              <p className="text-2xl font-black mt-1">{myRequests.length}</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-3">
+              <p className="text-[10px] font-bold text-amber-100 uppercase">Active</p>
+              <p className="text-2xl font-black mt-1">{acceptedCount}</p>
             </div>
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto p-5 space-y-6 pb-24">
-          <div className={`${cardClass} rounded-2xl border p-4 shadow-lg`}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className={`text-lg font-black ${textClass}`}>Rental Interests</h2>
-              <div className="bg-amber-500 text-white text-[10px] font-black px-2 py-1 rounded-full animate-bounce">
-                {myRequests.length} NEW
+          {myRequests.length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between px-1">
+                <h2 className={`text-lg font-black ${textClass}`}>🔔 Rental Inquiries</h2>
+                <span className="bg-orange-500 text-white text-[10px] font-black px-3 py-1 rounded-full animate-pulse">{myRequests.length}</span>
               </div>
-            </div>
-
-            {myRequests.length === 0 ? (
-              <div className="text-center py-8 opacity-50">
-                <Bell size={32} className="mx-auto mb-2" />
-                <p className="text-sm font-bold">No active interests</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {myRequests.map((req) => (
-                  <div key={req.id} className={`${darkMode ? 'bg-gray-700/50' : 'bg-amber-50'} rounded-2xl p-4 border border-amber-200/50`}>
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <p className={`font-black ${textClass}`}>{req.equipmentName}</p>
-                        <p className={`text-[10px] font-bold ${textMutedClass} uppercase`}>Inquiry for {req.date}</p>
-                      </div>
+              {myRequests.map((req) => (
+                <div key={req.id} className={`${cardClass} rounded-2xl border-2 border-amber-200/50 p-5 shadow-lg hover:shadow-xl transition-all`}>
+                  <div className="flex gap-4 mb-4">
+                    <div className="p-3 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex-shrink-0">
+                      <MapPin className="text-amber-600" size={20} />
                     </div>
-                    <div className="flex gap-2 mt-4">
-                      <button 
-                        onClick={() => updateBookingStatus(req.id, 'accepted')}
-                        className="flex-1 bg-amber-500 text-white text-xs font-black py-2.5 rounded-xl shadow-lg active:scale-95 transition-transform"
-                      >
-                        Accept Inquiry
-                      </button>
-                      <button className={`px-4 ${darkMode ? 'bg-gray-600' : 'bg-white'} border text-xs font-bold rounded-xl`}>Call</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div>
-            <h2 className={`text-lg font-bold ${textClass} mb-3`}>🌾 My Land Listings</h2>
-            <div className="space-y-3">
-              {landData.lands.map((item) => (
-                <div key={item.id} className={`${cardClass} border rounded-2xl p-4 shadow-md`}>
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <p className={`font-bold ${textClass}`}>{item.size} Acres</p>
-                      <p className={`text-sm ${textMutedClass}`}>{item.soilType}</p>
+                    <div className="flex-1">
+                      <p className={`font-black ${textClass} text-lg`}>Land Inquiry</p>
+                      <p className={`text-xs ${textMutedClass} font-bold`}>📅 {req.date} • Duration: 3 months</p>
                     </div>
                     <div className="text-right">
-                      <p className={`text-xl font-bold text-amber-500`}>₹{item.pricePerAcre}</p>
-                      <p className={`text-xs ${textMutedClass}`}>/acre</p>
+                      <p className="text-2xl font-black text-amber-600">₹5k</p>
+                      <p className="text-[10px] font-bold text-amber-500">/month</p>
                     </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={() => updateBookingStatus(req.id, 'accepted')}
+                      className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-black py-3 rounded-xl shadow-lg active:scale-95 transition-all hover:shadow-xl"
+                    >
+                      ✓ Accept Inquiry
+                    </button>
+                    <button className="px-4 bg-red-500/10 text-red-600 text-xs font-black rounded-xl hover:bg-red-500/20 transition-colors">
+                      📞 Call
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="space-y-4">
+            <h2 className={`text-lg font-black ${textClass} px-1`}>🌾 My Land Properties</h2>
+            <div className="grid gap-4">
+              {landData.lands.map((item) => (
+                <div key={item.id} className={`${cardClass} rounded-2xl border p-5 shadow-md hover:shadow-lg transition-all overflow-hidden`}>
+                  {(item as any).image && (
+                    <div className="mb-4 -m-5 mb-4">
+                      <img src={(item as any).image} alt="Land" className="w-full h-32 object-cover" />
+                    </div>
+                  )}
+                  <div className="flex gap-4">
+                    <div className="flex-1">
+                      <p className={`font-black ${textClass} text-base`}>{item.size} Acres</p>
+                      <p className={`text-xs ${textMutedClass} mt-1`}>🌱 Soil: {item.soilType}</p>
+                      <p className={`text-xs ${textMutedClass}`}>💧 Water: {item.waterAccess}</p>
+                    </div>
+                    <div className="text-right flex flex-col justify-center">
+                      <p className="text-2xl font-black text-amber-600">₹{item.pricePerAcre}</p>
+                      <p className={`text-[10px] font-bold ${textMutedClass}`}>per acre</p>
+                    </div>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <button className="w-full text-xs font-black text-amber-600 py-2 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg transition-colors">
+                      View Details →
+                    </button>
                   </div>
                 </div>
               ))}
@@ -343,73 +394,103 @@ export default function Home() {
   if (userRole === 'shopper' && shopperData) {
     const { bookings, updateBookingStatus } = useApp();
     const myOrders = bookings.filter(b => b.status === 'confirmed');
+    const acceptedCount = bookings.filter(b => b.status === 'accepted').length;
+    const totalProducts = shopperData.products.length;
 
     return (
       <div className={`${bgClass} h-screen flex flex-col transition-colors duration-300`}>
-        <div className="flex-shrink-0 bg-gradient-to-r from-purple-600 via-purple-500 to-pink-500 text-white p-5 shadow-2xl">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-white/20 rounded-xl backdrop-blur-sm">
-              <ShoppingCart size={24} />
+        <div className="flex-shrink-0 bg-gradient-to-br from-purple-600 via-purple-500 to-pink-500 text-white p-6 shadow-2xl">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm">
+              <ShoppingCart size={28} />
             </div>
             <div>
-              <h1 className="text-xl font-bold">Shop Manager</h1>
-              <p className="text-xs text-purple-100 font-semibold">{shopperData.shopName}</p>
+              <h1 className="text-2xl font-black">{shopperData.shopName}</h1>
+              <p className="text-sm text-purple-100 font-bold">{shopperData.shopOwner}</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-3">
+              <p className="text-[10px] font-bold text-purple-100 uppercase">Products</p>
+              <p className="text-2xl font-black mt-1">{totalProducts}</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-3">
+              <p className="text-[10px] font-bold text-purple-100 uppercase">Pending</p>
+              <p className="text-2xl font-black mt-1">{myOrders.length}</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-3">
+              <p className="text-[10px] font-bold text-purple-100 uppercase">Accepted</p>
+              <p className="text-2xl font-black mt-1">{acceptedCount}</p>
             </div>
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto p-5 space-y-6 pb-24">
-          <div className={`${cardClass} rounded-2xl border p-4 shadow-lg`}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className={`text-lg font-black ${textClass}`}>New Orders</h2>
-              <div className="bg-purple-500 text-white text-[10px] font-black px-2 py-1 rounded-full animate-bounce">
-                {myOrders.length} NEW
+          {myOrders.length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between px-1">
+                <h2 className={`text-lg font-black ${textClass}`}>📦 New Orders</h2>
+                <span className="bg-purple-500 text-white text-[10px] font-black px-3 py-1 rounded-full animate-pulse">{myOrders.length}</span>
               </div>
-            </div>
-
-            {myOrders.length === 0 ? (
-              <div className="text-center py-8 opacity-50">
-                <Bell size={32} className="mx-auto mb-2" />
-                <p className="text-sm font-bold">No pending orders</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {myOrders.map((req) => (
-                  <div key={req.id} className={`${darkMode ? 'bg-gray-700/50' : 'bg-purple-50'} rounded-2xl p-4 border border-purple-200/50`}>
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <p className={`font-black ${textClass}`}>{req.equipmentName}</p>
-                        <p className={`text-[10px] font-bold ${textMutedClass} uppercase`}>Pickup: {req.date}</p>
-                      </div>
+              {myOrders.map((req) => (
+                <div key={req.id} className={`${cardClass} rounded-2xl border-2 border-purple-200/50 p-5 shadow-lg hover:shadow-xl transition-all`}>
+                  <div className="flex gap-4 mb-4">
+                    <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex-shrink-0">
+                      <ShoppingCart className="text-purple-600" size={20} />
                     </div>
-                    <div className="flex gap-2 mt-4">
-                      <button 
-                        onClick={() => updateBookingStatus(req.id, 'accepted')}
-                        className="flex-1 bg-purple-500 text-white text-xs font-black py-2.5 rounded-xl shadow-lg active:scale-95 transition-transform"
-                      >
-                        Accept Order
-                      </button>
-                      <button className={`px-4 ${darkMode ? 'bg-gray-600' : 'bg-white'} border text-xs font-bold rounded-xl`}>Chat</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div>
-            <h2 className={`text-lg font-bold ${textClass} mb-3`}>🛍️ My Products</h2>
-            <div className="space-y-3">
-              {shopperData.products.map((item) => (
-                <div key={item.id} className={`${cardClass} border rounded-2xl p-4 shadow-md`}>
-                  <div className="flex justify-between items-start mb-2">
                     <div className="flex-1">
-                      <p className={`font-bold ${textClass}`}>{item.name}</p>
-                      <p className={`text-xs ${textMutedClass}`}>{item.category}</p>
+                      <p className={`font-black ${textClass} text-lg`}>Customer Order</p>
+                      <p className={`text-xs ${textMutedClass} font-bold`}>📅 Pickup: {req.date} • {req.time}</p>
                     </div>
                     <div className="text-right">
-                      <p className={`text-xl font-bold text-purple-500`}>₹{item.price}</p>
+                      <p className="text-2xl font-black text-purple-600">₹1.2k</p>
+                      <p className="text-[10px] font-bold text-purple-500">total</p>
                     </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={() => updateBookingStatus(req.id, 'accepted')}
+                      className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-black py-3 rounded-xl shadow-lg active:scale-95 transition-all hover:shadow-xl"
+                    >
+                      ✓ Accept Order
+                    </button>
+                    <button className="px-4 bg-blue-500/10 text-blue-600 text-xs font-black rounded-xl hover:bg-blue-500/20 transition-colors">
+                      💬 Chat
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="space-y-4">
+            <h2 className={`text-lg font-black ${textClass} px-1`}>🛒 Product Inventory</h2>
+            <div className="grid gap-4">
+              {shopperData.products.map((item) => (
+                <div key={item.id} className={`${cardClass} rounded-2xl border p-5 shadow-md hover:shadow-lg transition-all overflow-hidden`}>
+                  {(item as any).image && (
+                    <div className="mb-4 -m-5 mb-4">
+                      <img src={(item as any).image} alt={item.name} className="w-full h-32 object-cover" />
+                    </div>
+                  )}
+                  <div className="flex gap-4 items-start">
+                    <div className="flex-1">
+                      <p className={`font-black ${textClass} text-base`}>{item.name}</p>
+                      <p className={`text-xs ${textMutedClass} mt-1`}>Category: {item.category}</p>
+                      <p className={`text-xs font-bold mt-2 ${item.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {item.quantity > 0 ? `📦 ${item.quantity} in stock` : '❌ Out of stock'}
+                      </p>
+                    </div>
+                    <div className="text-right flex flex-col justify-center">
+                      <p className="text-2xl font-black text-purple-600">₹{item.price}</p>
+                      <p className={`text-[10px] font-bold ${textMutedClass}`}>per unit</p>
+                    </div>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <button className="w-full text-xs font-black text-purple-600 py-2 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-colors">
+                      Manage Stock →
+                    </button>
                   </div>
                 </div>
               ))}
