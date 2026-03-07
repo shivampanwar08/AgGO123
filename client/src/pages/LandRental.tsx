@@ -71,10 +71,18 @@ const demoWorkerGroups = [
 ];
 
 export default function LandRental() {
-  const { darkMode, language, allLandOwners } = useApp();
+  const { darkMode, language, allLandOwners, addBooking } = useApp();
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'lands' | 'workers' | 'groups'>('lands');
+  const [showWorkerForm, setShowWorkerForm] = useState<string | null>(null);
+  const [showGroupForm, setShowGroupForm] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    acres: '',
+    startDate: '',
+    duration: '',
+    requirements: ''
+  });
 
   return (
     <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} h-full flex flex-col relative overflow-hidden transition-colors`}>
@@ -244,10 +252,12 @@ export default function LandRental() {
                     </div>
                   </div>
 
-                  <a href={`tel:${worker.phone}`} className={`w-full ${darkMode ? 'bg-amber-500/10 text-amber-400' : 'bg-amber-500 text-white'} py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all`}>
+                  <button 
+                    onClick={() => setShowWorkerForm(worker.id)}
+                    className={`w-full ${darkMode ? 'bg-amber-500/10 text-amber-400' : 'bg-amber-500 text-white'} py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all`}>
                     <Phone size={16} fill="currentColor" strokeWidth={0} />
                     Hire Worker
-                  </a>
+                  </button>
                 </div>
               ))}
             </div>
@@ -314,16 +324,190 @@ export default function LandRental() {
                     </div>
                   </div>
 
-                  <a href={`tel:${group.phone}`} className={`w-full ${darkMode ? 'bg-green-500/10 text-green-400' : 'bg-green-500 text-white'} py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all`}>
+                  <button 
+                    onClick={() => setShowGroupForm(group.id)}
+                    className={`w-full ${darkMode ? 'bg-green-500/10 text-green-400' : 'bg-green-500 text-white'} py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all`}>
                     <Phone size={16} fill="currentColor" strokeWidth={0} />
-                    Call to Rent
-                  </a>
+                    Book Group
+                  </button>
                 </div>
               ))}
             </div>
           </div>
         )}
       </div>
+
+      {/* Worker Hire Form Modal */}
+      {showWorkerForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-end z-50">
+          <div className={`w-full ${darkMode ? 'bg-gray-900' : 'bg-white'} rounded-t-3xl p-6 max-h-[85vh] overflow-y-auto`}>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className={`text-2xl font-black ${darkMode ? 'text-white' : 'text-gray-900'}`}>Hire Worker</h2>
+              <button onClick={() => setShowWorkerForm(null)} className="text-gray-500 text-2xl">×</button>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div>
+                <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase`}>Land Size (Acres)</label>
+                <input 
+                  type="number" 
+                  value={formData.acres}
+                  onChange={(e) => setFormData({...formData, acres: e.target.value})}
+                  placeholder="Enter acres"
+                  className={`w-full mt-2 p-3 ${darkMode ? 'bg-gray-800 text-white border-gray-700' : 'bg-gray-50 text-gray-900 border-gray-200'} border rounded-xl outline-none focus:ring-2 focus:ring-amber-500`}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase`}>Start Date</label>
+                  <input 
+                    type="date" 
+                    value={formData.startDate}
+                    onChange={(e) => setFormData({...formData, startDate: e.target.value})}
+                    className={`w-full mt-2 p-3 ${darkMode ? 'bg-gray-800 text-white border-gray-700' : 'bg-gray-50 text-gray-900 border-gray-200'} border rounded-xl outline-none focus:ring-2 focus:ring-amber-500`}
+                  />
+                </div>
+                <div>
+                  <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase`}>Duration (Days)</label>
+                  <input 
+                    type="number" 
+                    value={formData.duration}
+                    onChange={(e) => setFormData({...formData, duration: e.target.value})}
+                    placeholder="Days"
+                    className={`w-full mt-2 p-3 ${darkMode ? 'bg-gray-800 text-white border-gray-700' : 'bg-gray-50 text-gray-900 border-gray-200'} border rounded-xl outline-none focus:ring-2 focus:ring-amber-500`}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase`}>Special Requirements</label>
+                <textarea 
+                  value={formData.requirements}
+                  onChange={(e) => setFormData({...formData, requirements: e.target.value})}
+                  placeholder="Any special needs for the worker..."
+                  className={`w-full mt-2 p-3 ${darkMode ? 'bg-gray-800 text-white border-gray-700' : 'bg-gray-50 text-gray-900 border-gray-200'} border rounded-xl outline-none focus:ring-2 focus:ring-amber-500 resize-none`}
+                  rows={3}
+                />
+              </div>
+            </div>
+
+            <button 
+              onClick={() => {
+                const worker = demoWorkers.find(w => w.id === showWorkerForm);
+                if(worker && formData.acres && formData.startDate) {
+                  addBooking({
+                    id: `booking-${Date.now()}`,
+                    equipmentName: worker.name,
+                    providerName: worker.name,
+                    date: formData.startDate,
+                    time: '08:00 AM',
+                    status: 'confirmed',
+                    type: 'worker',
+                    acres: formData.acres,
+                    duration: formData.duration
+                  });
+                  setShowWorkerForm(null);
+                  setFormData({acres: '', startDate: '', duration: '', requirements: ''});
+                  alert('Worker hired successfully!');
+                }
+              }}
+              className="w-full bg-amber-500 text-white py-3 rounded-xl font-black text-lg shadow-lg active:scale-95 transition-all"
+            >
+              Confirm Booking
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Group Hire Form Modal */}
+      {showGroupForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-end z-50">
+          <div className={`w-full ${darkMode ? 'bg-gray-900' : 'bg-white'} rounded-t-3xl p-6 max-h-[85vh] overflow-y-auto`}>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className={`text-2xl font-black ${darkMode ? 'text-white' : 'text-gray-900'}`}>Book Worker Group</h2>
+              <button onClick={() => setShowGroupForm(null)} className="text-gray-500 text-2xl">×</button>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <div>
+                <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase`}>Land Size (Acres)</label>
+                <input 
+                  type="number" 
+                  value={formData.acres}
+                  onChange={(e) => setFormData({...formData, acres: e.target.value})}
+                  placeholder="Minimum 50 acres recommended"
+                  className={`w-full mt-2 p-3 ${darkMode ? 'bg-gray-800 text-white border-gray-700' : 'bg-gray-50 text-gray-900 border-gray-200'} border rounded-xl outline-none focus:ring-2 focus:ring-green-500`}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase`}>Start Date</label>
+                  <input 
+                    type="date" 
+                    value={formData.startDate}
+                    onChange={(e) => setFormData({...formData, startDate: e.target.value})}
+                    className={`w-full mt-2 p-3 ${darkMode ? 'bg-gray-800 text-white border-gray-700' : 'bg-gray-50 text-gray-900 border-gray-200'} border rounded-xl outline-none focus:ring-2 focus:ring-green-500`}
+                  />
+                </div>
+                <div>
+                  <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase`}>Season (Months)</label>
+                  <select 
+                    value={formData.duration}
+                    onChange={(e) => setFormData({...formData, duration: e.target.value})}
+                    className={`w-full mt-2 p-3 ${darkMode ? 'bg-gray-800 text-white border-gray-700' : 'bg-gray-50 text-gray-900 border-gray-200'} border rounded-xl outline-none focus:ring-2 focus:ring-green-500`}
+                  >
+                    <option value="">Select months</option>
+                    <option value="3">3 Months</option>
+                    <option value="4">4 Months</option>
+                    <option value="6">6 Months</option>
+                    <option value="12">Full Year</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase`}>Land Conditions</label>
+                <textarea 
+                  value={formData.requirements}
+                  onChange={(e) => setFormData({...formData, requirements: e.target.value})}
+                  placeholder="Irrigation status, equipment available, etc..."
+                  className={`w-full mt-2 p-3 ${darkMode ? 'bg-gray-800 text-white border-gray-700' : 'bg-gray-50 text-gray-900 border-gray-200'} border rounded-xl outline-none focus:ring-2 focus:ring-green-500 resize-none`}
+                  rows={3}
+                />
+              </div>
+            </div>
+
+            <button 
+              onClick={() => {
+                const group = demoWorkerGroups.find(g => g.id === showGroupForm);
+                if(group && formData.acres && formData.startDate && formData.duration) {
+                  addBooking({
+                    id: `booking-${Date.now()}`,
+                    equipmentName: group.name,
+                    providerName: group.name,
+                    date: formData.startDate,
+                    time: '09:00 AM',
+                    status: 'confirmed',
+                    type: 'group',
+                    acres: formData.acres,
+                    members: group.members,
+                    duration: formData.duration
+                  });
+                  setShowGroupForm(null);
+                  setFormData({acres: '', startDate: '', duration: '', requirements: ''});
+                  alert('Group booking confirmed!');
+                }
+              }}
+              className="w-full bg-green-500 text-white py-3 rounded-xl font-black text-lg shadow-lg active:scale-95 transition-all"
+            >
+              Confirm Booking
+            </button>
+          </div>
+        </div>
+      )}
+
       <BottomNav />
     </div>
   );
