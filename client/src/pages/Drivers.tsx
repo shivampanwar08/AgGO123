@@ -10,12 +10,17 @@ export default function Drivers() {
   const [searchParams] = useState(new URLSearchParams(window.location.search));
   const itemsParam = searchParams.get('items');
   const selectedTypes = itemsParam ? itemsParam.split(',') : [];
+  const [selectedVillage, setSelectedVillage] = useState('');
+  const [selectedDistance, setSelectedDistance] = useState(10);
 
-  // Filter drivers based on equipment types if provided
+  // Get unique villages
+  const uniqueVillages = Array.from(new Set(allEquipmentRenters.map(d => d.village))).filter(Boolean);
+
+  // Filter drivers based on equipment types, village, and distance
   const filteredDrivers = allEquipmentRenters.filter(driver => {
-    if (!itemsParam) return true;
-    const driverEquipmentNames = driver.equipment.map(e => e.name);
-    return selectedTypes.some(type => driverEquipmentNames.includes(type));
+    const equipmentMatch = !itemsParam || driver.equipment.map(e => e.name).some(name => selectedTypes.includes(name));
+    const villageMatch = !selectedVillage || driver.village === selectedVillage;
+    return equipmentMatch && villageMatch;
   });
 
   return (
@@ -35,6 +40,39 @@ export default function Drivers() {
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-24 no-scrollbar">
+        {/* Filter Section */}
+        <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-2xl border p-4 space-y-4`}>
+          <div>
+            <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider mb-2 block`}>Village</label>
+            <select 
+              value={selectedVillage}
+              onChange={(e) => setSelectedVillage(e.target.value)}
+              className={`w-full p-2.5 ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-200 text-gray-900'} border rounded-xl text-sm font-semibold outline-none`}
+            >
+              <option value="">All Villages</option>
+              {uniqueVillages.map(village => (
+                <option key={village} value={village}>{village}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div>
+            <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider mb-2 block`}>Radius: {selectedDistance} km</label>
+            <input 
+              type="range" 
+              min="1" 
+              max="50" 
+              value={selectedDistance}
+              onChange={(e) => setSelectedDistance(Number(e.target.value))}
+              className="w-full h-2 bg-gradient-to-r from-green-400 to-green-600 rounded-lg appearance-none cursor-pointer"
+            />
+            <div className="flex justify-between text-[10px] text-gray-500 mt-1">
+              <span>1 km</span>
+              <span>50 km</span>
+            </div>
+          </div>
+        </div>
+
         {/* Filter Tags */}
         <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
           {selectedTypes.length > 0 ? (

@@ -97,6 +97,12 @@ export default function Marketplace() {
   const [activeTab, setActiveTab] = useState<'browse' | 'sell'>('browse');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCrop, setSelectedCrop] = useState<any>(null);
+  const [selectedVillage, setSelectedVillage] = useState('');
+  const [selectedRadius, setSelectedRadius] = useState(10);
+  const [selectedDate, setSelectedDate] = useState('');
+
+  // Get unique villages from farmers
+  const uniqueVillages = Array.from(new Set([...farmersWithCrops.map(f => f.village), ...Array.from(new Map(marketplaceItems.map((item: any) => [item.village, item.village])).values())].filter(Boolean)));
 
   // Helper to get user profile info
   const getUserProfile = () => {
@@ -197,9 +203,11 @@ export default function Marketplace() {
 
   const allListings = [...farmersWithCrops, ...Array.from(sellersMap.values())];
   const uniqueListings = Array.from(new Map(allListings.map(item => [item.name, item])).values());
-  const filteredFarmers = uniqueListings.filter(farmer => 
-    farmer.crops.some((crop: any) => crop.name.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  const filteredFarmers = uniqueListings.filter(farmer => {
+    const villageMatch = !selectedVillage || farmer.village === selectedVillage;
+    const cropMatch = !searchQuery || farmer.crops.some((crop: any) => crop.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    return villageMatch && cropMatch;
+  });
   const myListedCrops = marketplaceItems.filter(item => item.isUserListing);
 
   return (
@@ -220,10 +228,50 @@ export default function Marketplace() {
       <div className="flex-1 overflow-y-auto pb-24 no-scrollbar">
         {activeTab === 'browse' && (
           <div className="p-4 space-y-4">
-            <div className="relative">
+            <div className="relative mb-3">
               <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} size={18} />
               <input type="text" placeholder="Search crops, pesticides..." className={`w-full ${darkMode ? 'bg-gray-800 text-white border-gray-700' : 'bg-white text-gray-900 border-gray-200'} rounded-xl pl-10 pr-4 py-3 text-sm font-medium outline-none focus:ring-2 focus:ring-green-500 transition-all border`} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
             </div>
+
+            {/* Filters */}
+            <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-2xl border p-4 space-y-3`}>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider mb-1 block`}>Village</label>
+                  <select 
+                    value={selectedVillage}
+                    onChange={(e) => setSelectedVillage(e.target.value)}
+                    className={`w-full p-2 ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-200 text-gray-900'} border rounded-lg text-xs font-semibold outline-none`}
+                  >
+                    <option value="">All Villages</option>
+                    {uniqueVillages.map(village => (
+                      <option key={village} value={village}>{village}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider mb-1 block`}>Radius: {selectedRadius} km</label>
+                  <input 
+                    type="range" 
+                    min="1" 
+                    max="50" 
+                    value={selectedRadius}
+                    onChange={(e) => setSelectedRadius(Number(e.target.value))}
+                    className="w-full h-2 bg-gradient-to-r from-green-400 to-green-600 rounded-lg appearance-none cursor-pointer"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider mb-1 block`}>Harvest Date</label>
+                <input 
+                  type="date" 
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className={`w-full p-2 ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-200 text-gray-900'} border rounded-lg text-xs font-semibold outline-none`}
+                />
+              </div>
+            </div>
+
             <div className="space-y-6">
               <h2 className={`text-xs font-bold ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-widest mt-4`}>Available Crops</h2>
               {filteredFarmers.map(farmer => (
