@@ -4,7 +4,7 @@ import { useApp } from '@/lib/appContext';
 import BottomNav from '@/components/BottomNav';
 
 export default function Notifications() {
-  const { darkMode, bookings, updateBookingStatus } = useApp();
+  const { darkMode, bookings, updateBookingStatus, userRole } = useApp();
   const [, setLocation] = useLocation();
 
   const bgClass = darkMode ? 'bg-gray-900' : 'bg-gray-50';
@@ -14,6 +14,14 @@ export default function Notifications() {
 
   const myRequests = bookings.filter(b => b.status === 'confirmed');
   const history = bookings.filter(b => b.status !== 'confirmed');
+  
+  // Role-specific title
+  const getTitle = () => {
+    if (userRole === 'equipment-renter') return '🔧 Equipment Requests';
+    if (userRole === 'land-owner') return '🌾 Land Rental Inquiries';
+    if (userRole === 'shopper') return '🛒 Customer Contacts';
+    return 'Activity & Earnings';
+  };
 
   // Calculate earnings (mock logic)
   const totalEarnings = history.length * 500;
@@ -24,33 +32,40 @@ export default function Notifications() {
         <button onClick={() => setLocation('/')} className="p-2 hover:bg-gray-100/10 rounded-full transition-colors">
           <ArrowLeft size={20} className={textClass} />
         </button>
-        <h1 className={`text-xl font-bold ${textClass}`}>Activity & Earnings</h1>
+        <h1 className={`text-xl font-bold ${textClass}`}>{getTitle()}</h1>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-6 pb-24 no-scrollbar">
-        {/* Earnings Card */}
-        <div className="bg-gradient-to-br from-green-600 to-green-400 rounded-3xl p-6 text-white shadow-xl">
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <p className="text-green-100 text-xs font-bold uppercase tracking-wider">Total Earnings</p>
-              <h2 className="text-3xl font-black mt-1 flex items-center">
-                <IndianRupee size={24} strokeWidth={3} />
-                {totalEarnings}
-              </h2>
+        {/* Show earnings card only for sellers/renters */}
+        {(userRole === 'equipment-renter' || userRole === 'land-owner' || userRole === 'shopper') && (
+          <div className="bg-gradient-to-br from-green-600 to-green-400 rounded-3xl p-6 text-white shadow-xl">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <p className="text-green-100 text-xs font-bold uppercase tracking-wider">Total Earnings</p>
+                <h2 className="text-3xl font-black mt-1 flex items-center">
+                  <IndianRupee size={24} strokeWidth={3} />
+                  {totalEarnings}
+                </h2>
+              </div>
+              <div className="bg-white/20 p-2 rounded-xl backdrop-blur-md">
+                <TrendingUp size={24} />
+              </div>
             </div>
-            <div className="bg-white/20 p-2 rounded-xl backdrop-blur-md">
-              <TrendingUp size={24} />
+            <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/10">
+              <p className="text-[10px] font-bold uppercase text-green-50 opacity-80">Recent Payout</p>
+              <p className="text-sm font-black">₹{history.length > 0 ? 500 : 0} • Processing</p>
             </div>
           </div>
-          <div className="bg-white/10 rounded-xl p-3 backdrop-blur-sm border border-white/10">
-            <p className="text-[10px] font-bold uppercase text-green-50 opacity-80">Recent Payout</p>
-            <p className="text-sm font-black">₹{history.length > 0 ? 500 : 0} • Processing</p>
-          </div>
-        </div>
+        )}
 
         {/* New Requests Section */}
         <div className="space-y-4">
-          <h3 className={`text-sm font-black ${textMutedClass} uppercase tracking-widest`}>Pending Requests</h3>
+          <h3 className={`text-sm font-black ${textMutedClass} uppercase tracking-widest`}>
+            {userRole === 'equipment-renter' && '📋 Pending Rental Requests'}
+            {userRole === 'land-owner' && '🔔 Land Rental Inquiries'}
+            {userRole === 'shopper' && '👥 Customer Contact Requests'}
+            {!userRole && 'Pending Requests'}
+          </h3>
           {myRequests.length === 0 ? (
             <div className={`${cardClass} border rounded-2xl p-8 text-center opacity-50`}>
               <Clock size={32} className="mx-auto mb-2" />
@@ -58,23 +73,35 @@ export default function Notifications() {
             </div>
           ) : (
             myRequests.map((req) => (
-              <div key={req.id} className={`${cardClass} border-2 border-blue-500/30 rounded-2xl p-4 shadow-sm relative overflow-hidden`}>
-                <div className="absolute top-0 right-0 bg-blue-500 text-white text-[8px] font-black px-2 py-0.5 rounded-bl-lg">NEW</div>
+              <div key={req.id} className={`${cardClass} border-2 ${
+                userRole === 'land-owner' ? 'border-amber-500/30' : userRole === 'shopper' ? 'border-purple-500/30' : 'border-blue-500/30'
+              } rounded-2xl p-4 shadow-sm relative overflow-hidden`}>
+                <div className={`absolute top-0 right-0 ${
+                  userRole === 'land-owner' ? 'bg-amber-500' : userRole === 'shopper' ? 'bg-purple-500' : 'bg-blue-500'
+                } text-white text-[8px] font-black px-2 py-0.5 rounded-bl-lg`}>NEW</div>
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <p className={`font-black ${textClass}`}>{req.equipmentName}</p>
-                    <p className={`text-[10px] font-bold ${textMutedClass}`}>Request from: {req.userName || 'Anonymous Farmer'}</p>
+                    <p className={`font-black ${textClass}`}>{req.equipmentName || 'New Request'}</p>
+                    <p className={`text-[10px] font-bold ${textMutedClass}`}>
+                      {userRole === 'shopper' ? 'Contact from: ' : 'Request from: '}{req.userName || 'Customer'}
+                    </p>
                   </div>
-                  <p className="text-blue-500 font-black">₹500</p>
+                  <p className={`font-black ${
+                    userRole === 'land-owner' ? 'text-amber-500' : userRole === 'shopper' ? 'text-purple-500' : 'text-blue-500'
+                  }`}>₹{req.price || 500}</p>
                 </div>
                 <div className="flex gap-2">
                   <button 
                     onClick={() => updateBookingStatus(req.id, 'accepted')}
-                    className="flex-1 bg-blue-500 text-white text-xs font-black py-2.5 rounded-xl shadow-lg active:scale-95 transition-transform"
+                    className={`flex-1 ${
+                      userRole === 'land-owner' ? 'bg-amber-500' : userRole === 'shopper' ? 'bg-purple-500' : 'bg-blue-500'
+                    } text-white text-xs font-black py-2.5 rounded-xl shadow-lg active:scale-95 transition-transform`}
                   >
-                    Accept
+                    {userRole === 'shopper' ? 'Accept Contact' : 'Accept'}
                   </button>
-                  <button className={`px-4 ${darkMode ? 'bg-gray-700' : 'bg-white'} border text-xs font-bold rounded-xl`}>Decline</button>
+                  <button className={`px-4 ${darkMode ? 'bg-gray-700' : 'bg-white'} border text-xs font-bold rounded-xl`}>
+                    {userRole === 'shopper' ? 'Reject' : 'Decline'}
+                  </button>
                 </div>
               </div>
             ))
