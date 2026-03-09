@@ -91,6 +91,11 @@ export default function Shops() {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const [highlightedShopId, setHighlightedShopId] = useState<string | null>(null);
+  const [selectedVillage, setSelectedVillage] = useState('');
+  const [selectedRadius, setSelectedRadius] = useState(10);
+
+  // Get unique villages from shops
+  const uniqueVillages = Array.from(new Set([...shops.map(s => 'Nearby'), ...allShoppers.map(s => s.village)].filter(Boolean)));
 
   const handleSelectShop = (shopId: string) => {
     setSearchQuery(''); // Clear search to show shops list
@@ -191,6 +196,12 @@ export default function Shops() {
     }
   };
 
+  // Filter shops based on village and radius
+  const filteredShopsList = allShopsList.filter(shop => {
+    const villageMatch = !selectedVillage || shop.type === selectedVillage || (selectedVillage === 'Nearby' && shop.type === 'Local Seller');
+    return villageMatch;
+  });
+
   return (
     <div className={`${darkMode ? 'bg-gray-900' : 'bg-gray-50'} h-full flex flex-col relative overflow-hidden transition-colors`}>
       <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} px-4 py-4 z-10 shadow-sm space-y-3 transition-colors flex-shrink-0`}>
@@ -234,12 +245,47 @@ export default function Shops() {
         ) : (
           // Default Shop List View
           <>
+            {/* Filters */}
+            <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-2xl border p-4 space-y-4`}>
+              <div>
+                <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider mb-2 block`}>Shop Type</label>
+                <select 
+                  value={selectedVillage}
+                  onChange={(e) => setSelectedVillage(e.target.value)}
+                  className={`w-full p-2.5 ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-200 text-gray-900'} border rounded-xl text-sm font-semibold outline-none`}
+                >
+                  <option value="">All Shops</option>
+                  <option value="Nearby">Nearby</option>
+                  <option value="Local Seller">Local Sellers</option>
+                  <option value="Seeds & Fertilizers">Seeds & Fertilizers</option>
+                  <option value="Spare Parts & Repair">Spare Parts</option>
+                  <option value="Pesticides">Pesticides</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className={`text-xs font-bold ${darkMode ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider mb-2 block`}>Radius: {selectedRadius} km</label>
+                <input 
+                  type="range" 
+                  min="1" 
+                  max="50" 
+                  value={selectedRadius}
+                  onChange={(e) => setSelectedRadius(Number(e.target.value))}
+                  className="w-full h-2 bg-gradient-to-r from-green-400 to-green-600 rounded-lg appearance-none cursor-pointer"
+                />
+                <div className="flex justify-between text-[10px] text-gray-500 mt-1">
+                  <span>1 km</span>
+                  <span>50 km</span>
+                </div>
+              </div>
+            </div>
+
             <div className="flex justify-between items-center">
               <h2 className={`text-xs font-bold ${darkMode ? 'text-gray-500' : 'text-gray-400'} uppercase tracking-wider`}>{t('all_shops', language)}</h2>
               <span className={`text-xs ${darkMode ? 'text-green-400' : 'text-green-600'} font-bold`}>{t('view_map', language)}</span>
             </div>
 
-            {allShopsList.map(shop => (
+            {filteredShopsList.map(shop => (
               <ShopCard 
                 key={shop.id} 
                 {...shop} 
@@ -247,6 +293,12 @@ export default function Shops() {
                 onProductClick={openProductDetails}
               />
             ))}
+
+            {filteredShopsList.length === 0 && (
+              <div className="text-center py-10 opacity-50">
+                <p className={darkMode ? 'text-white' : 'text-gray-900'}>No shops found matching your filters.</p>
+              </div>
+            )}
           </>
         )}
       </div>
