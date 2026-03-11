@@ -404,6 +404,7 @@ export default function LandRental() {
                     time: '08:00 AM',
                     status: 'confirmed',
                     type: 'worker',
+                    roleType: 'land-owner',
                     acres: formData.acres,
                     duration: formData.duration
                   });
@@ -491,6 +492,7 @@ export default function LandRental() {
                     time: '09:00 AM',
                     status: 'confirmed',
                     type: 'group',
+                    roleType: 'land-owner',
                     acres: formData.acres,
                     members: group.members,
                     duration: formData.duration

@@ -12,8 +12,16 @@ export default function Notifications() {
   const textClass = darkMode ? 'text-white' : 'text-gray-900';
   const textMutedClass = darkMode ? 'text-gray-400' : 'text-gray-500';
 
-  const myRequests = bookings.filter(b => b.status === 'confirmed');
-  const history = bookings.filter(b => b.status !== 'confirmed');
+  // Filter bookings by current role
+  const roleFilteredBookings = bookings.filter(b => {
+    if (userRole === 'equipment-renter') return b.roleType === 'equipment-renter' || (!b.roleType && !b.type);
+    if (userRole === 'land-owner') return b.roleType === 'land-owner';
+    if (userRole === 'shopper') return b.roleType === 'shopper' || b.type === 'cart';
+    return true;
+  });
+
+  const myRequests = roleFilteredBookings.filter(b => b.status === 'confirmed');
+  const history = roleFilteredBookings.filter(b => b.status !== 'confirmed');
   
   // Role-specific title
   const getTitle = () => {

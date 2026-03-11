@@ -342,7 +342,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       date: new Date().toISOString().split('T')[0],
       time: new Date().toLocaleTimeString(),
       status: 'confirmed',
-      type: 'cart'
+      type: 'cart',
+      roleType: 'shopper'
     });
   };
 
