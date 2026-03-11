@@ -93,6 +93,8 @@ interface AppContextType {
   addBooking: (booking: any) => void;
   updateBookingStatus: (id: string, status: string) => void;
   deleteBooking: (id: string) => void;
+  cartItems: any[];
+  addToCart: (item: any) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -323,6 +325,26 @@ export function AppProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('aggo_bookings', JSON.stringify(updated));
   };
 
+  const [cartItems, setCartItemsState] = useState<any[]>(() => {
+    const saved = localStorage.getItem('aggo_cart_items');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const addToCart = (item: any) => {
+    const updated = [{ ...item, addedAt: new Date().toISOString(), id: `cart-${Date.now()}` }, ...cartItems];
+    setCartItemsState(updated);
+    localStorage.setItem('aggo_cart_items', JSON.stringify(updated));
+    addBooking({
+      id: `activity-${Date.now()}`,
+      equipmentName: `Added ${item.name} to cart`,
+      providerName: 'You',
+      date: new Date().toISOString().split('T')[0],
+      time: new Date().toLocaleTimeString(),
+      status: 'confirmed',
+      type: 'cart'
+    });
+  };
+
   return (
     <AppContext.Provider value={{ 
       language, setLanguage, 
@@ -336,7 +358,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       allEquipmentRenters, addEquipmentRenter,
       allLandOwners, addLandOwner,
       allShoppers, addShopper,
-      marketplaceItems, addMarketplaceItem, removeMarketplaceItem
+      marketplaceItems, addMarketplaceItem, removeMarketplaceItem,
+      cartItems, addToCart
     }}>
       {children}
     </AppContext.Provider>

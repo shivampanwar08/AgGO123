@@ -392,10 +392,10 @@ export default function Home() {
 
   // Shopper View
   if (userRole === 'shopper' && shopperData) {
-    const { bookings, updateBookingStatus } = useApp();
-    const myOrders = bookings.filter(b => b.status === 'confirmed');
+    const { bookings, updateBookingStatus, cartItems } = useApp();
+    const myOrders = bookings.filter(b => b.status === 'confirmed' || b.type === 'cart');
     const acceptedCount = bookings.filter(b => b.status === 'accepted').length;
-    const totalProducts = shopperData.products.length;
+    const totalProducts = (shopperData.products.length + cartItems.length);
 
     return (
       <div className={`${bgClass} h-screen flex flex-col transition-colors duration-300`}>
@@ -467,6 +467,19 @@ export default function Home() {
           <div className="space-y-4">
             <h2 className={`text-lg font-black ${textClass} px-1`}>🛒 Product Inventory</h2>
             <div className="grid gap-4">
+              {cartItems.length > 0 && (
+                <div className="border-2 border-green-400 bg-green-50/50 dark:bg-green-900/10 rounded-2xl p-4">
+                  <h3 className="text-sm font-black text-green-700 dark:text-green-400 mb-2">🆕 Recently Added ({cartItems.length})</h3>
+                  <div className="space-y-2">
+                    {cartItems.slice(0, 3).map((item) => (
+                      <div key={item.id} className="flex justify-between items-center text-xs">
+                        <span className="font-bold text-gray-900 dark:text-white">{item.name}</span>
+                        <span className="text-green-600 dark:text-green-400 font-black">₹{item.price}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
               {shopperData.products.map((item) => (
                 <div key={item.id} className={`${cardClass} rounded-2xl border p-5 shadow-md hover:shadow-lg transition-all overflow-hidden`}>
                   {(item as any).image && (

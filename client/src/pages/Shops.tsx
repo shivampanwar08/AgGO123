@@ -86,7 +86,7 @@ const shops = [
 ];
 
 export default function Shops() {
-  const { darkMode, language, allShoppers } = useApp();
+  const { darkMode, language, allShoppers, addToCart } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
@@ -365,7 +365,14 @@ export default function Shops() {
               </div>
               
               <div className="mt-8 pb-4">
-                <button className="w-full bg-green-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-green-500/30 active:scale-[0.98] transition-all">
+                <button 
+                  onClick={() => {
+                    addToCart(selectedProduct);
+                    setSelectedProduct(null);
+                    alert('Item added to cart!');
+                  }}
+                  className="w-full bg-green-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-green-500/30 active:scale-[0.98] transition-all"
+                >
                   Add to Cart
                 </button>
               </div>
