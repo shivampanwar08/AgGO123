@@ -95,6 +95,7 @@ interface AppContextType {
   deleteBooking: (id: string) => void;
   cartItems: any[];
   addToCart: (item: any) => void;
+  getPricingSuggestion: (type: 'equipment' | 'land', itemName: string, currentPrice: number) => { suggested: number; marketAvg: number; percentChange: number };
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -345,6 +346,29 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const getPricingSuggestion = (type: 'equipment' | 'land', itemName: string, currentPrice: number) => {
+    const marketData: Record<string, Record<string, number>> = {
+      equipment: {
+        'tractor': 1500, 'harvestor': 2500, 'plow': 800, 'drill': 1200, 'sprayer': 600, 'cultivator': 900, 'thresher': 2000, 'irrigation': 1000,
+        'pump': 500, 'generator': 1800, 'wagon': 400, 'loader': 3000, 'default': 1000
+      },
+      land: {
+        'rice': 15000, 'wheat': 12000, 'sugarcane': 20000, 'cotton': 18000, 'corn': 13000, 'soybean': 14000, 'default': 15000
+      }
+    };
+
+    const markets = type === 'equipment' ? marketData.equipment : marketData.land;
+    const normalizedName = itemName.toLowerCase();
+    const basePrice = Object.entries(markets).find(([key]) => normalizedName.includes(key))?.[1] || markets.default;
+    
+    const demandMultiplier = 0.95 + Math.random() * 0.1;
+    const seasonalAdjustment = 0.98 + Math.random() * 0.04;
+    const suggested = Math.round(basePrice * demandMultiplier * seasonalAdjustment);
+    const percentChange = Math.round(((suggested - currentPrice) / currentPrice) * 100);
+
+    return { suggested, marketAvg: basePrice, percentChange };
+  };
+
   return (
     <AppContext.Provider value={{ 
       language, setLanguage, 
@@ -359,7 +383,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       allLandOwners, addLandOwner,
       allShoppers, addShopper,
       marketplaceItems, addMarketplaceItem, removeMarketplaceItem,
-      cartItems, addToCart
+      cartItems, addToCart,
+      getPricingSuggestion
     }}>
       {children}
     </AppContext.Provider>

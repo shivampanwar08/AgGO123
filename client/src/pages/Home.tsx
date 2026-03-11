@@ -1,3 +1,4 @@
+import { useState } from "react";
 import MapBackground from "@/components/MapBackground";
 import LocationCard from "@/components/LocationCard";
 import VehicleSheet from "@/components/VehicleSheet";
@@ -171,7 +172,8 @@ export default function Home() {
 
   // Equipment Renter View
   if (userRole === 'equipment-renter' && equipmentData) {
-    const { bookings, updateBookingStatus } = useApp();
+    const { bookings, updateBookingStatus, getPricingSuggestion } = useApp();
+    const [expandedPricing, setExpandedPricing] = useState<string | null>(null);
     const myRequests = bookings.filter(b => b.status === 'confirmed');
     const acceptedCount = bookings.filter(b => b.status === 'accepted').length;
     const completedCount = bookings.filter(b => b.status === 'completed').length;
@@ -246,28 +248,61 @@ export default function Home() {
           <div className="space-y-4">
             <h2 className={`text-lg font-black ${textClass} px-1`}>🔧 My Equipment</h2>
             <div className="grid gap-4">
-              {equipmentData.equipment.map((item) => (
-                <div key={item.id} className={`${cardClass} rounded-2xl border p-5 shadow-md hover:shadow-lg transition-all`}>
-                  <div className="flex gap-4">
-                    <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex-shrink-0">
-                      <Tractor className="text-blue-600" size={24} />
+              {equipmentData.equipment.map((item) => {
+                const pricing = getPricingSuggestion('equipment', item.name, item.pricePerDay);
+                const isExpanded = expandedPricing === `eq-${item.id}`;
+                return (
+                  <div key={item.id} className={`${cardClass} rounded-2xl border p-5 shadow-md hover:shadow-lg transition-all`}>
+                    <div className="flex gap-4">
+                      <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex-shrink-0">
+                        <Tractor className="text-blue-600" size={24} />
+                      </div>
+                      <div className="flex-1">
+                        <p className={`font-black ${textClass} text-base`}>{item.name}</p>
+                        <p className={`text-xs ${textMutedClass} mt-1`}>Qty: {item.quantity}</p>
+                      </div>
+                      <div className="text-right flex flex-col justify-center">
+                        <p className="text-xl font-black text-blue-600">₹{item.pricePerDay}</p>
+                        <p className={`text-[10px] font-bold ${textMutedClass}`}>per day</p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className={`font-black ${textClass} text-base`}>{item.name}</p>
-                      <p className={`text-xs ${textMutedClass} mt-1`}>Qty: {item.quantity}</p>
-                    </div>
-                    <div className="text-right flex flex-col justify-center">
-                      <p className="text-xl font-black text-blue-600">₹{item.pricePerDay}</p>
-                      <p className={`text-[10px] font-bold ${textMutedClass}`}>per day</p>
+                    {isExpanded && (
+                      <div className="mt-3 pt-3 border-t border-blue-200 dark:border-blue-700/50 space-y-2">
+                        <div className={`bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3`}>
+                          <p className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase mb-2">💡 Pricing Suggestion</p>
+                          <div className="space-y-1 text-xs">
+                            <div className="flex justify-between">
+                              <span className={textMutedClass}>Market Average:</span>
+                              <span className="font-bold text-gray-900 dark:text-white">₹{pricing.marketAvg}/day</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className={textMutedClass}>Suggested Price:</span>
+                              <span className="font-bold text-blue-600">₹{pricing.suggested}/day</span>
+                            </div>
+                            <div className="flex justify-between pt-1 border-t border-blue-200 dark:border-blue-700/50">
+                              <span className={textMutedClass}>Adjustment:</span>
+                              <span className={`font-black ${pricing.percentChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                {pricing.percentChange > 0 ? '+' : ''}{pricing.percentChange}%
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex gap-2">
+                      <button 
+                        onClick={() => setExpandedPricing(isExpanded ? null : `eq-${item.id}`)}
+                        className="flex-1 text-xs font-black text-blue-600 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                      >
+                        {isExpanded ? '← Price Insights' : 'Price Insights →'}
+                      </button>
+                      <button className="text-xs font-black text-blue-600 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors px-3">
+                        Edit →
+                      </button>
                     </div>
                   </div>
-                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                    <button className="w-full text-xs font-black text-blue-600 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
-                      Edit Listing →
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -280,7 +315,8 @@ export default function Home() {
 
   // Land Owner View
   if (userRole === 'land-owner' && landData) {
-    const { bookings, updateBookingStatus } = useApp();
+    const { bookings, updateBookingStatus, getPricingSuggestion } = useApp();
+    const [expandedPricing, setExpandedPricing] = useState<string | null>(null);
     const myRequests = bookings.filter(b => b.status === 'confirmed');
     const acceptedCount = bookings.filter(b => b.status === 'accepted').length;
     const totalAcres = landData.lands.reduce((sum, l) => sum + l.size, 0);
@@ -355,31 +391,64 @@ export default function Home() {
           <div className="space-y-4">
             <h2 className={`text-lg font-black ${textClass} px-1`}>🌾 My Land Properties</h2>
             <div className="grid gap-4">
-              {landData.lands.map((item) => (
-                <div key={item.id} className={`${cardClass} rounded-2xl border p-5 shadow-md hover:shadow-lg transition-all overflow-hidden`}>
-                  {(item as any).image && (
-                    <div className="mb-4 -m-5 mb-4">
-                      <img src={(item as any).image} alt="Land" className="w-full h-32 object-cover" />
+              {landData.lands.map((item) => {
+                const pricing = getPricingSuggestion('land', item.soilType, item.pricePerAcre);
+                const isExpanded = expandedPricing === `land-${item.id}`;
+                return (
+                  <div key={item.id} className={`${cardClass} rounded-2xl border p-5 shadow-md hover:shadow-lg transition-all overflow-hidden`}>
+                    {(item as any).image && (
+                      <div className="mb-4 -m-5 mb-4">
+                        <img src={(item as any).image} alt="Land" className="w-full h-32 object-cover" />
+                      </div>
+                    )}
+                    <div className="flex gap-4">
+                      <div className="flex-1">
+                        <p className={`font-black ${textClass} text-base`}>{item.size} Acres</p>
+                        <p className={`text-xs ${textMutedClass} mt-1`}>🌱 Soil: {item.soilType}</p>
+                        <p className={`text-xs ${textMutedClass}`}>💧 Water: {item.waterAccess}</p>
+                      </div>
+                      <div className="text-right flex flex-col justify-center">
+                        <p className="text-2xl font-black text-amber-600">₹{item.pricePerAcre}</p>
+                        <p className={`text-[10px] font-bold ${textMutedClass}`}>per acre</p>
+                      </div>
                     </div>
-                  )}
-                  <div className="flex gap-4">
-                    <div className="flex-1">
-                      <p className={`font-black ${textClass} text-base`}>{item.size} Acres</p>
-                      <p className={`text-xs ${textMutedClass} mt-1`}>🌱 Soil: {item.soilType}</p>
-                      <p className={`text-xs ${textMutedClass}`}>💧 Water: {item.waterAccess}</p>
-                    </div>
-                    <div className="text-right flex flex-col justify-center">
-                      <p className="text-2xl font-black text-amber-600">₹{item.pricePerAcre}</p>
-                      <p className={`text-[10px] font-bold ${textMutedClass}`}>per acre</p>
+                    {isExpanded && (
+                      <div className="mt-3 pt-3 border-t border-amber-200 dark:border-amber-700/50 space-y-2">
+                        <div className={`bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3`}>
+                          <p className="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase mb-2">💡 Pricing Suggestion</p>
+                          <div className="space-y-1 text-xs">
+                            <div className="flex justify-between">
+                              <span className={textMutedClass}>Market Average:</span>
+                              <span className="font-bold text-gray-900 dark:text-white">₹{pricing.marketAvg}/acre</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className={textMutedClass}>Suggested Price:</span>
+                              <span className="font-bold text-amber-600">₹{pricing.suggested}/acre</span>
+                            </div>
+                            <div className="flex justify-between pt-1 border-t border-amber-200 dark:border-amber-700/50">
+                              <span className={textMutedClass}>Adjustment:</span>
+                              <span className={`font-black ${pricing.percentChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                {pricing.percentChange > 0 ? '+' : ''}{pricing.percentChange}%
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex gap-2">
+                      <button 
+                        onClick={() => setExpandedPricing(isExpanded ? null : `land-${item.id}`)}
+                        className="flex-1 text-xs font-black text-amber-600 py-2 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg transition-colors"
+                      >
+                        {isExpanded ? '← Price Insights' : 'Price Insights →'}
+                      </button>
+                      <button className="text-xs font-black text-amber-600 py-2 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg transition-colors px-3">
+                        Edit →
+                      </button>
                     </div>
                   </div>
-                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                    <button className="w-full text-xs font-black text-amber-600 py-2 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg transition-colors">
-                      View Details →
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
