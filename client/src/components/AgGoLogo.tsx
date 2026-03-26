@@ -4,133 +4,200 @@ interface AgGoLogoProps {
 }
 
 export default function AgGoLogo({ size = 64, className = '' }: AgGoLogoProps) {
+  const id = `aggo-${size}`;
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 100 100"
+      viewBox="0 0 120 120"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
       <defs>
-        <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#22c55e" />
-          <stop offset="100%" stopColor="#15803d" />
+        {/* Background gradient – deep tech green to dark teal */}
+        <linearGradient id={`bg-${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#0d2818" />
+          <stop offset="100%" stopColor="#0a2420" />
+        </linearGradient>
+
+        {/* Outer ring glow */}
+        <linearGradient id={`ring-${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#34d399" />
+          <stop offset="50%" stopColor="#10b981" />
+          <stop offset="100%" stopColor="#06b6d4" />
+        </linearGradient>
+
+        {/* Equipment accent – electric blue */}
+        <linearGradient id={`eq-${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#38bdf8" />
+          <stop offset="100%" stopColor="#0ea5e9" />
+        </linearGradient>
+
+        {/* Marketplace accent – warm amber-gold */}
+        <linearGradient id={`mkt-${id}`} x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#fbbf24" />
+          <stop offset="100%" stopColor="#f59e0b" />
+        </linearGradient>
+
+        {/* Shopper accent – violet-emerald */}
+        <linearGradient id={`sh-${id}`} x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#a78bfa" />
+          <stop offset="100%" stopColor="#8b5cf6" />
+        </linearGradient>
+
+        {/* Center glow */}
+        <radialGradient id={`ctr-${id}`} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#34d399" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#34d399" stopOpacity="0" />
         </radialGradient>
-        <radialGradient id="innerGrad" cx="50%" cy="40%" r="60%">
-          <stop offset="0%" stopColor="#4ade80" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="#166534" stopOpacity="0" />
+
+        {/* Segment glows */}
+        <radialGradient id={`glow-eq-${id}`} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
         </radialGradient>
-        <linearGradient id="tractorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#fef9c3" />
-          <stop offset="100%" stopColor="#fde68a" />
-        </linearGradient>
-        <linearGradient id="wheatGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#fef9c3" />
-          <stop offset="100%" stopColor="#fde68a" />
-        </linearGradient>
-        <linearGradient id="cartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="100%" stopColor="#e0f2fe" />
-        </linearGradient>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="1" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
+        <radialGradient id={`glow-mkt-${id}`} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#fbbf24" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id={`glow-sh-${id}`} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#a78bfa" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#a78bfa" stopOpacity="0" />
+        </radialGradient>
+
+        <clipPath id={`clip-${id}`}>
+          <circle cx="60" cy="60" r="55" />
+        </clipPath>
       </defs>
 
-      {/* Outer glow ring */}
-      <circle cx="50" cy="50" r="49" fill="none" stroke="#4ade80" strokeWidth="1" strokeOpacity="0.4" />
+      {/* ── Base circle ── */}
+      <circle cx="60" cy="60" r="58" fill={`url(#bg-${id})`} />
 
-      {/* Main circle background */}
-      <circle cx="50" cy="50" r="46" fill="url(#bgGrad)" />
-      <circle cx="50" cy="50" r="46" fill="url(#innerGrad)" />
+      {/* ── Subtle hex grid overlay ── */}
+      <g clipPath={`url(#clip-${id})`} opacity="0.06" stroke="#34d399" strokeWidth="0.5">
+        <line x1="60" y1="5" x2="60" y2="115" />
+        <line x1="5" y1="32" x2="115" y2="88" />
+        <line x1="5" y1="88" x2="115" y2="32" />
+        <circle cx="60" cy="60" r="25" />
+        <circle cx="60" cy="60" r="42" />
+      </g>
 
-      {/* Subtle inner border */}
-      <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+      {/* ── Outer glow ring ── */}
+      <circle cx="60" cy="60" r="55" fill="none" stroke={`url(#ring-${id})`} strokeWidth="2.5" />
+      {/* inner soft ring */}
+      <circle cx="60" cy="60" r="51" fill="none" stroke="#34d399" strokeWidth="0.5" strokeOpacity="0.2" />
 
-      {/* ── TRACTOR (bottom-left) ── */}
+      {/* ── Three segment zone glows ── */}
+      {/* Equipment – top-left zone */}
+      <circle cx="35" cy="38" r="26" fill={`url(#glow-eq-${id})`} />
+      {/* Marketplace – top-right zone */}
+      <circle cx="85" cy="38" r="26" fill={`url(#glow-mkt-${id})`} />
+      {/* Shopper – bottom-center zone */}
+      <circle cx="60" cy="85" r="26" fill={`url(#glow-sh-${id})`} />
+
+      {/* ── Divider lines from center ── */}
+      <line x1="60" y1="60" x2="60" y2="10" stroke="#34d399" strokeWidth="0.6" strokeOpacity="0.25" />
+      <line x1="60" y1="60" x2="14" y2="85" stroke="#34d399" strokeWidth="0.6" strokeOpacity="0.25" />
+      <line x1="60" y1="60" x2="106" y2="85" stroke="#34d399" strokeWidth="0.6" strokeOpacity="0.25" />
+
+      {/* ══════════════════════════════════
+          EQUIPMENT RENTER — top-left
+          Clean tractor silhouette (line art)
+          ══════════════════════════════════ */}
       {/* Tractor body */}
-      <rect x="14" y="60" width="22" height="12" rx="2" fill="url(#tractorGrad)" />
-      {/* Cabin */}
-      <rect x="20" y="53" width="12" height="10" rx="2" fill="#fef9c3" />
-      {/* Windshield */}
-      <rect x="22" y="55" width="7" height="6" rx="1" fill="#86efac" fillOpacity="0.6" />
-      {/* Exhaust pipe */}
-      <rect x="29" y="49" width="2.5" height="7" rx="1" fill="#fde68a" />
-      <circle cx="30.25" cy="48.5" r="1.5" fill="#fde68a" />
+      <rect x="22" y="37" width="20" height="10" rx="2.5" fill="none" stroke={`url(#eq-${id})`} strokeWidth="1.8" />
+      {/* Cabin roof */}
+      <path d="M28 37 L30 31 L38 31 L40 37" fill="none" stroke={`url(#eq-${id})`} strokeWidth="1.8" strokeLinejoin="round" />
+      {/* Cabin window */}
+      <rect x="30.5" y="32.5" width="6" height="4" rx="1" fill={`url(#eq-${id})`} fillOpacity="0.3" stroke={`url(#eq-${id})`} strokeWidth="0.8" />
+      {/* Exhaust */}
+      <line x1="37" y1="28" x2="37" y2="32" stroke={`url(#eq-${id})`} strokeWidth="1.6" strokeLinecap="round" />
       {/* Large rear wheel */}
-      <circle cx="22" cy="73" r="8" fill="#166534" />
-      <circle cx="22" cy="73" r="5.5" fill="#4ade80" />
-      <circle cx="22" cy="73" r="2.5" fill="#166534" />
-      {/* Tyre tread marks */}
-      <line x1="22" y1="65.5" x2="22" y2="67.5" stroke="#166534" strokeWidth="1.2" strokeLinecap="round" />
-      <line x1="22" y1="78.5" x2="22" y2="80.5" stroke="#166534" strokeWidth="1.2" strokeLinecap="round" />
-      <line x1="14.5" y1="73" x2="16.5" y2="73" stroke="#166534" strokeWidth="1.2" strokeLinecap="round" />
-      <line x1="27.5" y1="73" x2="29.5" y2="73" stroke="#166534" strokeWidth="1.2" strokeLinecap="round" />
+      <circle cx="28" cy="50" r="6.5" fill="none" stroke={`url(#eq-${id})`} strokeWidth="1.8" />
+      <circle cx="28" cy="50" r="3" fill={`url(#eq-${id})`} fillOpacity="0.4" />
+      {/* Wheel spokes */}
+      <line x1="28" y1="44" x2="28" y2="56" stroke={`url(#eq-${id})`} strokeWidth="0.8" strokeOpacity="0.6" />
+      <line x1="22" y1="50" x2="34" y2="50" stroke={`url(#eq-${id})`} strokeWidth="0.8" strokeOpacity="0.6" />
+      <line x1="23.6" y1="45.4" x2="32.4" y2="54.6" stroke={`url(#eq-${id})`} strokeWidth="0.8" strokeOpacity="0.6" />
+      <line x1="32.4" y1="45.4" x2="23.6" y2="54.6" stroke={`url(#eq-${id})`} strokeWidth="0.8" strokeOpacity="0.6" />
       {/* Small front wheel */}
-      <circle cx="34" cy="72" r="4.5" fill="#166534" />
-      <circle cx="34" cy="72" r="2.8" fill="#4ade80" />
-      <circle cx="34" cy="72" r="1.2" fill="#166534" />
+      <circle cx="40" cy="49" r="4" fill="none" stroke={`url(#eq-${id})`} strokeWidth="1.6" />
+      <circle cx="40" cy="49" r="1.5" fill={`url(#eq-${id})`} fillOpacity="0.4" />
+      {/* Label dot */}
+      <circle cx="28" cy="20" r="2" fill={`url(#eq-${id})`} />
 
-      {/* ── WHEAT STALKS (top-center) ── */}
+      {/* ══════════════════════════════════
+          MARKETPLACE — top-right
+          Minimal wheat / crop icon
+          ══════════════════════════════════ */}
       {/* Center stalk */}
-      <line x1="50" y1="42" x2="50" y2="22" stroke="#fde68a" strokeWidth="1.8" strokeLinecap="round" />
-      {/* Center grain head */}
-      <ellipse cx="50" cy="18" rx="3.5" ry="6" fill="url(#wheatGrad)" />
-      <line x1="50" y1="14" x2="50" y2="12" stroke="#fde68a" strokeWidth="1.5" strokeLinecap="round" />
-      {/* Left stalk */}
-      <path d="M50 38 Q44 34 40 24" stroke="#fde68a" strokeWidth="1.6" strokeLinecap="round" fill="none" />
-      <ellipse cx="38.5" cy="20" rx="2.8" ry="5" fill="url(#wheatGrad)" transform="rotate(-20 38.5 20)" />
-      <line x1="38.5" y1="16.5" x2="37.5" y2="14.8" stroke="#fde68a" strokeWidth="1.3" strokeLinecap="round" />
-      {/* Right stalk */}
-      <path d="M50 38 Q56 34 60 24" stroke="#fde68a" strokeWidth="1.6" strokeLinecap="round" fill="none" />
-      <ellipse cx="61.5" cy="20" rx="2.8" ry="5" fill="url(#wheatGrad)" transform="rotate(20 61.5 20)" />
-      <line x1="61.5" y1="16.5" x2="62.5" y2="14.8" stroke="#fde68a" strokeWidth="1.3" strokeLinecap="round" />
-      {/* Far left stalk */}
-      <path d="M50 35 Q41 31 36 20" stroke="#fde68a" strokeWidth="1.3" strokeLinecap="round" fill="none" strokeOpacity="0.75" />
-      <ellipse cx="34.5" cy="16.5" rx="2.2" ry="4" fill="url(#wheatGrad)" fillOpacity="0.75" transform="rotate(-30 34.5 16.5)" />
-      {/* Far right stalk */}
-      <path d="M50 35 Q59 31 64 20" stroke="#fde68a" strokeWidth="1.3" strokeLinecap="round" fill="none" strokeOpacity="0.75" />
-      <ellipse cx="65.5" cy="16.5" rx="2.2" ry="4" fill="url(#wheatGrad)" fillOpacity="0.75" transform="rotate(30 65.5 16.5)" />
+      <line x1="85" y1="55" x2="85" y2="25" stroke={`url(#mkt-${id})`} strokeWidth="1.8" strokeLinecap="round" />
+      {/* Top grain */}
+      <ellipse cx="85" cy="21" rx="3.5" ry="5.5" fill="none" stroke={`url(#mkt-${id})`} strokeWidth="1.6" />
+      <ellipse cx="85" cy="21" rx="1.5" ry="3" fill={`url(#mkt-${id})`} fillOpacity="0.35" />
+      <line x1="85" y1="16" x2="85" y2="14" stroke={`url(#mkt-${id})`} strokeWidth="1.4" strokeLinecap="round" />
+      {/* Left branch */}
+      <path d="M85 45 C80 42 76 36 77 29" stroke={`url(#mkt-${id})`} strokeWidth="1.5" strokeLinecap="round" fill="none" />
+      <ellipse cx="76" cy="25.5" rx="2.8" ry="4.8" fill="none" stroke={`url(#mkt-${id})`} strokeWidth="1.4" transform="rotate(-18 76 25.5)" />
+      <ellipse cx="76" cy="25.5" rx="1.2" ry="2.4" fill={`url(#mkt-${id})`} fillOpacity="0.35" transform="rotate(-18 76 25.5)" />
+      {/* Right branch */}
+      <path d="M85 45 C90 42 94 36 93 29" stroke={`url(#mkt-${id})`} strokeWidth="1.5" strokeLinecap="round" fill="none" />
+      <ellipse cx="94" cy="25.5" rx="2.8" ry="4.8" fill="none" stroke={`url(#mkt-${id})`} strokeWidth="1.4" transform="rotate(18 94 25.5)" />
+      <ellipse cx="94" cy="25.5" rx="1.2" ry="2.4" fill={`url(#mkt-${id})`} fillOpacity="0.35" transform="rotate(18 94 25.5)" />
+      {/* Extra outer branches */}
+      <path d="M85 40 C78 37 74 30 75 23" stroke={`url(#mkt-${id})`} strokeWidth="1.1" strokeLinecap="round" fill="none" strokeOpacity="0.55" />
+      <path d="M85 40 C92 37 96 30 95 23" stroke={`url(#mkt-${id})`} strokeWidth="1.1" strokeLinecap="round" fill="none" strokeOpacity="0.55" />
+      {/* Label dot */}
+      <circle cx="92" cy="20" r="2" fill={`url(#mkt-${id})`} />
 
-      {/* ── SHOPPING BASKET (bottom-right) ── */}
-      {/* Basket body */}
-      <path d="M63 63 L65 78 H83 L85 63 Z" fill="url(#cartGrad)" />
-      {/* Basket handle left arc */}
-      <path d="M67 63 Q68 54 74 54 Q80 54 81 63" stroke="white" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      {/* Basket weave lines */}
-      <line x1="65.5" y1="68" x2="84.5" y2="68" stroke="#bbf7d0" strokeWidth="1" strokeOpacity="0.7" />
-      <line x1="66.5" y1="73" x2="83.5" y2="73" stroke="#bbf7d0" strokeWidth="1" strokeOpacity="0.7" />
-      {/* Basket divider lines */}
-      <line x1="70.5" y1="63" x2="68.5" y2="78" stroke="#bbf7d0" strokeWidth="0.9" strokeOpacity="0.6" />
-      <line x1="74" y1="63" x2="74" y2="78" stroke="#bbf7d0" strokeWidth="0.9" strokeOpacity="0.6" />
-      <line x1="77.5" y1="63" x2="79.5" y2="78" stroke="#bbf7d0" strokeWidth="0.9" strokeOpacity="0.6" />
-      {/* Small produce dots in basket */}
-      <circle cx="70" cy="75" r="1.8" fill="#4ade80" />
-      <circle cx="74" cy="75.5" r="1.8" fill="#fde68a" />
-      <circle cx="78" cy="75" r="1.8" fill="#4ade80" />
+      {/* ══════════════════════════════════
+          SHOPPER — bottom-center
+          Clean minimal shopping bag / basket
+          ══════════════════════════════════ */}
+      {/* Bag body */}
+      <path d="M47 82 L49 100 H71 L73 82 Z" fill="none" stroke={`url(#sh-${id})`} strokeWidth="1.8" strokeLinejoin="round" />
+      {/* Handle */}
+      <path d="M53 82 Q53 72 60 72 Q67 72 67 82" fill="none" stroke={`url(#sh-${id})`} strokeWidth="2" strokeLinecap="round" />
+      {/* Inner fill glow */}
+      <path d="M48.5 84 L50.5 98 H69.5 L71.5 84 Z" fill={`url(#sh-${id})`} fillOpacity="0.12" />
+      {/* Horizontal detail lines */}
+      <line x1="49.5" y1="88.5" x2="70.5" y2="88.5" stroke={`url(#sh-${id})`} strokeWidth="0.9" strokeOpacity="0.5" />
+      <line x1="50.5" y1="93.5" x2="69.5" y2="93.5" stroke={`url(#sh-${id})`} strokeWidth="0.9" strokeOpacity="0.5" />
+      {/* Stylised tag */}
+      <circle cx="60" cy="77" r="2.2" fill={`url(#sh-${id})`} fillOpacity="0.5" stroke={`url(#sh-${id})`} strokeWidth="0.8" />
+      {/* Label dot */}
+      <circle cx="60" cy="103" r="2" fill={`url(#sh-${id})`} />
 
-      {/* ── CENTER HUB connecting all three ── */}
-      {/* Connector lines from center to each element */}
-      <line x1="50" y1="50" x2="30" y2="62" stroke="rgba(255,255,255,0.25)" strokeWidth="1" strokeDasharray="2,2" />
-      <line x1="50" y1="50" x2="50" y2="42" stroke="rgba(255,255,255,0.25)" strokeWidth="1" strokeDasharray="2,2" />
-      <line x1="50" y1="50" x2="70" y2="62" stroke="rgba(255,255,255,0.25)" strokeWidth="1" strokeDasharray="2,2" />
-      {/* Center hub circle */}
-      <circle cx="50" cy="50" r="7" fill="rgba(255,255,255,0.15)" />
-      <circle cx="50" cy="50" r="5" fill="rgba(255,255,255,0.25)" />
-      {/* "AG" text in center hub */}
+      {/* ══════════════════════════════════
+          CENTER NEXUS
+          ══════════════════════════════════ */}
+      {/* Center glow pool */}
+      <circle cx="60" cy="60" r="14" fill={`url(#ctr-${id})`} />
+      {/* Center ring */}
+      <circle cx="60" cy="60" r="10" fill="none" stroke="#34d399" strokeWidth="1.2" strokeOpacity="0.6" />
+      {/* Thin inner fill */}
+      <circle cx="60" cy="60" r="9" fill="#0d2818" fillOpacity="0.9" />
+      {/* Three micro-nodes on the inner ring for each role */}
+      <circle cx="60" cy="50" r="2.2" fill={`url(#mkt-${id})`} />
+      <circle cx="51.3" cy="64.5" r="2.2" fill={`url(#eq-${id})`} />
+      <circle cx="68.7" cy="64.5" r="2.2" fill={`url(#sh-${id})`} />
+      {/* Center monogram */}
       <text
-        x="50"
-        y="53.5"
+        x="60"
+        y="63"
         textAnchor="middle"
-        fontSize="6"
+        fontSize="8.5"
         fontWeight="900"
-        fontFamily="Arial, sans-serif"
-        fill="white"
-        letterSpacing="-0.5"
+        fontFamily="'Arial Black', Arial, sans-serif"
+        fill="#34d399"
+        letterSpacing="0.5"
       >AG</text>
+
+      {/* ── Outer edge shimmer dots ── */}
+      <circle cx="60" cy="5.5" r="2" fill="#34d399" fillOpacity="0.7" />
+      <circle cx="113.2" cy="87" r="1.5" fill="#34d399" fillOpacity="0.45" />
+      <circle cx="6.8" cy="87" r="1.5" fill="#34d399" fillOpacity="0.45" />
     </svg>
   );
 }
