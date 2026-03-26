@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ArrowLeft, Phone, Mail, CheckCircle2, Loader, User } from 'lucide-react';
-import { Leaf } from 'lucide-react';
+import AgGoLogo from '@/components/AgGoLogo';
 
 type AuthStep = 'input' | 'otp' | 'name';
 type AuthType = 'phone' | 'email';
@@ -237,9 +237,9 @@ export default function Auth({ onAuth }: AuthProps) {
         <div className="text-center">
           <div className="flex justify-center mb-4">
             <div className="relative">
-              <div className="absolute inset-0 bg-green-400 rounded-full blur-2xl opacity-30"></div>
-              <div className="relative bg-gradient-to-br from-green-400 to-green-600 rounded-full p-4 shadow-xl">
-                <Leaf size={32} className="text-white" fill="white" />
+              <div className="absolute inset-0 bg-green-400 rounded-full blur-2xl opacity-40 scale-110"></div>
+              <div className="relative">
+                <AgGoLogo size={80} />
               </div>
             </div>
           </div>

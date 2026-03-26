@@ -2,6 +2,7 @@ import { Users, Wrench, Leaf, ArrowRight, ShoppingCart, ChevronLeft } from 'luci
 import { useApp } from '@/lib/appContext';
 import { t } from '@/lib/translations';
 import { useState } from 'react';
+import AgGoLogo from '@/components/AgGoLogo';
 
 interface RoleSelectionProps {
   onRoleSelect: (role: 'user' | 'equipment-renter' | 'land-owner' | 'shopper') => void;
@@ -45,6 +46,12 @@ export default function RoleSelection({ onRoleSelect }: RoleSelectionProps) {
       <div className={`${bgClass} h-full flex flex-col items-center justify-center p-4 transition-colors duration-300`}>
         <div className="w-full max-w-md space-y-8">
           <div className="text-center mb-8">
+            <div className="flex justify-center mb-4">
+              <div className="relative">
+                <div className="absolute inset-0 bg-green-500/30 rounded-full blur-2xl scale-110"></div>
+                <AgGoLogo size={80} className="relative" />
+              </div>
+            </div>
             <h1 className={`text-4xl font-bold ${textClass} mb-2`}>AgGo</h1>
             <p className={`${textMutedClass} text-sm`}>{t('choose_role_desc', language)}</p>
           </div>

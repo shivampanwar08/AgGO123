@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Leaf, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
+import AgGoLogo from '@/components/AgGoLogo';
 
 export default function Splash({ onComplete }: { onComplete: () => void }) {
   const [isVisible, setIsVisible] = useState(true);
@@ -19,14 +20,15 @@ export default function Splash({ onComplete }: { onComplete: () => void }) {
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-10 right-20 w-64 h-64 bg-green-500/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-green-600/10 rounded-full blur-3xl animate-pulse delay-700" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] bg-green-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative flex flex-col items-center justify-center gap-8 z-10">
         {/* Logo with premium animation */}
         <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 rounded-3xl blur-2xl opacity-40 animate-pulse"></div>
-          <div className="relative bg-gradient-to-br from-green-400 to-green-600 rounded-3xl p-8 shadow-2xl border border-green-300/50">
-            <Leaf size={64} className="text-white" fill="white" />
+          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full blur-3xl opacity-50 animate-pulse scale-110"></div>
+          <div className="relative animate-pulse" style={{ animationDuration: '3s' }}>
+            <AgGoLogo size={140} />
           </div>
         </div>
 
@@ -39,9 +41,14 @@ export default function Splash({ onComplete }: { onComplete: () => void }) {
             <Zap size={14} className="text-green-400" />
             Smart Farming Platform
           </p>
-          <p className="text-gray-300 text-sm font-medium mt-2">
-            Rent • Sell • Grow
-          </p>
+          {/* Three pillars */}
+          <div className="flex items-center justify-center gap-3 mt-2">
+            <span className="text-xs text-yellow-300 font-bold bg-white/10 px-2.5 py-1 rounded-full">🚜 Equipment</span>
+            <span className="text-white/30 text-xs">•</span>
+            <span className="text-xs text-green-300 font-bold bg-white/10 px-2.5 py-1 rounded-full">🌾 Marketplace</span>
+            <span className="text-white/30 text-xs">•</span>
+            <span className="text-xs text-sky-300 font-bold bg-white/10 px-2.5 py-1 rounded-full">🛒 Shops</span>
+          </div>
         </div>
 
         {/* Status indicator */}
