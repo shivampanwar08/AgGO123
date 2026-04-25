@@ -1,199 +1,130 @@
 <svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Deep premium tech background -->
+    <!-- Bold solid brand green (like Swiggy orange / Zomato red) -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#064e3b"/>
-      <stop offset="60%" stop-color="#022c22"/>
-      <stop offset="100%" stop-color="#011a14"/>
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="55%" stop-color="#15803d"/>
+      <stop offset="100%" stop-color="#14532d"/>
     </linearGradient>
 
-    <!-- Top corner glow -->
-    <radialGradient id="cornerGlow" cx="20%" cy="0%" r="80%">
-      <stop offset="0%" stop-color="#34d399" stop-opacity="0.4"/>
-      <stop offset="60%" stop-color="#34d399" stop-opacity="0"/>
+    <!-- Top sheen -->
+    <radialGradient id="sheen" cx="30%" cy="0%" r="70%">
+      <stop offset="0%" stop-color="#bbf7d0" stop-opacity="0.45"/>
+      <stop offset="60%" stop-color="#bbf7d0" stop-opacity="0"/>
     </radialGradient>
 
-    <!-- Bottom ambient glow -->
-    <radialGradient id="ambient" cx="50%" cy="100%" r="80%">
-      <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
-      <stop offset="80%" stop-color="#10b981" stop-opacity="0"/>
+    <!-- Bottom shade -->
+    <radialGradient id="shade" cx="50%" cy="100%" r="80%">
+      <stop offset="0%" stop-color="#022c22" stop-opacity="0.45"/>
+      <stop offset="60%" stop-color="#022c22" stop-opacity="0"/>
     </radialGradient>
 
-    <!-- LEAF 1 — Equipment (electric blue) -->
-    <linearGradient id="leafBlue" x1="0%" y1="0%" x2="50%" y2="100%">
-      <stop offset="0%" stop-color="#7dd3fc"/>
-      <stop offset="60%" stop-color="#0ea5e9"/>
-      <stop offset="100%" stop-color="#0369a1"/>
-    </linearGradient>
-
-    <!-- LEAF 2 — Marketplace (warm gold) -->
-    <linearGradient id="leafGold" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#fef3c7"/>
-      <stop offset="50%" stop-color="#fbbf24"/>
-      <stop offset="100%" stop-color="#b45309"/>
-    </linearGradient>
-
-    <!-- LEAF 3 — Shopper (vibrant violet) -->
-    <linearGradient id="leafViolet" x1="100%" y1="0%" x2="50%" y2="100%">
-      <stop offset="0%" stop-color="#c4b5fd"/>
-      <stop offset="60%" stop-color="#8b5cf6"/>
-      <stop offset="100%" stop-color="#5b21b6"/>
-    </linearGradient>
-
-    <!-- Stem & seed gradient -->
-    <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+    <!-- Leaf gradient — fresh natural green -->
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#86efac"/>
-      <stop offset="100%" stop-color="#16a34a"/>
+      <stop offset="60%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#15803d"/>
     </linearGradient>
 
-    <!-- Inner highlight on each leaf -->
-    <linearGradient id="leafHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
-      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.1"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-    </linearGradient>
-
-    <!-- Glow filter for the mark -->
-    <filter id="leafGlow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+    <!-- Subtle text shadow -->
+    <filter id="textShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+      <feOffset dx="0" dy="6" result="off"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.45"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
 
-    <!-- Soft shadow under mark -->
-    <filter id="dropShadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="18"/>
-      <feOffset dx="0" dy="14" result="off"/>
+    <!-- Leaf shadow -->
+    <filter id="leafShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="4" result="off"/>
       <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
 
   <!-- ──────────────────────────────────
-       BASE — premium dark green rounded square
+       BASE — bold green rounded square
        ────────────────────────────────── -->
   <rect width="1024" height="1024" rx="232" ry="232" fill="url(#bgGrad)"/>
-  <rect width="1024" height="1024" rx="232" ry="232" fill="url(#cornerGlow)"/>
-  <rect width="1024" height="1024" rx="232" ry="232" fill="url(#ambient)"/>
-
-  <!-- Subtle grid texture for "smart farming" tech feel -->
-  <g opacity="0.06" stroke="#34d399" stroke-width="1.5" fill="none">
-    <circle cx="512" cy="700" r="120"/>
-    <circle cx="512" cy="700" r="200"/>
-    <circle cx="512" cy="700" r="280"/>
-    <line x1="512" y1="100" x2="512" y2="900"/>
-    <line x1="200" y1="700" x2="824" y2="700"/>
-  </g>
-
-  <!-- Inner border for depth -->
+  <rect width="1024" height="1024" rx="232" ry="232" fill="url(#sheen)"/>
+  <rect width="1024" height="1024" rx="232" ry="232" fill="url(#shade)"/>
   <rect x="14" y="14" width="996" height="996" rx="218" ry="218"
-        fill="none" stroke="#34d399" stroke-width="2.5" stroke-opacity="0.25"/>
+        fill="none" stroke="#ffffff" stroke-width="3" stroke-opacity="0.18"/>
 
   <!-- ──────────────────────────────────
-       THE TRINITY SPROUT
-       Three role-colored leaves growing
-       from a single stem & seed — one
-       unified mark, like Threads/Ola energy
+       SMALL LEAF SPROUT growing above the
+       wordmark — the agricultural signal
        ────────────────────────────────── -->
-
-  <g filter="url(#dropShadow)">
-    <!-- Glow halo behind the sprout -->
-    <ellipse cx="512" cy="500" rx="280" ry="320" fill="#34d399" fill-opacity="0.08" filter="url(#leafGlow)"/>
-
-    <!-- ── STEM ── thick organic central spine -->
-    <path d="
-      M 512 760
-      C 500 700, 510 600, 512 480
-      C 514 460, 516 440, 512 400"
-      fill="none" stroke="url(#stemGrad)" stroke-width="22" stroke-linecap="round"/>
-
-    <!-- ── SEED / BASE ── glowing pearl at bottom -->
-    <circle cx="512" cy="780" r="38" fill="url(#stemGrad)"/>
-    <circle cx="512" cy="780" r="38" fill="#ffffff" fill-opacity="0.15"/>
-    <circle cx="500" cy="768" r="12" fill="#ffffff" fill-opacity="0.5"/>
-
-    <!-- ═══════════════════════════════════
-         LEFT LEAF — EQUIPMENT (BLUE)
-         ═══════════════════════════════════ -->
-    <g transform="rotate(-32 512 540)">
-      <!-- Leaf body -->
-      <path d="
-        M 512 540
-        C 460 520, 380 480, 320 380
-        C 370 350, 450 360, 500 410
-        C 520 450, 522 500, 512 540 Z"
-        fill="url(#leafBlue)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
-      <!-- Inner highlight -->
-      <path d="
-        M 510 535
-        C 460 515, 390 480, 340 395
-        C 380 380, 430 395, 470 430
-        C 490 470, 505 510, 510 535 Z"
-        fill="url(#leafHighlight)"/>
-      <!-- Center vein -->
-      <path d="M 512 540 Q 420 470, 330 385" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-opacity="0.7" stroke-linecap="round"/>
-    </g>
-
-    <!-- ═══════════════════════════════════
-         RIGHT LEAF — SHOPPER (VIOLET)
-         ═══════════════════════════════════ -->
-    <g transform="rotate(32 512 540)">
-      <!-- Leaf body -->
-      <path d="
-        M 512 540
-        C 564 520, 644 480, 704 380
-        C 654 350, 574 360, 524 410
-        C 504 450, 502 500, 512 540 Z"
-        fill="url(#leafViolet)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
-      <!-- Inner highlight -->
-      <path d="
-        M 514 535
-        C 564 515, 634 480, 684 395
-        C 644 380, 594 395, 554 430
-        C 534 470, 519 510, 514 535 Z"
-        fill="url(#leafHighlight)"/>
-      <!-- Center vein -->
-      <path d="M 512 540 Q 604 470, 694 385" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-opacity="0.7" stroke-linecap="round"/>
-    </g>
-
-    <!-- ═══════════════════════════════════
-         CENTER LEAF — MARKETPLACE (GOLD)
-         (Drawn last so it sits on top, the
-         hero leaf reaching highest)
-         ═══════════════════════════════════ -->
-    <path d="
-      M 512 500
-      C 470 460, 450 360, 460 220
-      C 480 180, 544 180, 564 220
-      C 574 360, 554 460, 512 500 Z"
-      fill="url(#leafGold)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
-    <!-- Highlight -->
-    <path d="
-      M 510 490
-      C 478 455, 462 365, 472 230
-      C 486 205, 510 205, 520 225
-      C 526 360, 520 450, 510 490 Z"
-      fill="url(#leafHighlight)"/>
-    <!-- Center vein -->
-    <path d="M 512 500 L 512 200" stroke="#ffffff" stroke-width="4" stroke-opacity="0.7" stroke-linecap="round"/>
-    <!-- Small grain detail at top -->
-    <line x1="500" y1="240" x2="490" y2="220" stroke="#ffffff" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
-    <line x1="524" y1="240" x2="534" y2="220" stroke="#ffffff" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
-    <line x1="500" y1="290" x2="488" y2="270" stroke="#ffffff" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
-    <line x1="524" y1="290" x2="536" y2="270" stroke="#ffffff" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
-    <!-- Sparkle dot at the very top — the "data" / smart-farm accent -->
-    <circle cx="512" cy="180" r="14" fill="#ffffff"/>
-    <circle cx="512" cy="180" r="22" fill="#ffffff" fill-opacity="0.3" filter="url(#leafGlow)"/>
+  <g filter="url(#leafShadow)">
+    <!-- Stem -->
+    <path d="M 512 360 Q 510 320, 514 285" fill="none" stroke="#86efac" stroke-width="10" stroke-linecap="round"/>
+    <!-- Left leaf -->
+    <path d="M 510 320 Q 460 305, 442 268 Q 478 268, 510 305 Z" fill="url(#leafGrad)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>
+    <!-- Right leaf -->
+    <path d="M 514 320 Q 564 305, 582 268 Q 546 268, 514 305 Z" fill="url(#leafGrad)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>
+    <!-- Top tiny sprout dot -->
+    <circle cx="514" cy="270" r="14" fill="#fde68a"/>
+    <circle cx="514" cy="270" r="14" fill="url(#leafGrad)" fill-opacity="0.4"/>
   </g>
 
   <!-- ──────────────────────────────────
-       Subtle motion arc — suggests "Go"
-       (like Ola's swoosh)
+       MAIN WORDMARK — bold "AgGo"
+       (huge & clean, like Zomato/Swiggy)
        ────────────────────────────────── -->
-  <path d="M 290 850 Q 512 880, 734 850"
-    fill="none" stroke="#34d399" stroke-width="6" stroke-linecap="round" stroke-opacity="0.4"/>
-  <circle cx="290" cy="850" r="6" fill="#34d399" fill-opacity="0.6"/>
-  <circle cx="734" cy="850" r="6" fill="#34d399" fill-opacity="0.6"/>
+  <g filter="url(#textShadow)">
+    <text
+      x="512" y="640"
+      text-anchor="middle"
+      font-family="'Plus Jakarta Sans', 'Arial Black', sans-serif"
+      font-size="280"
+      font-weight="900"
+      fill="#ffffff"
+      letter-spacing="-10"
+    >AgG</text>
+
+    <!-- The final "o" is a STYLIZED LEAF — the clever twist -->
+    <!-- Position it to read perfectly inline with "AgG" -->
+    <g transform="translate(770 555)">
+      <!-- Leaf outline forming the "o" shape -->
+      <path d="
+        M 0 0
+        C -55 0, -90 35, -90 90
+        C -90 145, -55 180, 0 180
+        C 55 180, 90 145, 90 90
+        C 90 35, 55 0, 0 0 Z"
+        fill="url(#leafGrad)"
+        stroke="#ffffff"
+        stroke-width="14"/>
+      <!-- Inner leaf vein curve to make it OBVIOUSLY a leaf -->
+      <path d="M -50 50 Q 0 90, 50 130"
+        fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-opacity="0.85"/>
+      <!-- Side veins -->
+      <path d="M -30 75 Q -10 85, 5 95" fill="none" stroke="#ffffff" stroke-width="4" stroke-opacity="0.6" stroke-linecap="round"/>
+      <path d="M -10 100 Q 10 108, 25 118" fill="none" stroke="#ffffff" stroke-width="4" stroke-opacity="0.6" stroke-linecap="round"/>
+      <!-- Small leaf tip pointing up-right (like a real leaf curls) -->
+      <path d="M 50 5 Q 80 -15, 105 -25 Q 95 5, 75 18 Z"
+        fill="url(#leafGrad)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- ──────────────────────────────────
+       TAGLINE strip — "FARM • SHOP • SELL"
+       Tiny but clear — explains the app
+       ────────────────────────────────── -->
+  <text
+    x="512" y="800"
+    text-anchor="middle"
+    font-family="'Plus Jakarta Sans', Arial, sans-serif"
+    font-size="46"
+    font-weight="800"
+    fill="#dcfce7"
+    letter-spacing="14"
+    fill-opacity="0.95"
+  >FARM · SHOP · SELL</text>
+
+  <!-- Decorative gold underline -->
+  <rect x="362" y="830" width="300" height="5" rx="2.5" fill="#fbbf24" fill-opacity="0.85"/>
+  <circle cx="362" cy="832.5" r="6" fill="#fbbf24"/>
+  <circle cx="662" cy="832.5" r="6" fill="#fbbf24"/>
 </svg>

@@ -1,69 +1,66 @@
 <svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#064e3b"/>
-      <stop offset="60%" stop-color="#022c22"/>
-      <stop offset="100%" stop-color="#011a14"/>
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="55%" stop-color="#15803d"/>
+      <stop offset="100%" stop-color="#14532d"/>
     </linearGradient>
-    <radialGradient id="cornerGlow" cx="20%" cy="0%" r="80%">
-      <stop offset="0%" stop-color="#34d399" stop-opacity="0.4"/>
-      <stop offset="60%" stop-color="#34d399" stop-opacity="0"/>
+    <radialGradient id="sheen" cx="30%" cy="0%" r="70%">
+      <stop offset="0%" stop-color="#bbf7d0" stop-opacity="0.45"/>
+      <stop offset="60%" stop-color="#bbf7d0" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="ambient" cx="50%" cy="100%" r="80%">
-      <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
-      <stop offset="80%" stop-color="#10b981" stop-opacity="0"/>
+    <radialGradient id="shade" cx="50%" cy="100%" r="80%">
+      <stop offset="0%" stop-color="#022c22" stop-opacity="0.45"/>
+      <stop offset="60%" stop-color="#022c22" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="leafBlue" x1="0%" y1="0%" x2="50%" y2="100%">
-      <stop offset="0%" stop-color="#7dd3fc"/><stop offset="60%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#0369a1"/>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#86efac"/>
+      <stop offset="60%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#15803d"/>
     </linearGradient>
-    <linearGradient id="leafGold" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#fef3c7"/><stop offset="50%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#b45309"/>
-    </linearGradient>
-    <linearGradient id="leafViolet" x1="100%" y1="0%" x2="50%" y2="100%">
-      <stop offset="0%" stop-color="#c4b5fd"/><stop offset="60%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#5b21b6"/>
-    </linearGradient>
-    <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#86efac"/><stop offset="100%" stop-color="#16a34a"/>
-    </linearGradient>
-    <linearGradient id="leafHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
-      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.1"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-    </linearGradient>
-    <filter id="dropShadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="18"/>
-      <feOffset dx="0" dy="14" result="off"/>
+    <filter id="textShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+      <feOffset dx="0" dy="6" result="off"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.45"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="leafShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="4" result="off"/>
       <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
 
   <rect width="1024" height="1024" fill="url(#bgGrad)"/>
-  <rect width="1024" height="1024" fill="url(#cornerGlow)"/>
-  <rect width="1024" height="1024" fill="url(#ambient)"/>
+  <rect width="1024" height="1024" fill="url(#sheen)"/>
+  <rect width="1024" height="1024" fill="url(#shade)"/>
 
-  <g transform="translate(512 512) scale(0.72) translate(-512 -512)">
-    <g filter="url(#dropShadow)">
-      <path d="M 512 760 C 500 700, 510 600, 512 480 C 514 460, 516 440, 512 400" fill="none" stroke="url(#stemGrad)" stroke-width="22" stroke-linecap="round"/>
-      <circle cx="512" cy="780" r="38" fill="url(#stemGrad)"/>
-      <circle cx="500" cy="768" r="12" fill="#ffffff" fill-opacity="0.5"/>
-
-      <g transform="rotate(-32 512 540)">
-        <path d="M 512 540 C 460 520, 380 480, 320 380 C 370 350, 450 360, 500 410 C 520 450, 522 500, 512 540 Z" fill="url(#leafBlue)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
-        <path d="M 510 535 C 460 515, 390 480, 340 395 C 380 380, 430 395, 470 430 C 490 470, 505 510, 510 535 Z" fill="url(#leafHighlight)"/>
-        <path d="M 512 540 Q 420 470, 330 385" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-opacity="0.7" stroke-linecap="round"/>
-      </g>
-
-      <g transform="rotate(32 512 540)">
-        <path d="M 512 540 C 564 520, 644 480, 704 380 C 654 350, 574 360, 524 410 C 504 450, 502 500, 512 540 Z" fill="url(#leafViolet)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
-        <path d="M 514 535 C 564 515, 634 480, 684 395 C 644 380, 594 395, 554 430 C 534 470, 519 510, 514 535 Z" fill="url(#leafHighlight)"/>
-        <path d="M 512 540 Q 604 470, 694 385" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-opacity="0.7" stroke-linecap="round"/>
-      </g>
-
-      <path d="M 512 500 C 470 460, 450 360, 460 220 C 480 180, 544 180, 564 220 C 574 360, 554 460, 512 500 Z" fill="url(#leafGold)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
-      <path d="M 510 490 C 478 455, 462 365, 472 230 C 486 205, 510 205, 520 225 C 526 360, 520 450, 510 490 Z" fill="url(#leafHighlight)"/>
-      <path d="M 512 500 L 512 200" stroke="#ffffff" stroke-width="4" stroke-opacity="0.7" stroke-linecap="round"/>
-      <circle cx="512" cy="180" r="14" fill="#ffffff"/>
+  <g transform="translate(512 512) scale(0.78) translate(-512 -512)">
+    <g filter="url(#leafShadow)">
+      <path d="M 512 360 Q 510 320, 514 285" fill="none" stroke="#86efac" stroke-width="10" stroke-linecap="round"/>
+      <path d="M 510 320 Q 460 305, 442 268 Q 478 268, 510 305 Z" fill="url(#leafGrad)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M 514 320 Q 564 305, 582 268 Q 546 268, 514 305 Z" fill="url(#leafGrad)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>
+      <circle cx="514" cy="270" r="14" fill="#fde68a"/>
     </g>
+
+    <g filter="url(#textShadow)">
+      <text x="512" y="640" text-anchor="middle"
+        font-family="'Plus Jakarta Sans', 'Arial Black', sans-serif"
+        font-size="280" font-weight="900" fill="#ffffff" letter-spacing="-10">AgG</text>
+
+      <g transform="translate(770 555)">
+        <path d="M 0 0 C -55 0, -90 35, -90 90 C -90 145, -55 180, 0 180 C 55 180, 90 145, 90 90 C 90 35, 55 0, 0 0 Z"
+          fill="url(#leafGrad)" stroke="#ffffff" stroke-width="14"/>
+        <path d="M -50 50 Q 0 90, 50 130" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-opacity="0.85"/>
+        <path d="M 50 5 Q 80 -15, 105 -25 Q 95 5, 75 18 Z" fill="url(#leafGrad)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
+      </g>
+    </g>
+
+    <text x="512" y="800" text-anchor="middle"
+      font-family="'Plus Jakarta Sans', Arial, sans-serif"
+      font-size="46" font-weight="800" fill="#dcfce7"
+      letter-spacing="14" fill-opacity="0.95">FARM · SHOP · SELL</text>
+    <rect x="362" y="830" width="300" height="5" rx="2.5" fill="#fbbf24" fill-opacity="0.85"/>
   </g>
 </svg>
