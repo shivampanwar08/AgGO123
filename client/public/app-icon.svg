@@ -1,129 +1,199 @@
 <svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
   <defs>
+    <!-- Deep premium tech background -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#22c55e"/>
-      <stop offset="55%" stop-color="#16a34a"/>
-      <stop offset="100%" stop-color="#14532d"/>
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="60%" stop-color="#022c22"/>
+      <stop offset="100%" stop-color="#011a14"/>
     </linearGradient>
-    <radialGradient id="topGlow" cx="50%" cy="0%" r="80%">
-      <stop offset="0%" stop-color="#bbf7d0" stop-opacity="0.55"/>
-      <stop offset="60%" stop-color="#bbf7d0" stop-opacity="0"/>
+
+    <!-- Top corner glow -->
+    <radialGradient id="cornerGlow" cx="20%" cy="0%" r="80%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.4"/>
+      <stop offset="60%" stop-color="#34d399" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="botShade" cx="50%" cy="100%" r="80%">
-      <stop offset="0%" stop-color="#022c22" stop-opacity="0.4"/>
-      <stop offset="60%" stop-color="#022c22" stop-opacity="0"/>
+
+    <!-- Bottom ambient glow -->
+    <radialGradient id="ambient" cx="50%" cy="100%" r="80%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
+      <stop offset="80%" stop-color="#10b981" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="goldLine" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0"/>
-      <stop offset="50%" stop-color="#fbbf24" stop-opacity="1"/>
-      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+
+    <!-- LEAF 1 — Equipment (electric blue) -->
+    <linearGradient id="leafBlue" x1="0%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#7dd3fc"/>
+      <stop offset="60%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#0369a1"/>
     </linearGradient>
-    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
-      <feOffset dx="0" dy="8" result="off"/>
-      <feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>
+
+    <!-- LEAF 2 — Marketplace (warm gold) -->
+    <linearGradient id="leafGold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="50%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+
+    <!-- LEAF 3 — Shopper (vibrant violet) -->
+    <linearGradient id="leafViolet" x1="100%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="60%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#5b21b6"/>
+    </linearGradient>
+
+    <!-- Stem & seed gradient -->
+    <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#86efac"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+
+    <!-- Inner highlight on each leaf -->
+    <linearGradient id="leafHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Glow filter for the mark -->
+    <filter id="leafGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Soft shadow under mark -->
+    <filter id="dropShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="18"/>
+      <feOffset dx="0" dy="14" result="off"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
 
-  <!-- Base rounded square (matches app's rounded-3xl style) -->
+  <!-- ──────────────────────────────────
+       BASE — premium dark green rounded square
+       ────────────────────────────────── -->
   <rect width="1024" height="1024" rx="232" ry="232" fill="url(#bgGrad)"/>
-  <rect width="1024" height="1024" rx="232" ry="232" fill="url(#topGlow)"/>
-  <rect width="1024" height="1024" rx="232" ry="232" fill="url(#botShade)"/>
-  <rect x="16" y="16" width="992" height="992" rx="216" ry="216"
-        fill="none" stroke="#ffffff" stroke-width="3" stroke-opacity="0.18"/>
+  <rect width="1024" height="1024" rx="232" ry="232" fill="url(#cornerGlow)"/>
+  <rect width="1024" height="1024" rx="232" ry="232" fill="url(#ambient)"/>
+
+  <!-- Subtle grid texture for "smart farming" tech feel -->
+  <g opacity="0.06" stroke="#34d399" stroke-width="1.5" fill="none">
+    <circle cx="512" cy="700" r="120"/>
+    <circle cx="512" cy="700" r="200"/>
+    <circle cx="512" cy="700" r="280"/>
+    <line x1="512" y1="100" x2="512" y2="900"/>
+    <line x1="200" y1="700" x2="824" y2="700"/>
+  </g>
+
+  <!-- Inner border for depth -->
+  <rect x="14" y="14" width="996" height="996" rx="218" ry="218"
+        fill="none" stroke="#34d399" stroke-width="2.5" stroke-opacity="0.25"/>
 
   <!-- ──────────────────────────────────
-       TOP — Tiny sprout accent above wordmark
+       THE TRINITY SPROUT
+       Three role-colored leaves growing
+       from a single stem & seed — one
+       unified mark, like Threads/Ola energy
        ────────────────────────────────── -->
-  <g filter="url(#softShadow)">
-    <path d="M 512 175 Q 540 150, 558 122 Q 532 138, 512 168 Z" fill="#86efac"/>
-    <path d="M 512 175 Q 484 150, 466 122 Q 492 138, 512 168 Z" fill="#86efac"/>
-    <circle cx="512" cy="180" r="14" fill="#fde68a"/>
+
+  <g filter="url(#dropShadow)">
+    <!-- Glow halo behind the sprout -->
+    <ellipse cx="512" cy="500" rx="280" ry="320" fill="#34d399" fill-opacity="0.08" filter="url(#leafGlow)"/>
+
+    <!-- ── STEM ── thick organic central spine -->
+    <path d="
+      M 512 760
+      C 500 700, 510 600, 512 480
+      C 514 460, 516 440, 512 400"
+      fill="none" stroke="url(#stemGrad)" stroke-width="22" stroke-linecap="round"/>
+
+    <!-- ── SEED / BASE ── glowing pearl at bottom -->
+    <circle cx="512" cy="780" r="38" fill="url(#stemGrad)"/>
+    <circle cx="512" cy="780" r="38" fill="#ffffff" fill-opacity="0.15"/>
+    <circle cx="500" cy="768" r="12" fill="#ffffff" fill-opacity="0.5"/>
+
+    <!-- ═══════════════════════════════════
+         LEFT LEAF — EQUIPMENT (BLUE)
+         ═══════════════════════════════════ -->
+    <g transform="rotate(-32 512 540)">
+      <!-- Leaf body -->
+      <path d="
+        M 512 540
+        C 460 520, 380 480, 320 380
+        C 370 350, 450 360, 500 410
+        C 520 450, 522 500, 512 540 Z"
+        fill="url(#leafBlue)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
+      <!-- Inner highlight -->
+      <path d="
+        M 510 535
+        C 460 515, 390 480, 340 395
+        C 380 380, 430 395, 470 430
+        C 490 470, 505 510, 510 535 Z"
+        fill="url(#leafHighlight)"/>
+      <!-- Center vein -->
+      <path d="M 512 540 Q 420 470, 330 385" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-opacity="0.7" stroke-linecap="round"/>
+    </g>
+
+    <!-- ═══════════════════════════════════
+         RIGHT LEAF — SHOPPER (VIOLET)
+         ═══════════════════════════════════ -->
+    <g transform="rotate(32 512 540)">
+      <!-- Leaf body -->
+      <path d="
+        M 512 540
+        C 564 520, 644 480, 704 380
+        C 654 350, 574 360, 524 410
+        C 504 450, 502 500, 512 540 Z"
+        fill="url(#leafViolet)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
+      <!-- Inner highlight -->
+      <path d="
+        M 514 535
+        C 564 515, 634 480, 684 395
+        C 644 380, 594 395, 554 430
+        C 534 470, 519 510, 514 535 Z"
+        fill="url(#leafHighlight)"/>
+      <!-- Center vein -->
+      <path d="M 512 540 Q 604 470, 694 385" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-opacity="0.7" stroke-linecap="round"/>
+    </g>
+
+    <!-- ═══════════════════════════════════
+         CENTER LEAF — MARKETPLACE (GOLD)
+         (Drawn last so it sits on top, the
+         hero leaf reaching highest)
+         ═══════════════════════════════════ -->
+    <path d="
+      M 512 500
+      C 470 460, 450 360, 460 220
+      C 480 180, 544 180, 564 220
+      C 574 360, 554 460, 512 500 Z"
+      fill="url(#leafGold)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
+    <!-- Highlight -->
+    <path d="
+      M 510 490
+      C 478 455, 462 365, 472 230
+      C 486 205, 510 205, 520 225
+      C 526 360, 520 450, 510 490 Z"
+      fill="url(#leafHighlight)"/>
+    <!-- Center vein -->
+    <path d="M 512 500 L 512 200" stroke="#ffffff" stroke-width="4" stroke-opacity="0.7" stroke-linecap="round"/>
+    <!-- Small grain detail at top -->
+    <line x1="500" y1="240" x2="490" y2="220" stroke="#ffffff" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
+    <line x1="524" y1="240" x2="534" y2="220" stroke="#ffffff" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
+    <line x1="500" y1="290" x2="488" y2="270" stroke="#ffffff" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
+    <line x1="524" y1="290" x2="536" y2="270" stroke="#ffffff" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
+    <!-- Sparkle dot at the very top — the "data" / smart-farm accent -->
+    <circle cx="512" cy="180" r="14" fill="#ffffff"/>
+    <circle cx="512" cy="180" r="22" fill="#ffffff" fill-opacity="0.3" filter="url(#leafGlow)"/>
   </g>
 
   <!-- ──────────────────────────────────
-       WORDMARK — "AgGo" bold, instantly readable
+       Subtle motion arc — suggests "Go"
+       (like Ola's swoosh)
        ────────────────────────────────── -->
-  <g filter="url(#softShadow)">
-    <text
-      x="512" y="445"
-      text-anchor="middle"
-      font-family="'Plus Jakarta Sans', 'Arial Black', sans-serif"
-      font-size="240"
-      font-weight="900"
-      fill="#ffffff"
-      letter-spacing="-8"
-    >AgGo</text>
-  </g>
-
-  <!-- Gold underline accent -->
-  <rect x="312" y="495" width="400" height="6" rx="3" fill="url(#goldLine)"/>
-
-  <!-- Tagline -->
-  <text
-    x="512" y="555"
-    text-anchor="middle"
-    font-family="'Plus Jakarta Sans', Arial, sans-serif"
-    font-size="44"
-    font-weight="700"
-    fill="#dcfce7"
-    letter-spacing="14"
-    fill-opacity="0.85"
-  >FARM • SELL • SHOP</text>
-
-  <!-- ──────────────────────────────────
-       FEATURE ICONS — 3 circles in a row
-       ────────────────────────────────── -->
-
-  <!-- ① EQUIPMENT — Blue circle with tractor -->
-  <g transform="translate(280 760)">
-    <circle cx="0" cy="0" r="80" fill="#0ea5e9" stroke="#ffffff" stroke-width="6"/>
-    <circle cx="0" cy="0" r="80" fill="url(#topGlow)"/>
-    <!-- Tractor body -->
-    <rect x="-32" y="-12" width="50" height="24" rx="4" fill="#ffffff"/>
-    <!-- Cab -->
-    <path d="M -18 -12 L -14 -28 L 6 -28 L 14 -12 Z" fill="#ffffff"/>
-    <rect x="-12" y="-25" width="14" height="11" rx="2" fill="#0ea5e9"/>
-    <!-- Exhaust -->
-    <rect x="14" y="-32" width="4" height="8" rx="1" fill="#ffffff"/>
-    <!-- Big rear wheel -->
-    <circle cx="-22" cy="20" r="16" fill="#ffffff"/>
-    <circle cx="-22" cy="20" r="7" fill="#0ea5e9"/>
-    <!-- Small front wheel -->
-    <circle cx="14" cy="22" r="11" fill="#ffffff"/>
-    <circle cx="14" cy="22" r="4.5" fill="#0ea5e9"/>
-  </g>
-
-  <!-- ② MARKETPLACE — Gold circle with wheat -->
-  <g transform="translate(512 760)">
-    <circle cx="0" cy="0" r="80" fill="#f59e0b" stroke="#ffffff" stroke-width="6"/>
-    <circle cx="0" cy="0" r="80" fill="url(#topGlow)"/>
-    <!-- Center stalk -->
-    <line x1="0" y1="40" x2="0" y2="-30" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
-    <!-- Top grain -->
-    <ellipse cx="0" cy="-36" rx="10" ry="16" fill="#ffffff"/>
-    <line x1="0" y1="-52" x2="0" y2="-58" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
-    <!-- Left grains -->
-    <ellipse cx="-18" cy="-20" rx="7" ry="12" fill="#ffffff" transform="rotate(-25 -18 -20)"/>
-    <ellipse cx="-22" cy="0"  rx="7" ry="12" fill="#ffffff" transform="rotate(-25 -22 0)"/>
-    <!-- Right grains -->
-    <ellipse cx="18" cy="-20" rx="7" ry="12" fill="#ffffff" transform="rotate(25 18 -20)"/>
-    <ellipse cx="22" cy="0"   rx="7" ry="12" fill="#ffffff" transform="rotate(25 22 0)"/>
-  </g>
-
-  <!-- ③ SHOPPER — Violet circle with shopping cart -->
-  <g transform="translate(744 760)">
-    <circle cx="0" cy="0" r="80" fill="#8b5cf6" stroke="#ffffff" stroke-width="6"/>
-    <circle cx="0" cy="0" r="80" fill="url(#topGlow)"/>
-    <!-- Cart handle (top-left diagonal) -->
-    <path d="M -38 -22 L -22 -22 L -14 18 L 28 18" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-    <!-- Cart basket -->
-    <path d="M -16 -8 L 34 -8 L 28 18 L -10 18 Z" fill="#ffffff"/>
-    <!-- Wheels -->
-    <circle cx="-6" cy="32" r="6" fill="#ffffff"/>
-    <circle cx="22" cy="32" r="6" fill="#ffffff"/>
-    <circle cx="-6" cy="32" r="2.5" fill="#8b5cf6"/>
-    <circle cx="22" cy="32" r="2.5" fill="#8b5cf6"/>
-  </g>
+  <path d="M 290 850 Q 512 880, 734 850"
+    fill="none" stroke="#34d399" stroke-width="6" stroke-linecap="round" stroke-opacity="0.4"/>
+  <circle cx="290" cy="850" r="6" fill="#34d399" fill-opacity="0.6"/>
+  <circle cx="734" cy="850" r="6" fill="#34d399" fill-opacity="0.6"/>
 </svg>
