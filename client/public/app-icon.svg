@@ -1,6 +1,6 @@
 <svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Background -->
+    <!-- BACKGROUND -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#15803d"/>
       <stop offset="55%" stop-color="#14532d"/>
@@ -15,23 +15,30 @@
       <stop offset="60%" stop-color="#022c22" stop-opacity="0"/>
     </radialGradient>
 
-    <!-- Tractor body — bold yellow -->
-    <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+    <!-- GEAR — premium gold gradient -->
+    <linearGradient id="gearOuter" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="40%" stop-color="#fde047"/>
+      <stop offset="80%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#a16207"/>
+    </linearGradient>
+    <linearGradient id="gearInner" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#fef08a"/>
-      <stop offset="50%" stop-color="#facc15"/>
       <stop offset="100%" stop-color="#ca8a04"/>
     </linearGradient>
-
-    <!-- Tire -->
-    <radialGradient id="tireGrad" cx="50%" cy="40%" r="60%">
-      <stop offset="60%" stop-color="#1f2937"/>
-      <stop offset="100%" stop-color="#000000"/>
+    <radialGradient id="gearShine" cx="35%" cy="25%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
     </radialGradient>
 
-    <!-- Glass -->
-    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#bae6fd"/>
-      <stop offset="100%" stop-color="#0369a1"/>
+    <!-- WHEAT GREEN -->
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#86efac"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+    <linearGradient id="grainGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
     </linearGradient>
 
     <!-- "Go" lime gradient -->
@@ -41,9 +48,9 @@
     </linearGradient>
 
     <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
-      <feOffset dx="0" dy="10" result="off"/>
-      <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14"/>
+      <feOffset dx="0" dy="14" result="off"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.55"/></feComponentTransfer>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
     <filter id="textShadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -53,8 +60,8 @@
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
 
-    <radialGradient id="puff" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+    <radialGradient id="sparkle" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
       <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
     </radialGradient>
   </defs>
@@ -66,135 +73,116 @@
   <rect x="14" y="14" width="996" height="996" rx="218" ry="218"
         fill="none" stroke="#ffffff" stroke-width="3" stroke-opacity="0.18"/>
 
-  <!-- Halo -->
-  <ellipse cx="512" cy="380" rx="380" ry="220" fill="#ffffff" fill-opacity="0.05"/>
+  <!-- Halo behind gear -->
+  <circle cx="512" cy="395" r="270" fill="#ffffff" fill-opacity="0.05"/>
+  <circle cx="512" cy="395" r="220" fill="#ffffff" fill-opacity="0.04"/>
 
-  <!-- Field lines under tractor -->
-  <g opacity="0.3" stroke="#86efac" stroke-width="3" stroke-linecap="round">
-    <line x1="200" y1="600" x2="824" y2="600"/>
-    <line x1="220" y1="625" x2="804" y2="625" stroke-opacity="0.7"/>
-    <line x1="240" y1="648" x2="784" y2="648" stroke-opacity="0.5"/>
-  </g>
-
-  <!-- Smoke puffs above exhaust -->
-  <circle cx="370" cy="130" r="22" fill="url(#puff)"/>
-  <circle cx="345" cy="92"  r="15" fill="url(#puff)"/>
-  <circle cx="328" cy="62"  r="9"  fill="url(#puff)"/>
+  <!-- Decorative sparkles -->
+  <circle cx="200" cy="220" r="6" fill="#fde047" fill-opacity="0.7"/>
+  <circle cx="824" cy="240" r="8" fill="#bef264" fill-opacity="0.7"/>
+  <circle cx="180" cy="500" r="5" fill="#fde047" fill-opacity="0.6"/>
+  <circle cx="850" cy="520" r="6" fill="#bef264" fill-opacity="0.6"/>
+  <circle cx="240" cy="160" r="14" fill="url(#sparkle)"/>
+  <circle cx="800" cy="170" r="14" fill="url(#sparkle)"/>
 
   <!-- ══════════════════════════════════════════════════
-       TRACTOR — facing right, classic 🚜 silhouette
-       Cab on LEFT (over big rear wheel)
-       Hood on RIGHT (over small front wheel)
+       HERO MARK — Premium GEAR with WHEAT growing inside
+       (universal symbol for "agricultural equipment")
        ══════════════════════════════════════════════════ -->
-  <g filter="url(#dropShadow)" stroke="#1c1917" stroke-linejoin="round" stroke-linecap="round">
+  <g filter="url(#dropShadow)" transform="translate(512 395)">
 
-    <!-- ── EXHAUST PIPE ── -->
-    <rect x="358" y="150" width="26" height="100" rx="4" fill="#1f2937" stroke-width="6"/>
-    <ellipse cx="371" cy="148" rx="20" ry="6" fill="#0f172a" stroke-width="4"/>
-
-    <!-- ── CAB ROOF (with overhang on both sides) ── -->
-    <rect x="265" y="195" width="245" height="28" rx="8" fill="url(#bodyGrad)" stroke-width="8"/>
-
-    <!-- ── CAB BODY (square cabin with windshield) ── -->
-    <path d="
-      M 295 220
-      L 295 380
-      L 480 380
-      L 480 220
-      Z"
-      fill="url(#bodyGrad)" stroke-width="8"/>
-
-    <!-- Cab windshield (large, takes most of cab front) -->
-    <rect x="315" y="240" width="145" height="100" rx="6" fill="url(#glassGrad)" stroke-width="6"/>
-    <!-- Glass center post -->
-    <line x1="387" y1="240" x2="387" y2="340" stroke="#1c1917" stroke-width="5"/>
-    <!-- Glass highlight -->
-    <line x1="328" y1="252" x2="370" y2="252" stroke="#ffffff" stroke-width="4" stroke-opacity="0.7"/>
-    <line x1="402" y1="252" x2="445" y2="252" stroke="#ffffff" stroke-width="4" stroke-opacity="0.7"/>
-
-    <!-- Cab door step area -->
-    <rect x="315" y="350" width="145" height="22" rx="3" fill="#92400e" stroke-width="4"/>
-
-    <!-- ══ ENGINE HOOD (longer, lower than cab, on right) ══ -->
-    <path d="
-      M 480 260
-      L 720 260
-      Q 745 260, 750 285
-      L 760 380
-      L 480 380
-      Z"
-      fill="url(#bodyGrad)" stroke-width="8"/>
-
-    <!-- Hood horizontal accent lines -->
-    <line x1="495" y1="295" x2="745" y2="295" stroke="#92400e" stroke-width="4" stroke-opacity="0.55"/>
-    <line x1="495" y1="325" x2="755" y2="325" stroke="#92400e" stroke-width="4" stroke-opacity="0.55"/>
-
-    <!-- Front grille -->
-    <rect x="730" y="335" width="22" height="42" rx="3" fill="#1f2937" stroke-width="4"/>
-    <line x1="733" y1="345" x2="749" y2="345" stroke="#facc15" stroke-width="2.5"/>
-    <line x1="733" y1="355" x2="749" y2="355" stroke="#facc15" stroke-width="2.5"/>
-    <line x1="733" y1="365" x2="749" y2="365" stroke="#facc15" stroke-width="2.5"/>
-
-    <!-- Headlight (round, bright) -->
-    <circle cx="715" cy="290" r="20" fill="#fef9c3" stroke-width="6"/>
-    <circle cx="715" cy="290" r="9"  fill="#ffffff" stroke="none"/>
-
-    <!-- ── CHASSIS BAR connecting to wheels ── -->
-    <rect x="240" y="380" width="540" height="22" rx="5" fill="#92400e" stroke-width="6"/>
-
-    <!-- ══════════════════════════════════════════════════
-         REAR WHEEL — BIG (under cab)
-         ══════════════════════════════════════════════════ -->
+    <!-- ═══ OUTER GEAR — 12 bold teeth ═══ -->
     <g>
-      <!-- Outer tire -->
-      <circle cx="370" cy="500" r="115" fill="url(#tireGrad)" stroke="#facc15" stroke-width="6"/>
-      <!-- Bold tread blocks -->
-      <g fill="#374151" stroke="#0f172a" stroke-width="2">
-        <rect x="363" y="388" width="14" height="20" rx="3"/>
-        <rect x="438" y="412" width="20" height="14" rx="3" transform="rotate(40 448 419)"/>
-        <rect x="467" y="494" width="20" height="14" rx="3"/>
-        <rect x="438" y="575" width="20" height="14" rx="3" transform="rotate(-40 448 582)"/>
-        <rect x="363" y="595" width="14" height="20" rx="3"/>
-        <rect x="282" y="575" width="20" height="14" rx="3" transform="rotate(40 292 582)"/>
-        <rect x="253" y="494" width="20" height="14" rx="3"/>
-        <rect x="282" y="412" width="20" height="14" rx="3" transform="rotate(-40 292 419)"/>
+      <!-- Build gear shape: outer circle r=210 with 12 trapezoidal teeth -->
+      <path d="
+        M 0 -210
+        L 32 -210 L 38 -178 L 38 -178
+        A 178 178 0 0 1 89 -154
+        L 117 -171 L 138 -149 L 154 -89
+        A 178 178 0 0 1 178 -38
+        L 210 -32 L 210 32 L 178 38
+        A 178 178 0 0 1 154 89
+        L 171 117 L 149 138 L 89 154
+        A 178 178 0 0 1 38 178
+        L 32 210 L -32 210 L -38 178
+        A 178 178 0 0 1 -89 154
+        L -117 171 L -138 149 L -154 89
+        A 178 178 0 0 1 -178 38
+        L -210 32 L -210 -32 L -178 -38
+        A 178 178 0 0 1 -154 -89
+        L -171 -117 L -149 -138 L -89 -154
+        A 178 178 0 0 1 -38 -178
+        L -32 -210 Z
+      "
+      fill="url(#gearOuter)"
+      stroke="#854d0e"
+      stroke-width="6"
+      stroke-linejoin="round"/>
+
+      <!-- Highlight on top half of gear -->
+      <ellipse cx="-30" cy="-90" rx="120" ry="60" fill="url(#gearShine)"/>
+
+      <!-- Inner ring (decorative) -->
+      <circle cx="0" cy="0" r="160" fill="none" stroke="#854d0e" stroke-width="4" stroke-opacity="0.4"/>
+
+      <!-- Bolt holes between teeth (decorative dots) -->
+      <g fill="#854d0e" fill-opacity="0.6">
+        <circle cx="0" cy="-150" r="5"/>
+        <circle cx="106" cy="-106" r="5"/>
+        <circle cx="150" cy="0" r="5"/>
+        <circle cx="106" cy="106" r="5"/>
+        <circle cx="0" cy="150" r="5"/>
+        <circle cx="-106" cy="106" r="5"/>
+        <circle cx="-150" cy="0" r="5"/>
+        <circle cx="-106" cy="-106" r="5"/>
       </g>
-      <!-- Inner hub (yellow) -->
-      <circle cx="370" cy="500" r="58" fill="url(#bodyGrad)" stroke-width="6"/>
-      <!-- Spokes -->
-      <g stroke="#92400e" stroke-width="9" stroke-linecap="round">
-        <line x1="370" y1="450" x2="370" y2="550"/>
-        <line x1="320" y1="500" x2="420" y2="500"/>
-        <line x1="335" y1="465" x2="405" y2="535"/>
-        <line x1="405" y1="465" x2="335" y2="535"/>
-      </g>
-      <circle cx="370" cy="500" r="14" fill="#92400e" stroke-width="0"/>
-      <circle cx="370" cy="500" r="6"  fill="#fde047" stroke="none"/>
+
+      <!-- ═══ CENTER DISC (where the wheat sits) ═══ -->
+      <circle cx="0" cy="0" r="125" fill="#14532d" stroke="#854d0e" stroke-width="6"/>
+      <circle cx="0" cy="0" r="125" fill="url(#bgGrad)" fill-opacity="0.8"/>
     </g>
 
-    <!-- ══════════════════════════════════════════════════
-         FRONT WHEEL — SMALLER (under hood)
-         ══════════════════════════════════════════════════ -->
+    <!-- ═══ WHEAT SPRIG — green leaves + gold grain ═══ -->
     <g>
-      <circle cx="690" cy="525" r="72" fill="url(#tireGrad)" stroke="#facc15" stroke-width="5"/>
-      <g fill="#374151" stroke="#0f172a" stroke-width="1.5">
-        <rect x="684" y="458" width="12" height="16" rx="2"/>
-        <rect x="751" y="519" width="16" height="12" rx="2"/>
-        <rect x="684" y="576" width="12" height="16" rx="2"/>
-        <rect x="613" y="519" width="16" height="12" rx="2"/>
+      <!-- Center stalk -->
+      <line x1="0" y1="80" x2="0" y2="-90" stroke="#16a34a" stroke-width="6" stroke-linecap="round"/>
+
+      <!-- LEAVES (3 pairs, growing outward and up) -->
+      <!-- Bottom pair -->
+      <path d="M 0 50 Q -40 30, -55 -5 Q -30 5, 0 30 Z"
+        fill="url(#leafGrad)" stroke="#14532d" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M 0 50 Q 40 30, 55 -5 Q 30 5, 0 30 Z"
+        fill="url(#leafGrad)" stroke="#14532d" stroke-width="3" stroke-linejoin="round"/>
+      <!-- Middle pair -->
+      <path d="M 0 10 Q -45 -10, -60 -45 Q -32 -35, 0 -10 Z"
+        fill="url(#leafGrad)" stroke="#14532d" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M 0 10 Q 45 -10, 60 -45 Q 32 -35, 0 -10 Z"
+        fill="url(#leafGrad)" stroke="#14532d" stroke-width="3" stroke-linejoin="round"/>
+
+      <!-- ═══ GRAIN HEAD on top — wheat ears ═══ -->
+      <g>
+        <!-- Center grain -->
+        <ellipse cx="0" cy="-78" rx="9" ry="16" fill="url(#grainGrad)" stroke="#854d0e" stroke-width="2"/>
+        <!-- Side grains pair 1 -->
+        <ellipse cx="-12" cy="-65" rx="7" ry="13" fill="url(#grainGrad)" stroke="#854d0e" stroke-width="2" transform="rotate(-25 -12 -65)"/>
+        <ellipse cx="12" cy="-65" rx="7" ry="13" fill="url(#grainGrad)" stroke="#854d0e" stroke-width="2" transform="rotate(25 12 -65)"/>
+        <!-- Side grains pair 2 -->
+        <ellipse cx="-14" cy="-45" rx="7" ry="13" fill="url(#grainGrad)" stroke="#854d0e" stroke-width="2" transform="rotate(-30 -14 -45)"/>
+        <ellipse cx="14" cy="-45" rx="7" ry="13" fill="url(#grainGrad)" stroke="#854d0e" stroke-width="2" transform="rotate(30 14 -45)"/>
+        <!-- Top tip awn -->
+        <line x1="0" y1="-95" x2="0" y2="-115" stroke="#fde047" stroke-width="4" stroke-linecap="round"/>
+        <line x1="0" y1="-95" x2="-10" y2="-115" stroke="#fde047" stroke-width="3" stroke-linecap="round"/>
+        <line x1="0" y1="-95" x2="10" y2="-115" stroke="#fde047" stroke-width="3" stroke-linecap="round"/>
       </g>
-      <circle cx="690" cy="525" r="34" fill="url(#bodyGrad)" stroke-width="5"/>
-      <g stroke="#92400e" stroke-width="6" stroke-linecap="round">
-        <line x1="690" y1="495" x2="690" y2="555"/>
-        <line x1="660" y1="525" x2="720" y2="525"/>
-      </g>
-      <circle cx="690" cy="525" r="9" fill="#92400e" stroke-width="0"/>
-      <circle cx="690" cy="525" r="4" fill="#fde047" stroke="none"/>
     </g>
+
+    <!-- Center hub bolt -->
+    <circle cx="0" cy="65" r="16" fill="#854d0e" stroke="#fde047" stroke-width="3"/>
+    <circle cx="0" cy="65" r="6" fill="#fde047"/>
   </g>
 
   <!-- ══════════════════════════════════════════════════
-       WORDMARK — moved DOWN to clear the wheels
+       WORDMARK — "Ag" white + "Go" lime green
        ══════════════════════════════════════════════════ -->
   <g filter="url(#textShadow)">
     <text
