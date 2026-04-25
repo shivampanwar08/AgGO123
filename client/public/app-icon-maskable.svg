@@ -13,20 +13,24 @@
       <stop offset="0%" stop-color="#022c22" stop-opacity="0.45"/>
       <stop offset="60%" stop-color="#022c22" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#86efac"/>
-      <stop offset="60%" stop-color="#22c55e"/>
-      <stop offset="100%" stop-color="#15803d"/>
+    <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#dcfce7"/>
     </linearGradient>
-    <filter id="textShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
-      <feOffset dx="0" dy="6" result="off"/>
+    <linearGradient id="tireGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1f2937"/><stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
+      <feOffset dx="0" dy="10" result="off"/>
       <feComponentTransfer><feFuncA type="linear" slope="0.45"/></feComponentTransfer>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <filter id="leafShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
-      <feOffset dx="0" dy="4" result="off"/>
+    <filter id="textShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+      <feOffset dx="0" dy="5" result="off"/>
       <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
@@ -37,30 +41,54 @@
   <rect width="1024" height="1024" fill="url(#shade)"/>
 
   <g transform="translate(512 512) scale(0.78) translate(-512 -512)">
-    <g filter="url(#leafShadow)">
-      <path d="M 512 360 Q 510 320, 514 285" fill="none" stroke="#86efac" stroke-width="10" stroke-linecap="round"/>
-      <path d="M 510 320 Q 460 305, 442 268 Q 478 268, 510 305 Z" fill="url(#leafGrad)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>
-      <path d="M 514 320 Q 564 305, 582 268 Q 546 268, 514 305 Z" fill="url(#leafGrad)" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/>
-      <circle cx="514" cy="270" r="14" fill="#fde68a"/>
+    <ellipse cx="512" cy="450" rx="340" ry="240" fill="#ffffff" fill-opacity="0.06"/>
+    <g opacity="0.25" stroke="#86efac" stroke-width="3" stroke-linecap="round">
+      <line x1="180" y1="640" x2="844" y2="640"/>
+      <line x1="200" y1="665" x2="824" y2="665" stroke-opacity="0.7"/>
+      <line x1="220" y1="688" x2="804" y2="688" stroke-opacity="0.5"/>
+    </g>
+
+    <g filter="url(#dropShadow)">
+      <rect x="362" y="220" width="20" height="80" rx="4" fill="url(#bodyGrad)"/>
+      <rect x="358" y="216" width="28" height="14" rx="3" fill="url(#bodyGrad)"/>
+      <path d="M 412 230 L 432 165 L 530 165 L 555 230 Z" fill="url(#bodyGrad)" stroke="#16a34a" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M 432 220 L 446 175 L 522 175 L 540 220 Z" fill="url(#glassGrad)" stroke="#16a34a" stroke-width="4" stroke-linejoin="round"/>
+      <line x1="432" y1="220" x2="446" y2="175" stroke="#16a34a" stroke-width="6" stroke-linecap="round"/>
+      <line x1="555" y1="225" x2="522" y2="175" stroke="#16a34a" stroke-width="6" stroke-linecap="round"/>
+
+      <path d="M 340 300 L 340 240 Q 340 230, 350 230 L 600 230 Q 700 230, 720 280 L 750 360 Q 750 380, 730 380 L 350 380 Q 340 380, 340 370 Z"
+        fill="url(#bodyGrad)" stroke="#16a34a" stroke-width="6" stroke-linejoin="round"/>
+      <circle cx="715" cy="280" r="14" fill="#fde047" stroke="#16a34a" stroke-width="4"/>
+
+      <circle cx="380" cy="475" r="135" fill="url(#tireGrad)" stroke="#ffffff" stroke-width="10"/>
+      <circle cx="380" cy="475" r="65" fill="url(#bodyGrad)" stroke="#16a34a" stroke-width="6"/>
+      <g stroke="#16a34a" stroke-width="9" stroke-linecap="round">
+        <line x1="380" y1="420" x2="380" y2="530"/>
+        <line x1="325" y1="475" x2="435" y2="475"/>
+        <line x1="343" y1="438" x2="417" y2="512"/>
+        <line x1="417" y1="438" x2="343" y2="512"/>
+      </g>
+      <circle cx="380" cy="475" r="14" fill="#16a34a"/>
+
+      <circle cx="700" cy="510" r="80" fill="url(#tireGrad)" stroke="#ffffff" stroke-width="8"/>
+      <circle cx="700" cy="510" r="36" fill="url(#bodyGrad)" stroke="#16a34a" stroke-width="5"/>
+      <g stroke="#16a34a" stroke-width="6" stroke-linecap="round">
+        <line x1="700" y1="478" x2="700" y2="542"/>
+        <line x1="668" y1="510" x2="732" y2="510"/>
+      </g>
+      <circle cx="700" cy="510" r="9" fill="#16a34a"/>
+
+      <rect x="500" y="495" width="160" height="14" rx="4" fill="url(#bodyGrad)"/>
     </g>
 
     <g filter="url(#textShadow)">
-      <text x="512" y="640" text-anchor="middle"
+      <text x="512" y="800" text-anchor="middle"
         font-family="'Plus Jakarta Sans', 'Arial Black', sans-serif"
-        font-size="280" font-weight="900" fill="#ffffff" letter-spacing="-10">AgG</text>
-
-      <g transform="translate(770 555)">
-        <path d="M 0 0 C -55 0, -90 35, -90 90 C -90 145, -55 180, 0 180 C 55 180, 90 145, 90 90 C 90 35, 55 0, 0 0 Z"
-          fill="url(#leafGrad)" stroke="#ffffff" stroke-width="14"/>
-        <path d="M -50 50 Q 0 90, 50 130" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-opacity="0.85"/>
-        <path d="M 50 5 Q 80 -15, 105 -25 Q 95 5, 75 18 Z" fill="url(#leafGrad)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
-      </g>
+        font-size="180" font-weight="900" fill="#ffffff" letter-spacing="-6">AgGo</text>
     </g>
-
-    <text x="512" y="800" text-anchor="middle"
+    <text x="512" y="890" text-anchor="middle"
       font-family="'Plus Jakarta Sans', Arial, sans-serif"
-      font-size="46" font-weight="800" fill="#dcfce7"
-      letter-spacing="14" fill-opacity="0.95">FARM · SHOP · SELL</text>
-    <rect x="362" y="830" width="300" height="5" rx="2.5" fill="#fbbf24" fill-opacity="0.85"/>
+      font-size="38" font-weight="800" fill="#fde68a"
+      letter-spacing="10" fill-opacity="0.95">RENT FARM EQUIPMENT</text>
   </g>
 </svg>
