@@ -1,0 +1,59 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="55%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <radialGradient id="centerGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="12"/>
+      <feOffset dx="0" dy="8" result="offsetblur"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Full bleed background (no rounded corners — masker will handle it) -->
+  <rect x="0" y="0" width="1024" height="1024" fill="url(#bgGrad)"/>
+  <rect x="0" y="0" width="1024" height="1024" fill="url(#centerGlow)"/>
+
+  <!-- All content scaled to fit in safe inner 80% (pad ≈ 102px each side) -->
+  <g transform="translate(512 512) scale(0.78) translate(-512 -512)">
+    <circle cx="512" cy="512" r="360" fill="none" stroke="#a7f3d0" stroke-width="10" stroke-opacity="0.6"/>
+    <circle cx="512" cy="512" r="340" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.25"/>
+
+    <g filter="url(#softShadow)">
+      <circle cx="512" cy="640" r="170" fill="#0f3a2e" stroke="#ffffff" stroke-width="14"/>
+      <circle cx="512" cy="640" r="60" fill="#ffffff"/>
+      <g stroke="#ffffff" stroke-width="14" stroke-linecap="round">
+        <line x1="512" y1="490" x2="512" y2="790"/>
+        <line x1="362" y1="640" x2="662" y2="640"/>
+        <line x1="406" y1="534" x2="618" y2="746"/>
+        <line x1="618" y1="534" x2="406" y2="746"/>
+      </g>
+      <circle cx="512" cy="640" r="22" fill="#10b981"/>
+
+      <line x1="512" y1="490" x2="512" y2="240" stroke="url(#leafGrad)" stroke-width="22" stroke-linecap="round"/>
+      <ellipse cx="512" cy="220" rx="42" ry="70" fill="url(#leafGrad)" stroke="#92400e" stroke-width="4"/>
+      <line x1="512" y1="160" x2="512" y2="135" stroke="url(#leafGrad)" stroke-width="14" stroke-linecap="round"/>
+      <line x1="512" y1="200" x2="512" y2="270" stroke="#92400e" stroke-width="3" stroke-opacity="0.4"/>
+
+      <path d="M 512 380 Q 410 360 380 270 Q 460 290 512 380 Z" fill="url(#leafGrad)" stroke="#92400e" stroke-width="3"/>
+      <path d="M 512 380 Q 614 360 644 270 Q 564 290 512 380 Z" fill="url(#leafGrad)" stroke="#92400e" stroke-width="3"/>
+      <path d="M 512 440 Q 420 430 390 360 Q 470 360 512 440 Z" fill="url(#leafGrad)" stroke="#92400e" stroke-width="3" opacity="0.85"/>
+      <path d="M 512 440 Q 604 430 634 360 Q 554 360 512 440 Z" fill="url(#leafGrad)" stroke="#92400e" stroke-width="3" opacity="0.85"/>
+    </g>
+
+    <circle cx="152" cy="512" r="22" fill="#38bdf8" stroke="#ffffff" stroke-width="6"/>
+    <circle cx="872" cy="512" r="22" fill="#fbbf24" stroke="#ffffff" stroke-width="6"/>
+    <circle cx="512" cy="872" r="22" fill="#a78bfa" stroke="#ffffff" stroke-width="6"/>
+  </g>
+</svg>
