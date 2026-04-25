@@ -142,98 +142,214 @@
       <circle cx="0" cy="0" r="125" fill="url(#bgGrad)" fill-opacity="0.8"/>
     </g>
 
-    <!-- ═══ FARMER carrying CROPS on his shoulder ═══ -->
+    <!-- ═══ PROFESSIONAL FARMER PORTRAIT (waist-up) holding wheat sheaf ═══ -->
     <g stroke="#1c1917" stroke-linejoin="round" stroke-linecap="round">
 
-      <!-- Ground line (subtle field) -->
-      <ellipse cx="0" cy="92" rx="80" ry="6" fill="#000000" fill-opacity="0.25" stroke="none"/>
-
-      <!-- ═══ LEGS ═══ (standing pose, walking) -->
-      <!-- Back leg -->
-      <path d="M -8 30 L -22 88 L -8 90 L 4 38 Z"
-        fill="#1e40af" stroke-width="3"/>
-      <!-- Front leg -->
-      <path d="M 10 30 L 18 88 L 32 88 L 28 35 Z"
-        fill="#2563eb" stroke-width="3"/>
-      <!-- Boots -->
-      <ellipse cx="-15" cy="92" rx="14" ry="6" fill="#451a03" stroke-width="3"/>
-      <ellipse cx="25" cy="92" rx="14" ry="6" fill="#451a03" stroke-width="3"/>
-
-      <!-- ═══ TORSO (kurta/shirt) ═══ -->
+      <!-- ═══ SHOULDERS / SHIRT base ═══ -->
       <path d="
-        M -28 -10
-        Q -34 -5, -32 10
-        L -26 35
-        Q -8 42, 30 32
-        L 32 5
-        Q 30 -10, 22 -14
-        L -20 -14
+        M -68 95
+        Q -60 50, -38 30
+        L 38 30
+        Q 60 50, 68 95
         Z"
-        fill="#dc2626" stroke-width="4"/>
-      <!-- Shirt collar/V -->
-      <path d="M -8 -14 L 0 -2 L 10 -14 Z" fill="#fef9c3" stroke-width="2"/>
+        fill="#15803d" stroke-width="4"/>
 
-      <!-- ═══ FRONT ARM (holding bundle) ═══ -->
-      <path d="M 28 0 Q 50 5, 55 25 Q 50 35, 38 32 Q 30 22, 28 12 Z"
-        fill="#dc2626" stroke-width="3"/>
-      <!-- Front hand -->
-      <circle cx="55" cy="28" r="9" fill="#fcd34d" stroke-width="3"/>
+      <!-- Shirt buttons placket -->
+      <line x1="0" y1="35" x2="0" y2="92" stroke="#14532d" stroke-width="2.5"/>
+      <circle cx="0" cy="50" r="2.5" fill="#fde047" stroke-width="0"/>
+      <circle cx="0" cy="65" r="2.5" fill="#fde047" stroke-width="0"/>
+      <circle cx="0" cy="80" r="2.5" fill="#fde047" stroke-width="0"/>
 
-      <!-- ═══ BACK ARM (raised, holding sheaf above shoulder) ═══ -->
-      <path d="M -22 -8 Q -40 -20, -36 -42 Q -28 -48, -20 -42 Q -16 -25, -14 -10 Z"
-        fill="#dc2626" stroke-width="3"/>
-      <!-- Back hand near sheaf -->
-      <circle cx="-30" cy="-45" r="9" fill="#fcd34d" stroke-width="3"/>
+      <!-- Shirt collar -->
+      <path d="M -22 30 L -12 22 L 0 30 L 12 22 L 22 30 Z"
+        fill="#86efac" stroke-width="3"/>
 
-      <!-- ═══ HEAD (skin tone, looking forward) ═══ -->
-      <ellipse cx="0" cy="-30" rx="20" ry="22" fill="#fcd34d" stroke-width="4"/>
-      <!-- Beard/chin shadow -->
-      <path d="M -12 -22 Q 0 -14, 12 -22 Q 12 -16, 0 -10 Q -12 -16, -12 -22 Z"
-        fill="#92400e" stroke-width="0" opacity="0.5"/>
-      <!-- Eyes -->
-      <circle cx="-7" cy="-32" r="2.2" fill="#1c1917" stroke="none"/>
-      <circle cx="7" cy="-32" r="2.2" fill="#1c1917" stroke="none"/>
-      <!-- Smile -->
-      <path d="M -6 -22 Q 0 -18, 6 -22" fill="none" stroke="#1c1917" stroke-width="2"/>
+      <!-- Shoulder shadow -->
+      <path d="M -38 30 Q -50 45, -55 75" fill="none" stroke="#14532d" stroke-width="2.5" stroke-opacity="0.5"/>
+      <path d="M 38 30 Q 50 45, 55 75" fill="none" stroke="#14532d" stroke-width="2.5" stroke-opacity="0.5"/>
 
-      <!-- ═══ FARMER HAT (wide-brim straw hat) ═══ -->
-      <ellipse cx="0" cy="-50" rx="42" ry="9" fill="#a16207" stroke-width="4"/>
-      <ellipse cx="0" cy="-50" rx="42" ry="6" fill="#ca8a04" stroke-width="0"/>
-      <!-- Hat crown -->
-      <path d="M -18 -52 Q -16 -68, 0 -70 Q 16 -68, 18 -52 Z"
-        fill="#ca8a04" stroke-width="4"/>
-      <!-- Hat band -->
-      <rect x="-18" y="-56" width="36" height="5" rx="2" fill="#dc2626" stroke-width="0"/>
+      <!-- ═══ NECK ═══ -->
+      <path d="M -12 28 L -10 14 L 10 14 L 12 28 Z"
+        fill="#d97706" stroke-width="3"/>
+      <path d="M -10 22 L 10 22" stroke="#92400e" stroke-width="1.5" stroke-opacity="0.5"/>
 
-      <!-- ═══ SHEAF OF CROPS on shoulder (golden wheat bundle) ═══ -->
-      <g transform="translate(-30 -55)">
-        <!-- Bundle wrap (rope) -->
-        <ellipse cx="0" cy="0" rx="22" ry="14" fill="url(#grainGrad)" stroke="#854d0e" stroke-width="3"/>
-        <!-- Rope tying the bundle -->
-        <ellipse cx="0" cy="0" rx="22" ry="3" fill="#451a03" stroke-width="0"/>
-        <!-- Wheat stalks fanning UP from bundle -->
-        <g stroke="#16a34a" stroke-width="3" stroke-linecap="round">
-          <line x1="-15" y1="-10" x2="-22" y2="-40"/>
-          <line x1="-7" y1="-12" x2="-10" y2="-44"/>
-          <line x1="0" y1="-12" x2="0" y2="-46"/>
-          <line x1="8" y1="-12" x2="11" y2="-44"/>
-          <line x1="15" y1="-10" x2="22" y2="-40"/>
+      <!-- ═══ HEAD (warm skin tone, professional proportions) ═══ -->
+      <path d="
+        M -28 -22
+        Q -28 -52, 0 -52
+        Q 28 -52, 28 -22
+        Q 28 8, 14 14
+        Q 0 18, -14 14
+        Q -28 8, -28 -22
+        Z"
+        fill="#f59e0b" stroke-width="4"/>
+
+      <!-- Cheek shading -->
+      <ellipse cx="-18" cy="-5" rx="6" ry="4" fill="#dc2626" fill-opacity="0.2" stroke="none"/>
+      <ellipse cx="18" cy="-5" rx="6" ry="4" fill="#dc2626" fill-opacity="0.2" stroke="none"/>
+
+      <!-- Ears -->
+      <ellipse cx="-28" cy="-15" rx="4" ry="7" fill="#d97706" stroke-width="2.5"/>
+      <ellipse cx="28" cy="-15" rx="4" ry="7" fill="#d97706" stroke-width="2.5"/>
+
+      <!-- Eyes (refined) -->
+      <ellipse cx="-9" cy="-18" rx="3.5" ry="2.5" fill="#ffffff" stroke-width="1.5"/>
+      <ellipse cx="9" cy="-18" rx="3.5" ry="2.5" fill="#ffffff" stroke-width="1.5"/>
+      <circle cx="-9" cy="-18" r="1.8" fill="#1c1917" stroke="none"/>
+      <circle cx="9" cy="-18" r="1.8" fill="#1c1917" stroke="none"/>
+
+      <!-- Eyebrows -->
+      <path d="M -14 -25 Q -9 -28, -4 -25" fill="none" stroke="#1c1917" stroke-width="2.5"/>
+      <path d="M 14 -25 Q 9 -28, 4 -25" fill="none" stroke="#1c1917" stroke-width="2.5"/>
+
+      <!-- Nose -->
+      <path d="M 0 -15 Q -3 -8, -2 -3 Q 0 -1, 2 -3 Q 3 -8, 0 -15" fill="none" stroke="#92400e" stroke-width="1.8"/>
+
+      <!-- Mustache (mature professional farmer) -->
+      <path d="M -10 1 Q -6 5, 0 4 Q 6 5, 10 1 Q 7 -2, 0 -1 Q -7 -2, -10 1 Z"
+        fill="#451a03" stroke-width="2"/>
+
+      <!-- Smile under mustache -->
+      <path d="M -7 8 Q 0 13, 7 8" fill="none" stroke="#1c1917" stroke-width="2"/>
+
+      <!-- ═══ STRAW HAT (wide brim, classic Indian farmer) ═══ -->
+      <!-- Brim back shadow -->
+      <ellipse cx="0" cy="-46" rx="56" ry="10" fill="#78350f" stroke-width="0" opacity="0.4"/>
+      <!-- Wide brim -->
+      <ellipse cx="0" cy="-48" rx="56" ry="10" fill="url(#grainGrad)" stroke="#78350f" stroke-width="4"/>
+      <!-- Brim weave texture -->
+      <ellipse cx="0" cy="-48" rx="56" ry="6" fill="none" stroke="#92400e" stroke-width="1.5" stroke-opacity="0.4"/>
+      <!-- Crown of hat -->
+      <path d="
+        M -22 -52
+        Q -22 -82, 0 -85
+        Q 22 -82, 22 -52
+        Z"
+        fill="url(#grainGrad)" stroke="#78350f" stroke-width="4"/>
+      <!-- Crown weave lines -->
+      <path d="M -20 -65 Q 0 -68, 20 -65" fill="none" stroke="#92400e" stroke-width="1.5" stroke-opacity="0.5"/>
+      <path d="M -18 -75 Q 0 -77, 18 -75" fill="none" stroke="#92400e" stroke-width="1.5" stroke-opacity="0.5"/>
+      <!-- Hat band (red ribbon) -->
+      <path d="M -22 -54 Q 0 -52, 22 -54 L 22 -49 Q 0 -47, -22 -49 Z"
+        fill="#dc2626" stroke="#7f1d1d" stroke-width="1.5"/>
+      <!-- Hat highlight -->
+      <path d="M -10 -78 Q -4 -82, 4 -82" fill="none" stroke="#fef3c7" stroke-width="3" stroke-opacity="0.7"/>
+
+      <!-- ═══ ARMS holding sheaf in front ═══ -->
+      <!-- Left arm (curving in to hold sheaf) -->
+      <path d="
+        M -45 50
+        Q -55 70, -32 88
+        Q -22 92, -16 86
+        L -16 60
+        Z"
+        fill="#15803d" stroke-width="4"/>
+      <!-- Right arm -->
+      <path d="
+        M 45 50
+        Q 55 70, 32 88
+        Q 22 92, 16 86
+        L 16 60
+        Z"
+        fill="#15803d" stroke-width="4"/>
+      <!-- Sleeve cuffs -->
+      <path d="M -34 84 L -16 84" stroke="#14532d" stroke-width="2.5"/>
+      <path d="M 34 84 L 16 84" stroke="#14532d" stroke-width="2.5"/>
+
+      <!-- Left hand -->
+      <ellipse cx="-22" cy="89" rx="11" ry="9" fill="#f59e0b" stroke-width="3"/>
+      <!-- Right hand -->
+      <ellipse cx="22" cy="89" rx="11" ry="9" fill="#f59e0b" stroke-width="3"/>
+
+      <!-- ══════════════════════════════
+           SHEAF OF WHEAT held in front
+           (proper realistic wheat)
+           ══════════════════════════════ -->
+      <g>
+        <!-- Twine wrapping the sheaf base -->
+        <path d="M -22 78 Q 0 75, 22 78 L 22 92 Q 0 95, -22 92 Z"
+          fill="#78350f" stroke="#451a03" stroke-width="3"/>
+        <!-- Twine cross-wrap detail -->
+        <line x1="-18" y1="80" x2="18" y2="90" stroke="#fde047" stroke-width="1.5" stroke-opacity="0.6"/>
+        <line x1="-18" y1="90" x2="18" y2="80" stroke="#fde047" stroke-width="1.5" stroke-opacity="0.6"/>
+
+        <!-- ═══ WHEAT STALKS (curving up from twine) ═══ -->
+        <g stroke="#65a30d" stroke-width="3" stroke-linecap="round" fill="none">
+          <path d="M -18 78 Q -22 60, -28 35"/>
+          <path d="M -10 76 Q -12 50, -14 22"/>
+          <path d="M -3 75  Q -3 45, -5 14"/>
+          <path d="M 4 75   Q 4 45, 6 14"/>
+          <path d="M 11 76  Q 13 50, 15 22"/>
+          <path d="M 19 78  Q 23 60, 29 35"/>
         </g>
-        <!-- Golden grain heads on top of each stalk -->
-        <g fill="url(#grainGrad)" stroke="#854d0e" stroke-width="2">
-          <ellipse cx="-22" cy="-44" rx="5" ry="8" transform="rotate(-15 -22 -44)"/>
-          <ellipse cx="-10" cy="-48" rx="5" ry="8" transform="rotate(-7 -10 -48)"/>
-          <ellipse cx="0" cy="-50" rx="5" ry="8"/>
-          <ellipse cx="11" cy="-48" rx="5" ry="8" transform="rotate(7 11 -48)"/>
-          <ellipse cx="22" cy="-44" rx="5" ry="8" transform="rotate(15 22 -44)"/>
+
+        <!-- Small leaf blades on stalks -->
+        <g fill="#86efac" stroke="#16a34a" stroke-width="1.5">
+          <path d="M -14 55 Q -22 50, -25 42 Q -18 48, -14 55 Z"/>
+          <path d="M 14 55 Q 22 50, 25 42 Q 18 48, 14 55 Z"/>
+          <path d="M -7 40 Q -14 35, -16 28 Q -10 33, -7 40 Z"/>
+          <path d="M 7 40 Q 14 35, 16 28 Q 10 33, 7 40 Z"/>
         </g>
-        <!-- Wheat tip awns -->
-        <g stroke="#fde047" stroke-width="2" stroke-linecap="round">
-          <line x1="-22" y1="-50" x2="-26" y2="-58"/>
-          <line x1="-10" y1="-54" x2="-12" y2="-62"/>
-          <line x1="0" y1="-56" x2="0" y2="-66"/>
-          <line x1="11" y1="-54" x2="13" y2="-62"/>
-          <line x1="22" y1="-50" x2="26" y2="-58"/>
+
+        <!-- ═══ WHEAT HEADS (proper accurate cylindrical heads w/ kernels) ═══ -->
+        <g>
+          <!-- Each wheat head: oval body with diagonal kernel pattern + bristles -->
+
+          <!-- Head 1 (far left) -->
+          <g transform="translate(-28 30) rotate(-20)">
+            <ellipse cx="0" cy="0" rx="6" ry="14" fill="url(#grainGrad)" stroke="#78350f" stroke-width="2"/>
+            <!-- Kernel ridges (diagonal lines) -->
+            <path d="M -5 -10 L 5 -7 M -5 -5 L 5 -2 M -5 0 L 5 3 M -5 5 L 5 8" stroke="#854d0e" stroke-width="1.2" fill="none"/>
+            <!-- Bristles (awns) -->
+            <line x1="-3" y1="-12" x2="-7" y2="-22" stroke="#fde047" stroke-width="1.5"/>
+            <line x1="0" y1="-14" x2="0" y2="-26" stroke="#fde047" stroke-width="1.5"/>
+            <line x1="3" y1="-12" x2="7" y2="-22" stroke="#fde047" stroke-width="1.5"/>
+          </g>
+
+          <!-- Head 2 -->
+          <g transform="translate(-14 18) rotate(-10)">
+            <ellipse cx="0" cy="0" rx="6" ry="15" fill="url(#grainGrad)" stroke="#78350f" stroke-width="2"/>
+            <path d="M -5 -11 L 5 -8 M -5 -6 L 5 -3 M -5 -1 L 5 2 M -5 4 L 5 7 M -5 9 L 5 12" stroke="#854d0e" stroke-width="1.2" fill="none"/>
+            <line x1="-3" y1="-13" x2="-6" y2="-24" stroke="#fde047" stroke-width="1.5"/>
+            <line x1="0" y1="-15" x2="0" y2="-28" stroke="#fde047" stroke-width="1.5"/>
+            <line x1="3" y1="-13" x2="6" y2="-24" stroke="#fde047" stroke-width="1.5"/>
+          </g>
+
+          <!-- Head 3 (center-left, tallest) -->
+          <g transform="translate(-5 10) rotate(-3)">
+            <ellipse cx="0" cy="0" rx="7" ry="16" fill="url(#grainGrad)" stroke="#78350f" stroke-width="2"/>
+            <path d="M -6 -12 L 6 -9 M -6 -7 L 6 -4 M -6 -2 L 6 1 M -6 3 L 6 6 M -6 8 L 6 11" stroke="#854d0e" stroke-width="1.2" fill="none"/>
+            <line x1="-3" y1="-15" x2="-7" y2="-28" stroke="#fde047" stroke-width="1.6"/>
+            <line x1="0" y1="-17" x2="0" y2="-32" stroke="#fde047" stroke-width="1.6"/>
+            <line x1="3" y1="-15" x2="7" y2="-28" stroke="#fde047" stroke-width="1.6"/>
+          </g>
+
+          <!-- Head 4 (center-right, tallest) -->
+          <g transform="translate(6 10) rotate(3)">
+            <ellipse cx="0" cy="0" rx="7" ry="16" fill="url(#grainGrad)" stroke="#78350f" stroke-width="2"/>
+            <path d="M -6 -12 L 6 -9 M -6 -7 L 6 -4 M -6 -2 L 6 1 M -6 3 L 6 6 M -6 8 L 6 11" stroke="#854d0e" stroke-width="1.2" fill="none"/>
+            <line x1="-3" y1="-15" x2="-7" y2="-28" stroke="#fde047" stroke-width="1.6"/>
+            <line x1="0" y1="-17" x2="0" y2="-32" stroke="#fde047" stroke-width="1.6"/>
+            <line x1="3" y1="-15" x2="7" y2="-28" stroke="#fde047" stroke-width="1.6"/>
+          </g>
+
+          <!-- Head 5 -->
+          <g transform="translate(15 18) rotate(10)">
+            <ellipse cx="0" cy="0" rx="6" ry="15" fill="url(#grainGrad)" stroke="#78350f" stroke-width="2"/>
+            <path d="M -5 -11 L 5 -8 M -5 -6 L 5 -3 M -5 -1 L 5 2 M -5 4 L 5 7 M -5 9 L 5 12" stroke="#854d0e" stroke-width="1.2" fill="none"/>
+            <line x1="-3" y1="-13" x2="-6" y2="-24" stroke="#fde047" stroke-width="1.5"/>
+            <line x1="0" y1="-15" x2="0" y2="-28" stroke="#fde047" stroke-width="1.5"/>
+            <line x1="3" y1="-13" x2="6" y2="-24" stroke="#fde047" stroke-width="1.5"/>
+          </g>
+
+          <!-- Head 6 (far right) -->
+          <g transform="translate(29 30) rotate(20)">
+            <ellipse cx="0" cy="0" rx="6" ry="14" fill="url(#grainGrad)" stroke="#78350f" stroke-width="2"/>
+            <path d="M -5 -10 L 5 -7 M -5 -5 L 5 -2 M -5 0 L 5 3 M -5 5 L 5 8" stroke="#854d0e" stroke-width="1.2" fill="none"/>
+            <line x1="-3" y1="-12" x2="-7" y2="-22" stroke="#fde047" stroke-width="1.5"/>
+            <line x1="0" y1="-14" x2="0" y2="-26" stroke="#fde047" stroke-width="1.5"/>
+            <line x1="3" y1="-12" x2="7" y2="-22" stroke="#fde047" stroke-width="1.5"/>
+          </g>
         </g>
       </g>
     </g>
