@@ -15,12 +15,6 @@
     <radialGradient id="gearShine" cx="35%" cy="25%" r="50%">
       <stop offset="0%" stop-color="#ffffff" stop-opacity="0.7"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#86efac"/><stop offset="100%" stop-color="#16a34a"/>
-    </linearGradient>
-    <linearGradient id="grainGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#ca8a04"/>
-    </linearGradient>
     <linearGradient id="goGrad" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#bef264"/><stop offset="100%" stop-color="#65a30d"/>
     </linearGradient>
@@ -36,6 +30,33 @@
       <feComponentTransfer><feFuncA type="linear" slope="0.55"/></feComponentTransfer>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
+
+    <!-- AgGoLogo embedded gradients -->
+    <linearGradient id="logo-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d2818"/><stop offset="100%" stop-color="#0a2420"/>
+    </linearGradient>
+    <linearGradient id="logo-eq" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+    <linearGradient id="logo-mkt" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fde047"/><stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+    <linearGradient id="logo-sh" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <radialGradient id="logo-ctr" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.45"/><stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="logo-glow-eq" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.25"/><stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="logo-glow-mkt" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.25"/><stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="logo-glow-sh" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.25"/><stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="logo-clip"><circle cx="60" cy="60" r="55"/></clipPath>
   </defs>
 
   <rect width="1024" height="1024" fill="url(#bgGrad)"/>
@@ -54,75 +75,75 @@
         <circle cx="0" cy="-150" r="5"/><circle cx="106" cy="-106" r="5"/><circle cx="150" cy="0" r="5"/><circle cx="106" cy="106" r="5"/>
         <circle cx="0" cy="150" r="5"/><circle cx="-106" cy="106" r="5"/><circle cx="-150" cy="0" r="5"/><circle cx="-106" cy="-106" r="5"/>
       </g>
-      <circle cx="0" cy="0" r="148" fill="#14532d" stroke="#854d0e" stroke-width="6"/>
-      <circle cx="0" cy="0" r="148" fill="url(#bgGrad)" fill-opacity="0.8"/>
 
-      <g stroke="#1c1917" stroke-linejoin="round" stroke-linecap="round" transform="scale(1.32)">
-        <path d="M -68 95 Q -60 50, -38 30 L 38 30 Q 60 50, 68 95 Z" fill="#15803d" stroke-width="4"/>
-        <line x1="0" y1="35" x2="0" y2="92" stroke="#14532d" stroke-width="2.5"/>
-        <circle cx="0" cy="50" r="2.5" fill="#fde047" stroke-width="0"/>
-        <circle cx="0" cy="65" r="2.5" fill="#fde047" stroke-width="0"/>
-        <circle cx="0" cy="80" r="2.5" fill="#fde047" stroke-width="0"/>
-        <path d="M -22 30 L -12 22 L 0 30 L 12 22 L 22 30 Z" fill="#86efac" stroke-width="3"/>
-        <path d="M -12 28 L -10 14 L 10 14 L 12 28 Z" fill="#d97706" stroke-width="3"/>
-        <path d="M -28 -22 Q -28 -52, 0 -52 Q 28 -52, 28 -22 Q 28 8, 14 14 Q 0 18, -14 14 Q -28 8, -28 -22 Z" fill="#f59e0b" stroke-width="4"/>
-        <ellipse cx="-28" cy="-15" rx="4" ry="7" fill="#d97706" stroke-width="2.5"/>
-        <ellipse cx="28" cy="-15" rx="4" ry="7" fill="#d97706" stroke-width="2.5"/>
-        <ellipse cx="-9" cy="-18" rx="3.5" ry="2.5" fill="#ffffff" stroke-width="1.5"/>
-        <ellipse cx="9" cy="-18" rx="3.5" ry="2.5" fill="#ffffff" stroke-width="1.5"/>
-        <circle cx="-9" cy="-18" r="1.8" fill="#1c1917" stroke="none"/>
-        <circle cx="9" cy="-18" r="1.8" fill="#1c1917" stroke="none"/>
-        <path d="M -14 -25 Q -9 -28, -4 -25" fill="none" stroke="#1c1917" stroke-width="2.5"/>
-        <path d="M 14 -25 Q 9 -28, 4 -25" fill="none" stroke="#1c1917" stroke-width="2.5"/>
-        <path d="M -10 1 Q -6 5, 0 4 Q 6 5, 10 1 Q 7 -2, 0 -1 Q -7 -2, -10 1 Z" fill="#451a03" stroke-width="2"/>
-        <path d="M -7 8 Q 0 13, 7 8" fill="none" stroke="#1c1917" stroke-width="2"/>
+      <!-- AgGoLogo embedded inside the gear -->
+      <g transform="scale(2.45) translate(-60 -60)">
+        <circle cx="60" cy="60" r="55" fill="url(#logo-bg)"/>
 
-        <ellipse cx="0" cy="-48" rx="56" ry="10" fill="url(#grainGrad)" stroke="#78350f" stroke-width="4"/>
-        <path d="M -22 -52 Q -22 -82, 0 -85 Q 22 -82, 22 -52 Z" fill="url(#grainGrad)" stroke="#78350f" stroke-width="4"/>
-        <path d="M -22 -54 Q 0 -52, 22 -54 L 22 -49 Q 0 -47, -22 -49 Z" fill="#dc2626" stroke="#7f1d1d" stroke-width="1.5"/>
+        <g clip-path="url(#logo-clip)" opacity="0.08" stroke="#34d399" stroke-width="0.5">
+          <line x1="60" y1="5" x2="60" y2="115"/>
+          <line x1="5" y1="32" x2="115" y2="88"/>
+          <line x1="5" y1="88" x2="115" y2="32"/>
+          <circle cx="60" cy="60" r="25" fill="none"/>
+          <circle cx="60" cy="60" r="42" fill="none"/>
+        </g>
 
-        <path d="M -45 50 Q -55 70, -32 88 Q -22 92, -16 86 L -16 60 Z" fill="#15803d" stroke-width="4"/>
-        <path d="M 45 50 Q 55 70, 32 88 Q 22 92, 16 86 L 16 60 Z" fill="#15803d" stroke-width="4"/>
-        <ellipse cx="-22" cy="89" rx="11" ry="9" fill="#f59e0b" stroke-width="3"/>
-        <ellipse cx="22" cy="89" rx="11" ry="9" fill="#f59e0b" stroke-width="3"/>
+        <circle cx="35" cy="38" r="26" fill="url(#logo-glow-eq)"/>
+        <circle cx="85" cy="38" r="26" fill="url(#logo-glow-mkt)"/>
+        <circle cx="60" cy="85" r="26" fill="url(#logo-glow-sh)"/>
 
-        <path d="M -22 78 Q 0 75, 22 78 L 22 92 Q 0 95, -22 92 Z" fill="#78350f" stroke="#451a03" stroke-width="3"/>
-        <g stroke="#65a30d" stroke-width="3" stroke-linecap="round" fill="none">
-          <path d="M -18 78 Q -22 60, -28 35"/>
-          <path d="M -10 76 Q -12 50, -14 22"/>
-          <path d="M -3 75 Q -3 45, -5 14"/>
-          <path d="M 4 75 Q 4 45, 6 14"/>
-          <path d="M 11 76 Q 13 50, 15 22"/>
-          <path d="M 19 78 Q 23 60, 29 35"/>
-        </g>
-        <g fill="#86efac" stroke="#16a34a" stroke-width="1.5">
-          <path d="M -14 55 Q -22 50, -25 42 Q -18 48, -14 55 Z"/>
-          <path d="M 14 55 Q 22 50, 25 42 Q 18 48, 14 55 Z"/>
-        </g>
-        <g transform="translate(-28 30) rotate(-20)">
-          <ellipse cx="0" cy="0" rx="6" ry="14" fill="url(#grainGrad)" stroke="#78350f" stroke-width="2"/>
-          <line x1="0" y1="-14" x2="0" y2="-26" stroke="#fde047" stroke-width="1.5"/>
-        </g>
-        <g transform="translate(-14 18) rotate(-10)">
-          <ellipse cx="0" cy="0" rx="6" ry="15" fill="url(#grainGrad)" stroke="#78350f" stroke-width="2"/>
-          <line x1="0" y1="-15" x2="0" y2="-28" stroke="#fde047" stroke-width="1.5"/>
-        </g>
-        <g transform="translate(-5 10) rotate(-3)">
-          <ellipse cx="0" cy="0" rx="7" ry="16" fill="url(#grainGrad)" stroke="#78350f" stroke-width="2"/>
-          <line x1="0" y1="-17" x2="0" y2="-32" stroke="#fde047" stroke-width="1.6"/>
-        </g>
-        <g transform="translate(6 10) rotate(3)">
-          <ellipse cx="0" cy="0" rx="7" ry="16" fill="url(#grainGrad)" stroke="#78350f" stroke-width="2"/>
-          <line x1="0" y1="-17" x2="0" y2="-32" stroke="#fde047" stroke-width="1.6"/>
-        </g>
-        <g transform="translate(15 18) rotate(10)">
-          <ellipse cx="0" cy="0" rx="6" ry="15" fill="url(#grainGrad)" stroke="#78350f" stroke-width="2"/>
-          <line x1="0" y1="-15" x2="0" y2="-28" stroke="#fde047" stroke-width="1.5"/>
-        </g>
-        <g transform="translate(29 30) rotate(20)">
-          <ellipse cx="0" cy="0" rx="6" ry="14" fill="url(#grainGrad)" stroke="#78350f" stroke-width="2"/>
-          <line x1="0" y1="-14" x2="0" y2="-26" stroke="#fde047" stroke-width="1.5"/>
-        </g>
+        <line x1="60" y1="60" x2="60" y2="10" stroke="#34d399" stroke-width="0.6" stroke-opacity="0.25"/>
+        <line x1="60" y1="60" x2="14" y2="85" stroke="#34d399" stroke-width="0.6" stroke-opacity="0.25"/>
+        <line x1="60" y1="60" x2="106" y2="85" stroke="#34d399" stroke-width="0.6" stroke-opacity="0.25"/>
+
+        <!-- Tractor (Equipment) -->
+        <rect x="22" y="37" width="20" height="10" rx="2.5" fill="none" stroke="url(#logo-eq)" stroke-width="1.8"/>
+        <path d="M28 37 L30 31 L38 31 L40 37" fill="none" stroke="url(#logo-eq)" stroke-width="1.8" stroke-linejoin="round"/>
+        <rect x="30.5" y="32.5" width="6" height="4" rx="1" fill="url(#logo-eq)" fill-opacity="0.3" stroke="url(#logo-eq)" stroke-width="0.8"/>
+        <line x1="37" y1="28" x2="37" y2="32" stroke="url(#logo-eq)" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="28" cy="50" r="6.5" fill="none" stroke="url(#logo-eq)" stroke-width="1.8"/>
+        <circle cx="28" cy="50" r="3" fill="url(#logo-eq)" fill-opacity="0.4"/>
+        <line x1="28" y1="44" x2="28" y2="56" stroke="url(#logo-eq)" stroke-width="0.8" stroke-opacity="0.6"/>
+        <line x1="22" y1="50" x2="34" y2="50" stroke="url(#logo-eq)" stroke-width="0.8" stroke-opacity="0.6"/>
+        <line x1="23.6" y1="45.4" x2="32.4" y2="54.6" stroke="url(#logo-eq)" stroke-width="0.8" stroke-opacity="0.6"/>
+        <line x1="32.4" y1="45.4" x2="23.6" y2="54.6" stroke="url(#logo-eq)" stroke-width="0.8" stroke-opacity="0.6"/>
+        <circle cx="40" cy="49" r="4" fill="none" stroke="url(#logo-eq)" stroke-width="1.6"/>
+        <circle cx="40" cy="49" r="1.5" fill="url(#logo-eq)" fill-opacity="0.4"/>
+        <circle cx="28" cy="20" r="2" fill="url(#logo-eq)"/>
+
+        <!-- Wheat (Marketplace) -->
+        <line x1="85" y1="55" x2="85" y2="25" stroke="url(#logo-mkt)" stroke-width="1.8" stroke-linecap="round"/>
+        <ellipse cx="85" cy="21" rx="3.5" ry="5.5" fill="none" stroke="url(#logo-mkt)" stroke-width="1.6"/>
+        <ellipse cx="85" cy="21" rx="1.5" ry="3" fill="url(#logo-mkt)" fill-opacity="0.4"/>
+        <line x1="85" y1="16" x2="85" y2="14" stroke="url(#logo-mkt)" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M85 45 C80 42 76 36 77 29" stroke="url(#logo-mkt)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="76" cy="25.5" rx="2.8" ry="4.8" fill="none" stroke="url(#logo-mkt)" stroke-width="1.4" transform="rotate(-18 76 25.5)"/>
+        <ellipse cx="76" cy="25.5" rx="1.2" ry="2.4" fill="url(#logo-mkt)" fill-opacity="0.4" transform="rotate(-18 76 25.5)"/>
+        <path d="M85 45 C90 42 94 36 93 29" stroke="url(#logo-mkt)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="94" cy="25.5" rx="2.8" ry="4.8" fill="none" stroke="url(#logo-mkt)" stroke-width="1.4" transform="rotate(18 94 25.5)"/>
+        <ellipse cx="94" cy="25.5" rx="1.2" ry="2.4" fill="url(#logo-mkt)" fill-opacity="0.4" transform="rotate(18 94 25.5)"/>
+        <path d="M85 40 C78 37 74 30 75 23" stroke="url(#logo-mkt)" stroke-width="1.1" stroke-linecap="round" fill="none" stroke-opacity="0.55"/>
+        <path d="M85 40 C92 37 96 30 95 23" stroke="url(#logo-mkt)" stroke-width="1.1" stroke-linecap="round" fill="none" stroke-opacity="0.55"/>
+        <circle cx="92" cy="20" r="2" fill="url(#logo-mkt)"/>
+
+        <!-- Shopping bag (Shopper) -->
+        <path d="M47 82 L49 100 H71 L73 82 Z" fill="none" stroke="url(#logo-sh)" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M53 82 Q53 72 60 72 Q67 72 67 82" fill="none" stroke="url(#logo-sh)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M48.5 84 L50.5 98 H69.5 L71.5 84 Z" fill="url(#logo-sh)" fill-opacity="0.15"/>
+        <line x1="49.5" y1="88.5" x2="70.5" y2="88.5" stroke="url(#logo-sh)" stroke-width="0.9" stroke-opacity="0.5"/>
+        <line x1="50.5" y1="93.5" x2="69.5" y2="93.5" stroke="url(#logo-sh)" stroke-width="0.9" stroke-opacity="0.5"/>
+        <circle cx="60" cy="77" r="2.2" fill="url(#logo-sh)" fill-opacity="0.5" stroke="url(#logo-sh)" stroke-width="0.8"/>
+        <circle cx="60" cy="103" r="2" fill="url(#logo-sh)"/>
+
+        <!-- Center nexus -->
+        <circle cx="60" cy="60" r="14" fill="url(#logo-ctr)"/>
+        <circle cx="60" cy="60" r="10" fill="none" stroke="#34d399" stroke-width="1.2" stroke-opacity="0.7"/>
+        <circle cx="60" cy="60" r="9" fill="#0d2818" fill-opacity="0.95"/>
+        <circle cx="60" cy="50" r="2.2" fill="url(#logo-mkt)"/>
+        <circle cx="51.3" cy="64.5" r="2.2" fill="url(#logo-eq)"/>
+        <circle cx="68.7" cy="64.5" r="2.2" fill="url(#logo-sh)"/>
+        <text x="60" y="63.5" text-anchor="middle" font-size="8.5" font-weight="900"
+          font-family="'Arial Black', Arial, sans-serif" fill="#34d399" letter-spacing="0.5">AG</text>
       </g>
     </g>
 
