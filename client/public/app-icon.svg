@@ -138,12 +138,12 @@
       </g>
 
       <!-- ═══ CENTER DISC (where the wheat sits) ═══ -->
-      <circle cx="0" cy="0" r="125" fill="#14532d" stroke="#854d0e" stroke-width="6"/>
-      <circle cx="0" cy="0" r="125" fill="url(#bgGrad)" fill-opacity="0.8"/>
+      <circle cx="0" cy="0" r="148" fill="#14532d" stroke="#854d0e" stroke-width="6"/>
+      <circle cx="0" cy="0" r="148" fill="url(#bgGrad)" fill-opacity="0.8"/>
     </g>
 
     <!-- ═══ PROFESSIONAL FARMER PORTRAIT (waist-up) holding wheat sheaf ═══ -->
-    <g stroke="#1c1917" stroke-linejoin="round" stroke-linecap="round">
+    <g stroke="#1c1917" stroke-linejoin="round" stroke-linecap="round" transform="scale(1.32)">
 
       <!-- ═══ SHOULDERS / SHIRT base ═══ -->
       <path d="
@@ -185,32 +185,35 @@
         fill="#f59e0b" stroke-width="4"/>
 
       <!-- Cheek shading -->
-      <ellipse cx="-18" cy="-5" rx="6" ry="4" fill="#dc2626" fill-opacity="0.2" stroke="none"/>
-      <ellipse cx="18" cy="-5" rx="6" ry="4" fill="#dc2626" fill-opacity="0.2" stroke="none"/>
+      <ellipse cx="-18" cy="-3" rx="5" ry="3.5" fill="#dc2626" fill-opacity="0.22" stroke="none"/>
+      <ellipse cx="18" cy="-3" rx="5" ry="3.5" fill="#dc2626" fill-opacity="0.22" stroke="none"/>
 
       <!-- Ears -->
-      <ellipse cx="-28" cy="-15" rx="4" ry="7" fill="#d97706" stroke-width="2.5"/>
-      <ellipse cx="28" cy="-15" rx="4" ry="7" fill="#d97706" stroke-width="2.5"/>
+      <ellipse cx="-28" cy="-12" rx="4" ry="7" fill="#d97706" stroke-width="2.5"/>
+      <ellipse cx="28" cy="-12" rx="4" ry="7" fill="#d97706" stroke-width="2.5"/>
 
-      <!-- Eyes (refined) -->
-      <ellipse cx="-9" cy="-18" rx="3.5" ry="2.5" fill="#ffffff" stroke-width="1.5"/>
-      <ellipse cx="9" cy="-18" rx="3.5" ry="2.5" fill="#ffffff" stroke-width="1.5"/>
-      <circle cx="-9" cy="-18" r="1.8" fill="#1c1917" stroke="none"/>
-      <circle cx="9" cy="-18" r="1.8" fill="#1c1917" stroke="none"/>
+      <!-- Eyes (refined, larger and cleaner) -->
+      <ellipse cx="-10" cy="-18" rx="4" ry="3" fill="#ffffff" stroke-width="1.8"/>
+      <ellipse cx="10" cy="-18" rx="4" ry="3" fill="#ffffff" stroke-width="1.8"/>
+      <circle cx="-10" cy="-17" r="2" fill="#1c1917" stroke="none"/>
+      <circle cx="10" cy="-17" r="2" fill="#1c1917" stroke="none"/>
+      <!-- Eye shine -->
+      <circle cx="-9" cy="-19" r="0.8" fill="#ffffff" stroke="none"/>
+      <circle cx="11" cy="-19" r="0.8" fill="#ffffff" stroke="none"/>
 
-      <!-- Eyebrows -->
-      <path d="M -14 -25 Q -9 -28, -4 -25" fill="none" stroke="#1c1917" stroke-width="2.5"/>
-      <path d="M 14 -25 Q 9 -28, 4 -25" fill="none" stroke="#1c1917" stroke-width="2.5"/>
+      <!-- Eyebrows (bolder, more defined) -->
+      <path d="M -16 -26 Q -10 -29, -4 -26" fill="none" stroke="#1c1917" stroke-width="3"/>
+      <path d="M 16 -26 Q 10 -29, 4 -26" fill="none" stroke="#1c1917" stroke-width="3"/>
 
-      <!-- Nose -->
-      <path d="M 0 -15 Q -3 -8, -2 -3 Q 0 -1, 2 -3 Q 3 -8, 0 -15" fill="none" stroke="#92400e" stroke-width="1.8"/>
+      <!-- Nose (cleaner) -->
+      <path d="M 0 -12 Q -2.5 -5, -1.5 -1 Q 0 1, 1.5 -1 Q 2.5 -5, 0 -12" fill="#d97706" stroke="#92400e" stroke-width="1.5"/>
 
-      <!-- Mustache (mature professional farmer) -->
-      <path d="M -10 1 Q -6 5, 0 4 Q 6 5, 10 1 Q 7 -2, 0 -1 Q -7 -2, -10 1 Z"
-        fill="#451a03" stroke-width="2"/>
+      <!-- Mustache (cleaner, broader) -->
+      <path d="M -12 2 Q -7 6, 0 4 Q 7 6, 12 2 Q 9 -1, 4 0 Q 0 1, -4 0 Q -9 -1, -12 2 Z"
+        fill="#1c1917" stroke-width="1.5"/>
 
       <!-- Smile under mustache -->
-      <path d="M -7 8 Q 0 13, 7 8" fill="none" stroke="#1c1917" stroke-width="2"/>
+      <path d="M -6 9 Q 0 13, 6 9" fill="none" stroke="#1c1917" stroke-width="2.2"/>
 
       <!-- ═══ STRAW HAT (wide brim, classic Indian farmer) ═══ -->
       <!-- Brim back shadow -->
